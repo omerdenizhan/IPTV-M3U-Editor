@@ -5,7 +5,7 @@ A free, private, browser-based editor for M3U and M3U8 IPTV playlists.
 Open a playlist, organize groups and channels, edit channel details, check stream URLs, and download the cleaned playlist. Everything runs in your browser. Your playlist is not uploaded anywhere.
 
 ## Screenshot
-![screenshot](screenshot.png "Awesome M3U Editor 2.0")
+![screenshot](screenshot.png "IPTV M3U Editor 1.0.1")
 
 ## Main features
 
@@ -60,16 +60,10 @@ Then open `index.html` in your browser.
 
 ## Privacy
 
-Awesome M3U Editor works locally in your browser. Your playlist is not sent to a server.
+IPTV M3U Editor works locally in your browser. Your playlist is not sent to a server.
 
 ## Notes about status checking
 
 Browser-based checking has limits. Some IPTV servers block browser status checks with CORS. When that happens, the app shows `CORS` instead of guessing whether the stream is alive or dead.
 
-## License
-
-MIT License. See [LICENSE](LICENSE) for details.
-
----
-
-Made with ❤️ by [@arazgholami](https://github.com/arazgholami) | [Star on GitHub](https://github.com/arazgholami/awesome-m3u-editor)
+Made with ❤️ by [@omerdenizhan](https://github.com/omerdenizhan) | [Star on GitHub](https://github.com/omerdenizhan/IPTV-M3U-Editor)
