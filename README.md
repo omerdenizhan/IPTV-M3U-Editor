@@ -69,6 +69,7 @@ Browser-based checking has limits. Some IPTV servers block browser status checks
 
 Made with ❤️ by [@omerdenizhan](https://github.com/omerdenizhan) | [Star on GitHub](https://github.com/omerdenizhan/IPTV-M3U-Editor)
 
+
 > [!NOTE]
 > 🕰️ 19 Hazlran 2026 tarihinde güncelleme yapılmıştır.
 
