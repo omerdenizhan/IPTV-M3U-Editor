@@ -52,8 +52,9 @@ https://iptv-org.github.io/iptv/index.country.m3u
 ## Run locally
 
 ```bash
-git clone https://github.com/arazgholami/awesome-m3u-editor.git
-cd awesome-m3u-editor
+git clone https://github.com/omerdenizhan/IPTV-M3U-Editor.git
+cd IPTV-M3U-Editor
+
 ```
 
 Then open `index.html` in your browser.
