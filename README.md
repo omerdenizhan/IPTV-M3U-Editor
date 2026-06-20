@@ -1,13 +1,16 @@
-# IPTV M3U Editor 1.0.1
+<p align="center"><img src="icon.png" alt="Logo"></p>
+<h1 align="center">⭐ IPTV M3U Editor ⭐</h1>
 
 A free, private, browser-based editor for M3U and M3U8 IPTV playlists.
 
 Open a playlist, organize groups and channels, edit channel details, check stream URLs, and download the cleaned playlist. Everything runs in your browser. Your playlist is not uploaded anywhere.
 
-## Screenshot
-![screenshot](screenshot.png "IPTV M3U Editor 1.0.1")
+## Screenshots
+![screenshot](screenshot-1.png "Light Theme")
 
-## Main features
+![screenshot](screenshot-2.png "Dark Theme")
+
+## Main Features
 
 - Open `.m3u` and `.m3u8` playlists
 - Edit the playlist header, including EPG URLs
@@ -27,7 +30,7 @@ Open a playlist, organize groups and channels, edit channel details, check strea
 - Save progress in local browser storage
 - Download the edited playlist as a new `.m3u` file
 
-## Sample playlists
+## Sample Playlists
 
 ```txt
 # All TV channels grouped by category
@@ -40,7 +43,7 @@ https://iptv-org.github.io/iptv/index.language.m3u
 https://iptv-org.github.io/iptv/index.country.m3u
 ```
 
-## How to use
+## How to Use
 
 1. Open the live demo or run `index.html` locally.
 2. Choose your `.m3u` or `.m3u8` file.
@@ -49,7 +52,7 @@ https://iptv-org.github.io/iptv/index.country.m3u
 5. Use **Sort** to sort channels A-Z or by status.
 6. Click **Download Modified M3U** when you are done.
 
-## Run locally
+## Run Locally
 
 ```bash
 git clone https://github.com/omerdenizhan/IPTV-M3U-Editor.git
@@ -63,7 +66,7 @@ Then open `index.html` in your browser.
 
 IPTV M3U Editor works locally in your browser. Your playlist is not sent to a server.
 
-## Notes about status checking
+## Notes About Status Checking
 
 Browser-based checking has limits. Some IPTV servers block browser status checks with CORS. When that happens, the app shows `CORS` instead of guessing whether the stream is alive or dead.
 
@@ -73,7 +76,7 @@ Made with ❤️ by [@omerdenizhan](https://github.com/omerdenizhan) | [Star on 
 ---
 
 > [!NOTE]
-> 🕰️ 14 Hazlran 2026 tarihinde güncelleme yapılmıştır.
+> 🕰️ Updated on June 21, 2026
 
 ---
 <p align="center">❤️ Made with Love ❤️</p>
