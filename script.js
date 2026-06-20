@@ -20,7 +20,6 @@ const LEGACY_DATA_KEY = 'm3uData';
 const LEGACY_HEADER_KEY = 'm3uHeader';
 const NO_GROUP = 'No Group';
 
-
 function getStorageItem(key) {
     try {
         return window.localStorage ? window.localStorage.getItem(key) : null;
@@ -59,7 +58,6 @@ const fileInput = document.getElementById('fileInput');
 const downloadBtn = document.getElementById('downloadBtn');
 const clearBtn = document.getElementById('clearBtn');
 const playlistHeaderInput = document.getElementById('playlistHeaderInput');
-
 const groupsList = document.getElementById('groupsList');
 const groupsFilterInput = document.getElementById('groupsFilterInput');
 const newGroupBtn = document.getElementById('newGroupBtn');
@@ -67,7 +65,6 @@ const renameGroupBtn = document.getElementById('renameGroupBtn');
 const sortGroupsBtn = document.getElementById('sortGroupsBtn');
 const deleteGroupsBtn = document.getElementById('deleteGroupsBtn');
 const groupSelectedCount = document.getElementById('groupSelectedCount');
-
 const itemsList = document.getElementById('itemsList');
 const itemsFilterInput = document.getElementById('itemsFilterInput');
 const newItemBtn = document.getElementById('newItemBtn');
@@ -82,7 +79,6 @@ const groupDropdown = document.getElementById('groupDropdown');
 const deleteItemsBtn = document.getElementById('deleteItemsBtn');
 const itemSelectedCount = document.getElementById('itemSelectedCount');
 const statusCheckProgress = document.getElementById('statusCheckProgress');
-
 const itemDetailsForm = document.getElementById('itemDetailsForm');
 const itemIndexInput = document.getElementById('itemIndex');
 const itemNameInput = document.getElementById('itemName');
@@ -98,7 +94,6 @@ const itemStatusInput = document.getElementById('itemStatus');
 const itemStatusDescription = document.getElementById('itemStatusDescription');
 const checkCurrentItemBtn = document.getElementById('checkCurrentItemBtn');
 const itemUrlPreview = document.getElementById('itemUrlPreview');
-
 const itemGroupTitleDropdownMenu = document.getElementById('itemGroupTitleDropdownMenu');
 const itemGroupTitleSelected = document.getElementById('itemGroupTitleSelected');
 const itemGroupTitleInput = document.getElementById('itemGroupTitle');
@@ -204,19 +199,16 @@ function rebuildDataByGroupOrder() {
         if (!grouped.has(group)) grouped.set(group, []);
         grouped.get(group).push(item);
     });
-
     const newData = [];
     groupOrder.forEach(group => {
         if (grouped.has(group)) newData.push(...grouped.get(group));
     });
-
     grouped.forEach((items, group) => {
         if (!groupOrder.includes(group)) {
             groupOrder.push(group);
             newData.push(...items);
         }
     });
-
     m3uData = newData;
 }
 
@@ -224,7 +216,6 @@ function replaceGroupItems(groupName, newGroupItems) {
     const group = cleanGroupName(groupName);
     let inserted = false;
     const newData = [];
-
     m3uData.forEach(item => {
         if (getItemGroup(item) === group) {
             if (!inserted) {
@@ -235,12 +226,10 @@ function replaceGroupItems(groupName, newGroupItems) {
         }
         newData.push(item);
     });
-
     if (!inserted && newGroupItems.length > 0) {
         const insertAt = findInsertIndexForGroup(group);
         newData.splice(insertAt, 0, ...newGroupItems);
     }
-
     m3uData = newData;
     ensureGroupExists(group);
 }
@@ -249,13 +238,11 @@ function findInsertIndexForGroup(groupName) {
     const group = cleanGroupName(groupName);
     const allGroups = getAllGroups();
     const groupIndex = allGroups.indexOf(group);
-
     for (let i = 0; i < m3uData.length; i++) {
         const currentGroup = getItemGroup(m3uData[i]);
         const currentIndex = allGroups.indexOf(currentGroup);
         if (currentIndex > groupIndex) return i;
     }
-
     return m3uData.length;
 }
 
@@ -263,20 +250,15 @@ function moveSelectedBlock(order, movingItems, newIndex) {
     const movingSet = new Set(movingItems);
     const orderedMoving = order.filter(item => movingSet.has(item));
     if (orderedMoving.length === 0) return order.slice();
-
     const selectedIndices = orderedMoving.map(item => order.indexOf(item)).sort((a, b) => a - b);
     const minIndex = selectedIndices[0];
     const maxIndex = selectedIndices[selectedIndices.length - 1];
-
     if (newIndex >= minIndex && newIndex <= maxIndex) return order.slice();
-
     const remaining = order.filter(item => !movingSet.has(item));
     let insertAt = newIndex;
-
     if (newIndex > minIndex) {
         insertAt = newIndex - selectedIndices.filter(index => index < newIndex).length + 1;
     }
-
     insertAt = Math.max(0, Math.min(insertAt, remaining.length));
     return [
         ...remaining.slice(0, insertAt),
@@ -288,7 +270,6 @@ function moveSelectedBlock(order, movingItems, newIndex) {
 function mergeVisibleOrder(fullOrder, originalVisibleOrder, newVisibleOrder) {
     const visibleSet = new Set(originalVisibleOrder);
     let visibleIndex = 0;
-
     return fullOrder.map(item => {
         if (!visibleSet.has(item)) return item;
         return newVisibleOrder[visibleIndex++];
@@ -301,14 +282,12 @@ function parseAttributeString(text) {
     const source = String(text || '');
     const regex = /([A-Za-z0-9_:-]+)\s*=\s*(?:"([^"]*)"|'([^']*)'|“([^”]*)”|([^\s"'“”]+))/g;
     let match;
-
     while ((match = regex.exec(source)) !== null) {
         const key = match[1];
         const value = match[2] ?? match[3] ?? match[4] ?? match[5] ?? '';
         if (!Object.prototype.hasOwnProperty.call(attributes, key)) order.push(key);
         attributes[key] = value;
     }
-
     return { attributes, order };
 }
 
@@ -340,10 +319,8 @@ function buildExtinfLine(item) {
     if (item.catchup) attributes.push(formatAttribute('catchup', item.catchup));
     if (item.catchupType) attributes.push(formatAttribute('catchup-type', item.catchupType));
     if (item.catchupDays !== '') attributes.push(formatAttribute('catchup-days', item.catchupDays));
-
     const additional = buildAdditionalAttributes(item);
     if (additional) attributes.push(additional);
-
     const attrsText = attributes.length ? ` ${attributes.join(' ')}` : '';
     return `#EXTINF:${item.duration || '-1'}${attrsText},${item.name || ''}`;
 }
@@ -356,7 +333,6 @@ function normalizeChannelStatus(status) {
 function getStatusDescription(status) {
     const value = normalizeChannelStatus(status);
     const code = Number(value);
-
     if (value === STATUS_UNKNOWN) return 'Unknown. This channel has not been checked yet.';
     if (value === 'Queued') return 'Queued. This channel is waiting to be checked.';
     if (value === 'Checking') return 'Checking now.';
@@ -365,7 +341,6 @@ function getStatusDescription(status) {
     if (value === 'Unsupported') return 'Only http and https URLs can be checked from the browser.';
     if (value === 'CORS') return 'The browser reached it, but the server did not allow reading the real HTTP status.';
     if (value === 'Blocked') return 'The browser could not complete the request. It may be mixed content, DNS, network, ad blocker, or CORS.';
-
     if (code >= 200 && code < 300) return `${value} means fine and reachable.`;
     if (code >= 300 && code < 400) return `${value} means redirected. The final URL may still work in a player.`;
     if (code === 401) return '401 means authentication is required.';
@@ -383,7 +358,6 @@ function getStatusDescription(status) {
 function getStatusClass(status) {
     const value = normalizeChannelStatus(status);
     const code = Number(value);
-
     if (value === 'Checking') return 'status-checking';
     if (value === 'Queued' || value === STATUS_UNKNOWN || value === 'CORS') return 'status-neutral';
     if (value === 'Blocked' || value === 'No URL' || value === 'Bad URL' || value === 'Unsupported') return 'status-bad';
@@ -419,13 +393,11 @@ function setProgress(text) {
 function updateItemStatusControls(item) {
     const status = getStatusLabel(item);
     const description = getStatusTitle(item);
-
     if (itemStatusInput) {
         itemStatusInput.value = status;
         itemStatusInput.className = `form-control form-control-sm ${getStatusClass(status)}`;
         itemStatusInput.title = description;
     }
-
     if (itemStatusDescription) itemStatusDescription.textContent = description;
 }
 
@@ -451,7 +423,6 @@ function fillItemForm(item) {
         resetItemForm();
         return;
     }
-
     itemIndexInput.value = item._id;
     itemNameInput.value = item.name || '';
     itemUrlInput.value = item.url || '';
@@ -475,7 +446,6 @@ function updateItemUrlPreview(url) {
         itemUrlPreview.setAttribute('tabindex', '-1');
         return;
     }
-
     itemUrlPreview.href = url;
     itemUrlPreview.classList.remove('disabled');
     itemUrlPreview.removeAttribute('tabindex');
@@ -484,7 +454,6 @@ function updateItemUrlPreview(url) {
 function updateGroupDropdown() {
     const groups = getAllGroups();
     groupDropdown.innerHTML = '';
-
     groups.forEach(group => {
         const li = document.createElement('li');
         const link = document.createElement('a');
@@ -503,7 +472,6 @@ function updateGroupDropdown() {
 function updateItemGroupTitleDropdown(selectedValue) {
     const groups = getAllGroups();
     itemGroupTitleDropdownMenu.innerHTML = '';
-
     groups.forEach(group => {
         const li = document.createElement('li');
         const link = document.createElement('a');
@@ -518,7 +486,6 @@ function updateItemGroupTitleDropdown(selectedValue) {
         li.appendChild(link);
         itemGroupTitleDropdownMenu.appendChild(li);
     });
-
     const value = cleanGroupName(selectedValue || selectedGroup || groups[0] || NO_GROUP);
     itemGroupTitleSelected.textContent = value;
     itemGroupTitleInput.value = value;
@@ -531,11 +498,9 @@ function updateActionState() {
     const itemCount = selectedGroup ? getGroupItems(selectedGroup).length : 0;
     const selectedGroupCount = selectedGroups.size;
     const selectedItemCount = selectedChannels.size;
-
     renameGroupBtn.disabled = selectedGroupCount !== 1;
     deleteGroupsBtn.disabled = selectedGroupCount === 0;
     sortGroupsBtn.disabled = visibleGroupCount < 2;
-
     newItemBtn.disabled = !selectedGroup;
     renameItemBtn.disabled = selectedItemCount !== 1;
     cloneItemBtn.disabled = selectedItemCount !== 1;
@@ -546,7 +511,6 @@ function updateActionState() {
     moveItemsBtn.disabled = selectedItemCount === 0 || groupCount === 0;
     deleteItemsBtn.disabled = selectedItemCount === 0;
     downloadBtn.disabled = m3uData.length === 0 && getAllGroups().length === 0;
-
     groupSelectedCount.textContent = selectedGroupCount ? `(${selectedGroupCount} selected)` : '';
     itemSelectedCount.textContent = selectedItemCount ? `(${selectedItemCount} selected)` : '';
     if (statusCheckProgress) statusCheckProgress.textContent = checkingProgressText;
@@ -558,15 +522,12 @@ function renderGroups() {
     groupsList.innerHTML = '';
     updateGroupDropdown();
     updateItemGroupTitleDropdown(itemGroupTitleInput.value || selectedGroup || '');
-
     groups.forEach(group => {
         const groupItem = document.createElement('div');
         groupItem.className = 'list-group-item d-flex justify-content-between align-items-center gap-2';
         groupItem.dataset.groupName = group;
-
         if (selectedGroups.has(group)) groupItem.classList.add('selected');
         if (selectedGroup === group) groupItem.classList.add('active');
-
         if (renamingGroup === group) {
             const input = document.createElement('input');
             input.type = 'text';
@@ -579,12 +540,10 @@ function renderGroups() {
                     renderGroups();
                 }
             });
-
             const saveBtn = document.createElement('button');
             saveBtn.className = 'btn btn-sm btn-success';
             saveBtn.textContent = 'Save';
             saveBtn.addEventListener('click', () => saveGroupRename(group, input.value));
-
             groupItem.appendChild(input);
             groupItem.appendChild(saveBtn);
             setTimeout(() => {
@@ -595,20 +554,16 @@ function renderGroups() {
             const nameSpan = document.createElement('span');
             nameSpan.className = 'list-name';
             nameSpan.textContent = group;
-
             const countSpan = document.createElement('span');
             countSpan.className = 'badge bg-secondary ms-auto';
             countSpan.textContent = getGroupCount(group);
-
             groupItem.appendChild(nameSpan);
             groupItem.appendChild(countSpan);
             groupItem.addEventListener('click', event => selectGroup(event, group));
             groupItem.addEventListener('dblclick', () => startGroupRename(group));
         }
-
         groupsList.appendChild(groupItem);
     });
-
     if (!selectedGroup && getAllGroups().length > 0) {
         const firstGroup = groups[0] || getAllGroups()[0];
         selectedGroup = firstGroup;
@@ -618,34 +573,27 @@ function renderGroups() {
         renderItems();
         return;
     }
-
     updateActionState();
 }
 
 function renderItems() {
     selectedGroupItems = getVisibleItemsForSelectedGroup();
     selectedChannels = new Set([...selectedChannels].filter(id => m3uData.some(item => item._id === id)));
-
     if (activeChannelId && !m3uData.some(item => item._id === activeChannelId)) {
         activeChannelId = null;
     }
-
     itemsList.innerHTML = '';
-
     if (!selectedGroup) {
         resetItemForm();
         updateActionState();
         return;
     }
-
     selectedGroupItems.forEach(item => {
         const itemElement = document.createElement('div');
         itemElement.className = 'list-group-item d-flex justify-content-between align-items-center gap-2';
         itemElement.dataset.itemId = item._id;
-
         if (selectedChannels.has(item._id)) itemElement.classList.add('selected');
         if (activeChannelId === item._id) itemElement.classList.add('active');
-
         if (renamingItemId === item._id) {
             const input = document.createElement('input');
             input.type = 'text';
@@ -658,12 +606,10 @@ function renderItems() {
                     renderItems();
                 }
             });
-
             const saveBtn = document.createElement('button');
             saveBtn.className = 'btn btn-sm btn-success';
             saveBtn.textContent = 'Save';
             saveBtn.addEventListener('click', () => saveItemRename(item._id, input.value));
-
             itemElement.appendChild(input);
             itemElement.appendChild(saveBtn);
             setTimeout(() => {
@@ -673,21 +619,17 @@ function renderItems() {
         } else {
             const channelMain = document.createElement('span');
             channelMain.className = 'channel-main d-flex align-items-center gap-2';
-
             const nameSpan = document.createElement('span');
             nameSpan.className = 'list-name';
             nameSpan.textContent = item.name || 'Unnamed';
-
             const statusSpan = document.createElement('span');
             statusSpan.className = `status-badge ${getStatusClass(item.status)}`;
             statusSpan.textContent = getStatusLabel(item);
             statusSpan.title = getStatusTitle(item);
-
             const urlSpan = document.createElement('span');
             urlSpan.className = 'item-meta text-muted ms-auto';
             urlSpan.textContent = item.url || '';
             urlSpan.title = item.url || '';
-
             channelMain.appendChild(nameSpan);
             channelMain.appendChild(statusSpan);
             itemElement.appendChild(channelMain);
@@ -695,16 +637,13 @@ function renderItems() {
             itemElement.addEventListener('click', event => selectItem(event, item._id));
             itemElement.addEventListener('dblclick', () => startItemRename(item._id));
         }
-
         itemsList.appendChild(itemElement);
     });
-
     if (activeChannelId) {
         fillItemForm(m3uData.find(item => item._id === activeChannelId));
     } else {
         resetItemForm();
     }
-
     updateActionState();
 }
 
@@ -713,10 +652,8 @@ function selectGroup(event, groupName) {
     const visibleGroups = getVisibleGroups();
     const useToggle = event && (event.ctrlKey || event.metaKey);
     const useRange = event && event.shiftKey;
-
     renamingGroup = null;
     renamingItemId = null;
-
     if (useToggle) {
         if (selectedGroups.has(group)) {
             selectedGroups.delete(group);
@@ -733,7 +670,6 @@ function selectGroup(event, groupName) {
         renderItems();
         return;
     }
-
     if (useRange) {
         const anchor = groupSelectionAnchor || selectedGroup || group;
         let start = visibleGroups.indexOf(anchor);
@@ -749,7 +685,6 @@ function selectGroup(event, groupName) {
         renderItems();
         return;
     }
-
     selectedGroup = group;
     selectedGroups = new Set([group]);
     groupSelectionAnchor = group;
@@ -762,12 +697,9 @@ function selectGroup(event, groupName) {
 function selectItem(event, itemId) {
     const item = m3uData.find(entry => entry._id === itemId);
     if (!item) return;
-
     const useToggle = event && (event.ctrlKey || event.metaKey);
     const useRange = event && event.shiftKey;
-
     renamingItemId = null;
-
     if (useToggle) {
         if (selectedChannels.has(itemId)) {
             selectedChannels.delete(itemId);
@@ -780,7 +712,6 @@ function selectItem(event, itemId) {
         renderItems();
         return;
     }
-
     if (useRange) {
         const visibleIds = selectedGroupItems.map(entry => entry._id);
         const anchor = itemSelectionAnchorId || activeChannelId || itemId;
@@ -794,7 +725,6 @@ function selectItem(event, itemId) {
         renderItems();
         return;
     }
-
     selectedChannels = new Set([itemId]);
     activeChannelId = itemId;
     itemSelectionAnchorId = itemId;
@@ -834,13 +764,11 @@ function startSelectedItemRename() {
 function saveGroupRename(oldName, newName) {
     const oldGroup = cleanGroupName(oldName);
     const newGroup = cleanGroupName(newName);
-
     if (!newGroup || oldGroup === newGroup) {
         renamingGroup = null;
         renderGroups();
         return;
     }
-
     if (groupOrder.includes(newGroup) && oldGroup !== newGroup) {
         const shouldMerge = confirm(`A group named "${newGroup}" already exists. Merge "${oldGroup}" into it?`);
         if (!shouldMerge) return;
@@ -848,11 +776,9 @@ function saveGroupRename(oldName, newName) {
     } else {
         groupOrder = groupOrder.map(group => group === oldGroup ? newGroup : group);
     }
-
     m3uData.forEach(item => {
         if (getItemGroup(item) === oldGroup) item.groupTitle = newGroup;
     });
-
     selectedGroup = newGroup;
     selectedGroups = new Set([newGroup]);
     groupSelectionAnchor = newGroup;
@@ -866,14 +792,12 @@ function saveGroupRename(oldName, newName) {
 function saveItemRename(itemId, newName) {
     const item = m3uData.find(entry => entry._id === itemId);
     if (!item) return;
-
     const name = String(newName || '').trim();
     if (!name) {
         renamingItemId = null;
         renderItems();
         return;
     }
-
     item.name = name;
     renamingItemId = null;
     activeChannelId = itemId;
@@ -886,11 +810,9 @@ function createNewGroup() {
     const groups = getAllGroups();
     let newGroupName = 'New Group';
     let suffix = 1;
-
     while (groups.includes(newGroupName)) {
         newGroupName = `New Group ${suffix++}`;
     }
-
     groupOrder.unshift(newGroupName);
     selectedGroup = newGroupName;
     selectedGroups = new Set([newGroupName]);
@@ -906,7 +828,6 @@ function createNewGroup() {
 
 function createNewItem() {
     if (!selectedGroup) return;
-
     const group = ensureGroupExists(selectedGroup);
     const item = ensureItem({
         name: 'New Item',
@@ -925,7 +846,6 @@ function createNewItem() {
         lastChecked: '',
         extraLines: []
     });
-
     const groupItems = getGroupItems(group);
     if (groupItems.length) {
         const firstIndex = m3uData.findIndex(entry => getItemGroup(entry) === group);
@@ -934,14 +854,12 @@ function createNewItem() {
         const insertAt = findInsertIndexForGroup(group);
         m3uData.splice(insertAt, 0, item);
     }
-
     selectedChannels = new Set([item._id]);
     activeChannelId = item._id;
     itemSelectionAnchorId = item._id;
     saveToLocalStorage();
     renderGroups();
     renderItems();
-
     setTimeout(() => {
         itemNameInput.focus();
         itemNameInput.select();
@@ -950,11 +868,9 @@ function createNewItem() {
 
 function cloneSelectedItem() {
     if (selectedChannels.size !== 1) return;
-
     const sourceId = [...selectedChannels][0];
     const sourceIndex = m3uData.findIndex(item => item._id === sourceId);
     if (sourceIndex === -1) return;
-
     const source = m3uData[sourceIndex];
     const clone = ensureItem({
         ...source,
@@ -962,7 +878,6 @@ function cloneSelectedItem() {
         name: `${source.name || 'Unnamed'} Copy`,
         extraLines: Array.isArray(source.extraLines) ? source.extraLines.slice() : []
     });
-
     m3uData.splice(sourceIndex + 1, 0, clone);
     selectedGroup = getItemGroup(clone);
     selectedGroups = new Set([selectedGroup]);
@@ -976,12 +891,10 @@ function cloneSelectedItem() {
 
 function deleteSelectedGroups() {
     if (!selectedGroups.size) return;
-
     const count = selectedGroups.size;
     if (!confirm(`Delete ${count} selected group${count === 1 ? '' : 's'}? This will also delete every channel inside.`)) {
         return;
     }
-
     const groupsToDelete = new Set(selectedGroups);
     m3uData = m3uData.filter(item => !groupsToDelete.has(getItemGroup(item)));
     groupOrder = groupOrder.filter(group => !groupsToDelete.has(group));
@@ -998,7 +911,6 @@ function deleteSelectedGroups() {
 
 function deleteSelectedItems() {
     if (!selectedChannels.size) return;
-
     const idsToDelete = new Set(selectedChannels);
     m3uData = m3uData.filter(item => !idsToDelete.has(item._id));
     selectedChannels.clear();
@@ -1011,14 +923,11 @@ function deleteSelectedItems() {
 
 function moveSelectedItemsToGroup(targetGroupName) {
     if (!selectedChannels.size) return;
-
     const targetGroup = ensureGroupExists(targetGroupName);
     const movedIds = new Set(selectedChannels);
-
     m3uData.forEach(item => {
         if (movedIds.has(item._id)) item.groupTitle = targetGroup;
     });
-
     selectedGroup = targetGroup;
     selectedGroups = new Set([targetGroup]);
     groupSelectionAnchor = targetGroup;
@@ -1044,11 +953,9 @@ function sortGroupsAlphabetically() {
 
 function sortItemsAlphabetically() {
     if (!selectedGroup) return;
-
     const groupItems = getGroupItems(selectedGroup).slice().sort((a, b) => {
         return (a.name || '').localeCompare(b.name || '', undefined, { sensitivity: 'base' });
     });
-
     replaceGroupItems(selectedGroup, groupItems);
     saveToLocalStorage();
     renderItems();
@@ -1057,7 +964,6 @@ function sortItemsAlphabetically() {
 function getStatusSortWeight(status) {
     const value = normalizeChannelStatus(status);
     const code = Number(value);
-
     if (value === 'Checking') return 10;
     if (value === 'Queued') return 20;
     if (code >= 200 && code < 300) return 30;
@@ -1073,17 +979,13 @@ function getStatusSortWeight(status) {
 
 function sortItemsByStatus() {
     if (!selectedGroup) return;
-
     const groupItems = getGroupItems(selectedGroup).slice().sort((a, b) => {
         const weightDiff = getStatusSortWeight(a.status) - getStatusSortWeight(b.status);
         if (weightDiff) return weightDiff;
-
         const statusDiff = getStatusLabel(a).localeCompare(getStatusLabel(b), undefined, { numeric: true, sensitivity: 'base' });
         if (statusDiff) return statusDiff;
-
         return (a.name || '').localeCompare(b.name || '', undefined, { sensitivity: 'base' });
     });
-
     replaceGroupItems(selectedGroup, groupItems);
     saveToLocalStorage();
     renderItems();
@@ -1091,14 +993,12 @@ function sortItemsByStatus() {
 
 function updateGroupsOrder(evt) {
     if (!evt) return;
-
     const visibleGroups = getVisibleGroups();
     const allGroups = getAllGroups();
     const draggedGroup = evt.item.dataset.groupName || visibleGroups[evt.oldIndex];
     const groupsToMove = selectedGroups.has(draggedGroup)
         ? visibleGroups.filter(group => selectedGroups.has(group))
         : [draggedGroup];
-
     const newVisibleOrder = moveSelectedBlock(visibleGroups, groupsToMove, evt.newIndex);
     groupOrder = mergeVisibleOrder(allGroups, visibleGroups, newVisibleOrder);
     selectedGroup = draggedGroup;
@@ -1114,18 +1014,15 @@ function updateGroupsOrder(evt) {
 
 function updateItemsOrder(evt) {
     if (!selectedGroup || !evt) return;
-
     const visibleItems = selectedGroupItems.slice();
     const draggedId = evt.item.dataset.itemId || (visibleItems[evt.oldIndex] && visibleItems[evt.oldIndex]._id);
     const selectedIds = selectedChannels.has(draggedId)
         ? visibleItems.filter(item => selectedChannels.has(item._id)).map(item => item._id)
         : [draggedId];
-
     const visibleIds = visibleItems.map(item => item._id);
     const newVisibleIds = moveSelectedBlock(visibleIds, selectedIds, evt.newIndex);
     const itemById = new Map(visibleItems.map(item => [item._id, item]));
     const newVisibleItems = newVisibleIds.map(id => itemById.get(id)).filter(Boolean);
-
     const fullGroupItems = getGroupItems(selectedGroup);
     const visibleSet = new Set(visibleIds);
     let cursor = 0;
@@ -1133,7 +1030,6 @@ function updateItemsOrder(evt) {
         if (!visibleSet.has(item._id)) return item;
         return newVisibleItems[cursor++] || item;
     });
-
     replaceGroupItems(selectedGroup, newFullGroupItems);
     selectedChannels = new Set(selectedIds);
     activeChannelId = draggedId;
@@ -1175,7 +1071,6 @@ async function readCorsStatus(url) {
         cache: 'no-store',
         redirect: 'follow'
     }, 12000);
-
     return headResponse;
 }
 
@@ -1186,7 +1081,6 @@ async function readCorsStatusWithGet(url) {
         cache: 'no-store',
         redirect: 'follow'
     }, 12000);
-
     return getResponse;
 }
 
@@ -1201,22 +1095,18 @@ async function canReachWithoutReadingStatus(url) {
 
 async function checkSingleChannel(item) {
     const rawUrl = String(item.url || '').trim();
-
     if (!rawUrl) {
         markChannelStatus(item, 'No URL', getStatusDescription('No URL'));
         return;
     }
-
     if (!isValidUrl(rawUrl)) {
         markChannelStatus(item, 'Bad URL', getStatusDescription('Bad URL'));
         return;
     }
-
     if (!isHttpUrl(rawUrl)) {
         markChannelStatus(item, 'Unsupported', getStatusDescription('Unsupported'));
         return;
     }
-
     try {
         let response;
         try {
@@ -1224,7 +1114,6 @@ async function checkSingleChannel(item) {
         } catch (headError) {
             response = await readCorsStatusWithGet(rawUrl);
         }
-
         const status = String(response.status || STATUS_UNKNOWN);
         const statusText = response.statusText ? ` ${response.statusText}` : '';
         markChannelStatus(item, status, `${status}${statusText}. ${getStatusDescription(status)}`);
@@ -1244,17 +1133,14 @@ async function checkSingleChannel(item) {
 
 async function checkChannelItems(items, emptyMessage, finishedLabel) {
     if (isCheckingChannels) return;
-
     const targets = Array.from(new Set((items || []).filter(Boolean)));
     if (targets.length === 0) {
         setProgress(emptyMessage || 'Select at least one channel to check.');
         updateActionState();
         return;
     }
-
     isCheckingChannels = true;
     updateActionState();
-
     const candidates = targets.map(item => {
         ensureItem(item);
         item.status = 'Queued';
@@ -1262,37 +1148,29 @@ async function checkChannelItems(items, emptyMessage, finishedLabel) {
         item.lastChecked = '';
         return item;
     });
-
     const label = finishedLabel || 'selected channels';
     const total = candidates.length;
     const batchSize = 5;
-
     setProgress(`Queued ${total} ${label}. Checking 5 at a time.`);
     saveToLocalStorage();
     renderItems();
-
     for (let start = 0; start < total; start += batchSize) {
         const batch = candidates.slice(start, start + batchSize);
         const batchStart = start + 1;
         const batchEnd = start + batch.length;
-
         batch.forEach(item => {
             item.status = 'Checking';
             item.statusDetail = getStatusDescription('Checking');
             item.lastChecked = new Date().toLocaleString();
         });
-
         setProgress(`Checking ${batchStart}-${batchEnd} of ${total}. ${Math.max(total - batchEnd, 0)} queued.`);
         saveToLocalStorage();
         renderItems();
-
         await Promise.all(batch.map(item => checkSingleChannel(item)));
-
         setProgress(`Checked ${batchEnd} of ${total}. ${Math.max(total - batchEnd, 0)} queued.`);
         saveToLocalStorage();
         renderItems();
     }
-
     isCheckingChannels = false;
     setProgress(`Finished checking ${total} ${label}.`);
     saveToLocalStorage();
@@ -1306,11 +1184,9 @@ async function checkChannels() {
 
 async function checkCurrentItem() {
     if (!activeChannelId || isCheckingChannels) return;
-
     saveCurrentItemFromForm();
     const item = m3uData.find(entry => entry._id === activeChannelId);
     if (!item) return;
-
     selectedChannels = new Set([item._id]);
     await checkChannelItems([item], 'Select a channel to check.', 'current channel');
 }
@@ -1318,7 +1194,6 @@ async function checkCurrentItem() {
 function handleFileUpload(event) {
     const file = event.target.files[0];
     if (!file) return;
-
     const reader = new FileReader();
     reader.onload = event => {
         parseM3U(event.target.result);
@@ -1339,31 +1214,25 @@ function parseM3U(content) {
     activeChannelId = null;
     renamingGroup = null;
     renamingItemId = null;
-
     const lines = String(content || '').replace(/\r/g, '').split('\n');
     let currentItem = null;
-
     lines.forEach(rawLine => {
         const line = rawLine.trim();
         if (!line) return;
-
         if (line.toUpperCase().startsWith('#EXTM3U')) {
             playlistHeader = line;
             playlistHeaderInput.value = playlistHeader;
             return;
         }
-
         if (line.toUpperCase().startsWith('#EXTINF')) {
             currentItem = parseExtinfLine(line);
             return;
         }
-
         if (currentItem) {
             if (line.startsWith('#')) {
                 currentItem.extraLines.push(line);
                 return;
             }
-
             currentItem.url = line;
             ensureItem(currentItem);
             m3uData.push(currentItem);
@@ -1371,7 +1240,6 @@ function parseM3U(content) {
             currentItem = null;
         }
     });
-
     syncGroupOrder();
     selectedGroup = groupOrder[0] || null;
     if (selectedGroup) {
@@ -1390,7 +1258,6 @@ function parseExtinfLine(line) {
     const attributeText = firstSpace >= 0 ? info.slice(firstSpace + 1) : '';
     const parsed = parseAttributeString(attributeText);
     const attrs = parsed.attributes;
-
     return {
         _id: makeItemId(),
         name: name || 'Unnamed',
@@ -1415,20 +1282,17 @@ function generateM3U() {
     syncGroupOrder();
     const header = (playlistHeaderInput.value || '#EXTM3U').trim() || '#EXTM3U';
     playlistHeader = header.toUpperCase().startsWith('#EXTM3U') ? header : `#EXTM3U ${header}`;
-
     const lines = [playlistHeader];
     const orderedItems = [];
     groupOrder.forEach(group => {
         orderedItems.push(...getGroupItems(group));
     });
-
     orderedItems.forEach(item => {
         ensureItem(item);
         lines.push(buildExtinfLine(item));
         item.extraLines.forEach(extraLine => lines.push(extraLine));
         lines.push(item.url || '');
     });
-
     return `${lines.join('\n')}\n`;
 }
 
@@ -1439,7 +1303,6 @@ function downloadM3U() {
         renderGroups();
         renderItems();
     }
-
     const content = generateM3U();
     const blob = new Blob([content], { type: 'application/x-mpegurl' });
     const url = URL.createObjectURL(blob);
@@ -1456,11 +1319,9 @@ function saveCurrentItemFromForm() {
     const itemId = itemIndexInput.value;
     const item = m3uData.find(entry => entry._id === itemId);
     if (!item) return null;
-
     const oldGroup = getItemGroup(item);
     const oldUrl = item.url || '';
     const newGroup = ensureGroupExists(itemGroupTitleInput.value || selectedGroup || NO_GROUP);
-
     item.name = itemNameInput.value.trim() || 'Unnamed';
     item.url = itemUrlInput.value.trim();
     if (item.url !== oldUrl) {
@@ -1476,13 +1337,11 @@ function saveCurrentItemFromForm() {
     item.catchupType = itemCatchupTypeInput.value.trim();
     item.catchupDays = itemCatchupDaysInput.value.trim();
     item.additionalAttributes = buildAdditionalAttributes({ additionalAttributes: itemAdditionalAttrsInput.value.trim() });
-
     if (oldGroup !== newGroup) {
         selectedGroup = newGroup;
         selectedGroups = new Set([newGroup]);
         groupSelectionAnchor = newGroup;
     }
-
     selectedChannels = new Set([item._id]);
     activeChannelId = item._id;
     itemSelectionAnchorId = item._id;
@@ -1492,10 +1351,8 @@ function saveCurrentItemFromForm() {
 
 function saveItemChanges(event) {
     event.preventDefault();
-
     const item = saveCurrentItemFromForm();
     if (!item) return;
-
     saveToLocalStorage();
     renderGroups();
     renderItems();
@@ -1517,7 +1374,6 @@ function loadFromLocalStorage() {
     const savedProject = getStorageItem(STORAGE_KEY);
     const legacyData = getStorageItem(LEGACY_DATA_KEY);
     const legacyHeader = getStorageItem(LEGACY_HEADER_KEY);
-
     try {
         if (savedProject) {
             const parsed = JSON.parse(savedProject);
@@ -1538,20 +1394,17 @@ function loadFromLocalStorage() {
 
     playlistHeaderInput.value = playlistHeader;
     syncGroupOrder();
-
     if (groupOrder.length) {
         selectedGroup = groupOrder[0];
         selectedGroups = new Set([selectedGroup]);
         groupSelectionAnchor = selectedGroup;
     }
-
     renderGroups();
     renderItems();
 }
 
 function clearProject() {
     if (!confirm('Are you sure you want to clear this playlist? This cannot be undone.')) return;
-
     m3uData = [];
     groupOrder = [];
     playlistHeader = '#EXTM3U';
@@ -1638,7 +1491,6 @@ newGroupBtn.addEventListener('click', createNewGroup);
 renameGroupBtn.addEventListener('click', startSelectedGroupRename);
 sortGroupsBtn.addEventListener('click', sortGroupsAlphabetically);
 deleteGroupsBtn.addEventListener('click', deleteSelectedGroups);
-
 newItemBtn.addEventListener('click', createNewItem);
 renameItemBtn.addEventListener('click', startSelectedItemRename);
 cloneItemBtn.addEventListener('click', cloneSelectedItem);
