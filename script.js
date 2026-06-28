@@ -15,7 +15,7 @@ let isCheckingChannels = false;
 let checkingProgressText = '';
 
 const STATUS_UNKNOWN = 'Unknown';
-const STORAGE_KEY = 'awesomeM3uEditorProject';
+const STORAGE_KEY = 'IPTVM3uEditorProject';
 const LEGACY_DATA_KEY = 'm3uData';
 const LEGACY_HEADER_KEY = 'm3uHeader';
 const NO_GROUP = 'No Group';
@@ -1037,7 +1037,6 @@ function updateItemsOrder(evt) {
     saveToLocalStorage();
     renderItems();
 }
-
 
 function isHttpUrl(url) {
     try {
