@@ -1,3 +1,98 @@
+/* Stylish Button in the Upper Right Corner */
+.theme-toggle-btn {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Hover Effect */
+.theme-toggle-btn:hover {
+    transform: scale(1.1) rotate(15deg);
+    background: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.25);
+}
+
+/* General Style of Icons */
+.theme-toggle-btn svg {
+    width: 22px;
+    height: 22px;
+    position: absolute;
+    transition: transform 0.4s, opacity 0.4s;
+}
+
+/* Page Overall Softness */
+body, .bg-white, .border, input, textarea, select, .list-group-item {
+    transition: background-color 0.4s ease, border-color 0.4s ease, color 0.4s ease !important;
+}
+
+/* --- Default Status: ON MODE --- */
+.theme-toggle-btn .sun-icon { opacity: 0; transform: rotate(-90deg); stroke: #fff; }
+.theme-toggle-btn .moon-icon { opacity: 1; transform: rotate(0deg); stroke: #1e293b; }
+
+/* --- STYLES TO BE APPLIED WHEN DARK MODE IS ACTIVE --- */
+body.dark-mode {
+    background-color: #1c1c1c !important; /* Midnight Blue / Black Background */
+    color: #f1f5f9 !important;
+}
+
+/* Button Icon Change in Dark Mode */
+body.dark-mode .theme-toggle-btn {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(15, 23, 42, 0.6);
+}
+
+body.dark-mode .theme-toggle-btn .sun-icon { opacity: 1; transform: rotate(0deg); stroke: #f59e0b; }
+body.dark-mode .theme-toggle-btn .moon-icon { opacity: 0; transform: rotate(90deg); stroke: #fff; }
+
+/* Transformation of White Areas in Dark Mode */
+body.dark-mode .bg-white {
+    background-color: #1e293b !important; /* Panel Backgrounds */
+    color: #f1f5f9 !important;
+}
+
+/* Form Elements and Borders in Dark Mode */
+body.dark-mode .border, 
+body.dark-mode .form-control, 
+body.dark-mode .form-select, 
+body.dark-mode textarea {
+    background-color: #334155 !important;
+    border-color: #475569 !important;
+    color: #f8fafc !important;
+}
+
+/* Passive (Disabled) Elements in Dark Mode */
+body.dark-mode .form-control:disabled,
+body.dark-mode button:disabled {
+    background-color: #1e293b !important;
+    opacity: 0.6;
+}
+
+/* Setting Font Colors in Dark Mode */
+body.dark-mode .text-muted {
+    color: #94a3b8 !important;
+}
+
+/* Scrolling the Small Meta Information on the Top Right to Prevent It from Being Under the Button */
+@media (min-width: 576px) {
+    .app-meta {
+        margin-right: 55px;
+    }
+}
+
 body {
     background-color: #f8f9fa;
     font-size: 0.9rem;
