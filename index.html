@@ -8,15 +8,74 @@
     <link rel="shortcut icon" href="logo_main.png?v=v2.0-20260619" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css?v=v2.0-20260619" rel="stylesheet">
     <link rel="stylesheet" href="styles.css?v=v2.0-20260619">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css?v=v2.0-20260619" rel="stylesheet">
+    
+    <style>
+        /* Üst Kontrol Butonları Sarmalayıcısı */
+        .top-controls-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 2000;
+        }
+        /* Butonların yerleşim stillerini çakışmaması için normalize ediyoruz */
+        .top-controls-container .theme-toggle-btn,
+        .top-controls-container .lang-toggle-btn {
+            position: static !important;
+            margin: 0 !important;
+        }
+        /* Modern Dil Değiştirme Butonu */
+        .lang-toggle-btn {
+            background-color: #ffffff;
+            color: #212529;
+            border: 1px solid #ced4da;
+            border-radius: 50px;
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        .lang-toggle-btn:hover {
+            background-color: #f1f3f5;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+        }
+        /* Koyu Modda Dil Butonu Stilleri */
+        .dark-mode .lang-toggle-btn {
+            background-color: #2b2b36;
+            color: #f8f9fa;
+            border-color: #444454;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+        .dark-mode .lang-toggle-btn:hover {
+            background-color: #383846;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+        }
+    </style>
 </head>
 
 <body>
-    <button id="themeToggle" class="theme-toggle-btn" aria-label="Toggle Theme">
-        <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M18.36 18.36l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg>
-        <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>
-    </button>
+    <div class="top-controls-container">
+        <button id="langToggle" class="lang-toggle-btn" aria-label="Toggle Language">
+            <i class="fa-solid fa-globe"></i>
+            <span id="langText">EN</span>
+        </button>
+
+        <button id="themeToggle" class="theme-toggle-btn" aria-label="Toggle Theme">
+            <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M18.36 18.36l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg>
+            <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>
+        </button>
+    </div>
+
     <div class="container-fluid p-3">
         <header class="app-header d-flex justify-content-between align-items-start gap-3 mb-3">
             <div>
@@ -24,48 +83,39 @@
                     <img src="logo_main.png" alt="Logo" class="me-2" style="width: 48px; height: 48px; object-fit: contain;">
                     <div class="fw-bold">M3U & M3U8 Editor</div>
                 </h4>
-                <div class="text-muted small">Free, private, local, browser-based M3U & M3U8 playlist editor.</div>
+                <div class="text-muted small" data-i18n="subtitle">Free, private, local, browser-based M3U & M3U8 playlist editor.</div>
             </div>
             <div class="d-flex align-items-center gap-2 flex-wrap justify-content-center">
                 <input type="file" id="fileInput" class="form-control" accept=".m3u,.m3u8" style="max-width: 200px;">
-                <button id="downloadBtn" class="btn btn-primary" disabled>Download Modified M3U & M3U8</button>
-                <button id="clearBtn" class="btn btn-outline-danger">Clear</button>
+                <button id="downloadBtn" class="btn btn-primary" data-i18n="downloadBtn" disabled>Download Modified M3U & M3U8</button>
+                <button id="clearBtn" class="btn btn-outline-danger" data-i18n="clearBtn">Clear</button>
             </div>
             <div class="text-end small app-meta">
                 <div id="current-date"></div>
                 <div id="current-time"></div>
-                <script>
-                function showtime() {
-                    const simdi = new Date();
-                    document.getElementById('current-date').textContent = simdi.toLocaleDateString('en-EN', { year: 'numeric', month: 'long', day: 'numeric' });
-                    document.getElementById('current-time').textContent = simdi.toLocaleTimeString('tr-TR');
-                }
-                showtime();
-                setInterval(showtime, 1000);
-                </script>
             </div>
         </header>
         <section class="border p-2 mb-2 bg-white">
-            <label for="playlistHeaderInput" class="form-label small fw-semibold mb-1">Playlist header</label>
+            <label for="playlistHeaderInput" class="form-label small fw-semibold mb-1" data-i18n="playlistHeaderLabel">Playlist header</label>
             <input id="playlistHeaderInput" type="text" class="form-control form-control-sm font-monospace" value="#EXTM3U" placeholder="#EXTM3U x-tvg-url=&quot;https://example.com/epg.xml&quot; url-tvg=&quot;https://example.com/epg.xml&quot;">
-            <div class="form-text small">Edit the first line of the playlist here. EPG and global catchup attributes are preserved when loading and downloading. <i style="color:orange">Don't touch it if you don't know what it is.</i></div>
+            <div class="form-text small" data-i18n="playlistHeaderHelp">Edit the first line of the playlist here. EPG and global catchup attributes are preserved when loading and downloading. <i style="color:orange">Don't touch it if you don't know what it is.</i></div>
         </section>
         <main class="row g-2">
             <section class="col-lg-3 col-md-4">
                 <div class="border p-2 h-100 d-flex flex-column bg-white">
                     <div class="d-flex justify-content-between align-items-center mb-2 gap-2 flex-wrap">
-                        <h6 class="mb-0">Groups <span id="groupSelectedCount" class="text-muted fw-normal"></span></h6>
+                        <h6 class="mb-0"><span data-i18n="groupsHeading">Groups</span> <span id="groupSelectedCount" class="text-muted fw-normal"></span></h6>
                         <div class="d-flex gap-1 flex-wrap">
-                            <button id="newGroupBtn" class="btn btn-sm btn-outline-success">New</button>
-                            <button id="renameGroupBtn" class="btn btn-sm btn-outline-secondary" disabled>Rename</button>
-                            <button id="sortGroupsBtn" class="btn btn-sm btn-outline-secondary">Sort A-Z</button>
-                            <button id="deleteGroupsBtn" class="btn btn-sm btn-outline-danger" disabled>Delete</button>
+                            <button id="newGroupBtn" class="btn btn-sm btn-outline-success" data-i18n="newGroupBtn">New</button>
+                            <button id="renameGroupBtn" class="btn btn-sm btn-outline-secondary" data-i18n="renameGroupBtn" disabled>Rename</button>
+                            <button id="sortGroupsBtn" class="btn btn-sm btn-outline-secondary" data-i18n="sortGroupsBtn">Sort A-Z</button>
+                            <button id="deleteGroupsBtn" class="btn btn-sm btn-outline-danger" data-i18n="deleteGroupsBtn" disabled>Delete</button>
                         </div>
                     </div>
                     <div class="mb-2">
-                        <input id="groupsFilterInput" type="text" class="form-control form-control-sm" placeholder="Filter groups...">
+                        <input id="groupsFilterInput" type="text" class="form-control form-control-sm" data-i18n-placeholder="groupsFilterPlaceholder" placeholder="Filter groups...">
                     </div>
-                    <div class="section-hint small text-muted mb-2">Ctrl/Cmd-click selects many. Shift-click selects a range. Drag selected rows to reorder.</div>
+                    <div class="section-hint small text-muted mb-2" data-i18n="groupsHint">Ctrl/Cmd-click selects many. Shift-click selects a range. Drag selected rows to reorder.</div>
                     <div id="groupsList" class="list-group flex-grow-1">
                     </div>
                 </div>
@@ -73,63 +123,64 @@
             <section class="col-lg-4 col-md-8">
                 <div class="border p-2 h-100 d-flex flex-column bg-white">
                     <div class="d-flex justify-content-between align-items-center mb-2 gap-2 flex-wrap">
-                        <h6 class="mb-0">Channels <span id="itemSelectedCount" class="text-muted fw-normal"></span></h6>
+                        <h6 class="mb-0"><span data-i18n="channelsHeading">Channels</span> <span id="itemSelectedCount" class="text-muted fw-normal"></span></h6>
                         <div class="d-flex gap-1 flex-wrap">
-                            <button id="newItemBtn" class="btn btn-sm btn-outline-success" disabled>New</button>
-                            <button id="renameItemBtn" class="btn btn-sm btn-outline-secondary" disabled>Rename</button>
-                            <button id="cloneItemBtn" class="btn btn-sm btn-outline-secondary" disabled>Clone</button>
+                            <button id="newItemBtn" class="btn btn-sm btn-outline-success" data-i18n="newItemBtn" disabled>New</button>
+                            <button id="renameItemBtn" class="btn btn-sm btn-outline-secondary" data-i18n="renameItemBtn" disabled>Rename</button>
+                            <button id="cloneItemBtn" class="btn btn-sm btn-outline-secondary" data-i18n="cloneItemBtn" disabled>Clone</button>
                             <div class="dropdown">
-                                <button id="sortItemsBtn" class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" disabled>
+                                <button id="sortItemsBtn" class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" data-i18n="sortItemsBtn" disabled>
                                     Sort
                                 </button>
                                 <ul class="dropdown-menu">
-                                    <li><a id="sortItemsAzBtn" class="dropdown-item" href="#">A-Z</a></li>
-                                    <li><a id="sortItemsStatusBtn" class="dropdown-item" href="#">By Status</a></li>
+                                    <li><a id="sortItemsAzBtn" class="dropdown-item" href="#" data-i18n="sortItemsAz">A-Z</a></li>
+                                    <li><a id="sortItemsStatusBtn" class="dropdown-item" href="#" data-i18n="sortItemsStatus">By Status</a></li>
                                 </ul>
                             </div>
-                            <button id="checkItemsBtn" class="btn btn-sm btn-outline-warning" disabled>Check</button>
+                            <button id="checkItemsBtn" class="btn btn-sm btn-outline-warning" data-i18n="checkItemsBtn" disabled>Check</button>
                             <div class="dropdown">
-                                <button id="moveItemsBtn" class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" disabled>
+                                <button id="moveItemsBtn" class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" data-i18n="moveItemsBtn" disabled>
                                     Move
                                 </button>
                                 <ul id="groupDropdown" class="dropdown-menu">
                                 </ul>
                             </div>
-                            <button id="deleteItemsBtn" class="btn btn-sm btn-outline-danger" disabled>Delete</button>
+                            <button id="deleteItemsBtn" class="btn btn-sm btn-outline-danger" data-i18n="deleteItemsBtn" disabled>Delete</button>
                         </div>
                     </div>
                     <div class="mb-2">
-                        <input id="itemsFilterInput" type="text" class="form-control form-control-sm" placeholder="Filter channels...">
+                        <input id="itemsFilterInput" type="text" class="form-control form-control-sm" data-i18n-placeholder="channelsFilterPlaceholder" placeholder="Filter channels...">
                     </div>
-                    <div class="section-hint small text-muted mb-2">Rename works by button or double click. Sort A-Z or by status. Select channels, then use Check to test only those URLs.</div>
+                    <div class="section-hint small text-muted mb-2" data-i18n="channelsHint">Rename works by button or double click. Sort A-Z or by status. Select channels, then use Check to test only those URLs.</div>
                     <div id="itemsList" class="list-group flex-grow-1 overflow-auto">
                     </div>
                     <div id="statusCheckProgress" class="status-progress small mt-2" aria-live="polite"></div>
                     <div class="status-legend small text-muted mt-2">
-                        <div><span class="status-badge status-ok">200</span> fine and reachable.</div>
-                        <div><span class="status-badge status-warning">403</span> not accessible by you, possibly account, token, or geo-limited.</div>
-                        <div><span class="status-badge status-bad">404</span> not found. <span class="status-badge status-bad">5xx</span> provider/server error.</div>
-                        <div><span class="status-badge status-neutral">CORS</span> browser could reach it, but cannot read the real status without server permission.</div>
-                        <div><span class="status-badge status-neutral">Queued</span> waiting for its turn during batch checks.</div>
-                        <div>Select one or more channels first. The list button checks selected channels only, 5 at a time.</div>
+                        <div><span class="status-badge status-ok">200</span> <span data-i18n="legendOk">fine and reachable.</span></div>
+                        <div><span class="status-badge status-warning">403</span> <span data-i18n="legendWarning">not accessible by you, possibly account, token, or geo-limited.</span></div>
+                        <div><span class="status-badge status-bad">404</span> <span data-i18n="legendNotFound">not found.</span> <span class="status-badge status-bad">5xx</span> <span data-i18n="legendServerError">provider/server error.</span></div>
+                        <div><span class="status-badge status-neutral">CORS</span> <span data-i18n="legendCors">browser could reach it, but cannot read the real status without server permission.</span></div>
+                        <div><span class="status-badge status-neutral">Queued</span> <span data-i18n="legendQueued">waiting for its turn during batch checks.</span></div>
+                        <div data-i18n="legendHint">Select one or more channels first. The list button checks selected channels only, 5 at a time.</div>
                     </div>
                 </div>
             </section>
             <section class="col-lg-5 col-md-12">
                 <div class="border p-3 h-100 bg-white">
-                    <h6>Channel Details</h6>
+                    <h6 data-i18n="detailsHeading">Channel Details</h6>
                     <form id="itemDetailsForm" class="needs-validation" novalidate>
                         <input type="hidden" id="itemIndex">
                         <div class="mb-2 row g-2">
-                            <label class="col-sm-3 col-form-label">Name:</label>
+                            <label class="col-sm-3 col-form-label" data-i18n="labelName">Name:</label>
                             <div class="col-sm-9">
                                 <input type="text" class="form-control form-control-sm" id="itemName" required>
                             </div>
                         </div>
                         <div class="mb-2 row g-2">
-                            <label class="col-sm-3 col-form-label d-flex justify-content-between align-items-center">URL:
+                            <label class="col-sm-3 col-form-label d-flex justify-content-between align-items-center">
+                                <span data-i18n="labelUrl">URL:</span>
                                 <a id="itemUrlPreview" href="#" target="_blank" rel="noopener" class="ms-2 text-decoration-none disabled" title="Preview">
-                                    <span class="bi bi-box-arrow-up-right"></span> Preview
+                                    <span class="bi bi-box-arrow-up-right"></span> <span data-i18n="urlPreview">Preview</span>
                                 </a>
                             </label>
                             <div class="col-sm-9">
@@ -137,39 +188,39 @@
                             </div>
                         </div>
                         <div class="mb-2 row g-2">
-                            <label class="col-sm-3 col-form-label">Status:</label>
+                            <label class="col-sm-3 col-form-label" data-i18n="labelStatus">Status:</label>
                             <div class="col-sm-9">
                                 <div class="input-group input-group-sm">
                                     <input type="text" class="form-control form-control-sm" id="itemStatus" value="Unknown" readonly>
-                                    <button type="button" id="checkCurrentItemBtn" class="btn btn-outline-warning" disabled>Check</button>
+                                    <button type="button" id="checkCurrentItemBtn" class="btn btn-outline-warning" data-i18n="btnCheckCurrent" disabled>Check</button>
                                 </div>
-                                <div id="itemStatusDescription" class="form-text small">Unknown. This channel has not been checked yet.</div>
+                                <div id="itemStatusDescription" class="form-text small" data-i18n="statusUnknownDesc">Unknown. This channel has not been checked yet.</div>
                             </div>
                         </div>
                         <div class="mb-2 row g-2">
-                            <label class="col-sm-3 col-form-label">TVG ID:</label>
+                            <label class="col-sm-3 col-form-label" data-i18n="labelTvgId">TVG ID:</label>
                             <div class="col-sm-9">
                                 <input type="text" class="form-control form-control-sm" id="itemTvgId">
                             </div>
                         </div>
                         <div class="mb-2 row g-2">
-                            <label class="col-sm-3 col-form-label">TVG Name:</label>
+                            <label class="col-sm-3 col-form-label" data-i18n="labelTvgName">TVG Name:</label>
                             <div class="col-sm-9">
                                 <input type="text" class="form-control form-control-sm" id="itemTvgName">
                             </div>
                         </div>
                         <div class="mb-2 row g-2">
-                            <label class="col-sm-3 col-form-label">TVG Logo:</label>
+                            <label class="col-sm-3 col-form-label" data-i18n="labelTvgLogo">TVG Logo:</label>
                             <div class="col-sm-9">
                                 <input type="text" class="form-control form-control-sm" id="itemTvgLogo">
                             </div>
                         </div>
                         <div class="mb-2 row g-2">
-                            <label class="col-sm-3 col-form-label">Group Title:</label>
+                            <label class="col-sm-3 col-form-label" data-i18n="labelGroupTitle">Group Title:</label>
                             <div class="col-sm-9">
                                 <div class="dropdown">
                                     <button id="itemGroupTitleDropdown" class="btn btn-sm btn-outline-primary dropdown-toggle w-100 text-start" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <span id="itemGroupTitleSelected">Select group</span>
+                                        <span id="itemGroupTitleSelected" data-i18n="selectGroupDefault">Select group</span>
                                     </button>
                                     <ul id="itemGroupTitleDropdownMenu" class="dropdown-menu w-100">
                                     </ul>
@@ -178,56 +229,223 @@
                             </div>
                         </div>
                         <div class="mb-2 row g-2">
-                            <label class="col-sm-3 col-form-label">Catchup:</label>
+                            <label class="col-sm-3 col-form-label" data-i18n="labelCatchup">Catchup:</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control form-control-sm" id="itemCatchup" placeholder="shift, default, append, or a catchup source">
+                                <input type="text" class="form-control form-control-sm" id="itemCatchup" data-i18n-placeholder="catchupPlaceholder" placeholder="shift, default, append, or a catchup source">
                             </div>
                         </div>
                         <div class="mb-2 row g-2">
-                            <label class="col-sm-3 col-form-label">Catchup Type:</label>
+                            <label class="col-sm-3 col-form-label" data-i18n="labelCatchupType">Catchup Type:</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control form-control-sm" id="itemCatchupType" placeholder="flussonic, xtream, default...">
+                                <input type="text" class="form-control form-control-sm" id="itemCatchupType" data-i18n-placeholder="catchupTypePlaceholder" placeholder="flussonic, xtream, default...">
                             </div>
                         </div>
                         <div class="mb-2 row g-2">
-                            <label class="col-sm-3 col-form-label">Catchup Days:</label>
+                            <label class="col-sm-3 col-form-label" data-i18n="labelCatchupDays">Catchup Days:</label>
                             <div class="col-sm-9">
-                                <input type="number" min="0" class="form-control form-control-sm" id="itemCatchupDays" placeholder="7">
+                                <input type="number" min="0" class="form-control form-control-sm" id="itemCatchupDays" data-i18n-placeholder="catchupDaysPlaceholder" placeholder="7">
                             </div>
                         </div>
                         <div class="mb-2 row g-2">
-                            <label class="col-sm-3 col-form-label">Extra Attributes:</label>
+                            <label class="col-sm-3 col-form-label" data-i18n="labelExtraAttrs">Extra Attributes:</label>
                             <div class="col-sm-9">
-                                <textarea class="form-control form-control-sm font-monospace" id="itemAdditionalAttrs" rows="2" placeholder="catchup-source=&quot;?utc={utc}&amp;lutc={lutc}&quot; timeshift=&quot;7&quot;"></textarea>
-                                <div class="form-text small">Unknown channel attributes are preserved here, so provider archive parameters are not lost.</div>
+                                <textarea class="form-control form-control-sm font-monospace" id="itemAdditionalAttrs" rows="2" data-i18n-placeholder="extraAttrsPlaceholder" placeholder="catchup-source=&quot;?utc={utc}&amp;lutc={lutc}&quot; timeshift=&quot;7&quot;"></textarea>
+                                <div class="form-text small" data-i18n="extraAttrsHelp">Unknown channel attributes are preserved here, so provider archive parameters are not lost.</div>
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-primary btn-sm">Save Changes</button>
+                        <button type="submit" class="btn btn-primary btn-sm" data-i18n="btnSave">Save Changes</button>
                     </form>
                 </div>
             </section>
         </main>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js?v=v2.0-20260619"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js?v=v2.0-20260619"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bundle.min.js?v=v2.0-20260619"></script>
     <script src="script.js?v=v2.0-20260619"></script>
+    
     <script>
+        // --- Tema Seçimi Yönetimi ---
         const themeToggleBtn = document.getElementById('themeToggle');
         const savedTheme = localStorage.getItem('theme');
-        // If the user has a previous preference, install it
         if (savedTheme === 'dark') {
             document.body.classList.add('dark-mode');
         }
-        // Click event trigger
         themeToggleBtn.addEventListener('click', () => {
             document.body.classList.toggle('dark-mode');
-            // Save preference to browser memory
             if (document.body.classList.contains('dark-mode')) {
                 localStorage.setItem('theme', 'dark');
             } else {
                 localStorage.setItem('theme', 'light');
             }
         });
+
+        // --- Çoklu Dil (i18n) Yönetimi ---
+        const translations = {
+            en: {
+                subtitle: "Free, private, local, browser-based M3U & M3U8 playlist editor.",
+                downloadBtn: "Download Modified M3U & M3U8",
+                clearBtn: "Clear",
+                playlistHeaderLabel: "Playlist header",
+                playlistHeaderHelp: "Edit the first line of the playlist here. EPG and global catchup attributes are preserved when loading and downloading. <i style='color:orange'>Don't touch it if you don't know what it is.</i>",
+                groupsHeading: "Groups",
+                newGroupBtn: "New",
+                renameGroupBtn: "Rename",
+                sortGroupsBtn: "Sort A-Z",
+                deleteGroupsBtn: "Delete",
+                groupsFilterPlaceholder: "Filter groups...",
+                groupsHint: "Ctrl/Cmd-click selects many. Shift-click selects a range. Drag selected rows to reorder.",
+                channelsHeading: "Channels",
+                newItemBtn: "New",
+                renameItemBtn: "Rename",
+                cloneItemBtn: "Clone",
+                sortItemsBtn: "Sort",
+                sortItemsAz: "A-Z",
+                sortItemsStatus: "By Status",
+                checkItemsBtn: "Check",
+                moveItemsBtn: "Move",
+                deleteItemsBtn: "Delete",
+                channelsFilterPlaceholder: "Filter channels...",
+                channelsHint: "Rename works by button or double click. Sort A-Z or by status. Select channels, then use Check to test only those URLs.",
+                legendOk: "fine and reachable.",
+                legendWarning: "not accessible by you, possibly account, token, or geo-limited.",
+                legendNotFound: "not found.",
+                legendServerError: "provider/server error.",
+                legendCors: "browser could reach it, but cannot read the real status without server permission.",
+                legendQueued: "waiting for its turn during batch checks.",
+                legendHint: "Select one or more channels first. The list button checks selected channels only, 5 at a time.",
+                detailsHeading: "Channel Details",
+                labelName: "Name:",
+                labelUrl: "URL:",
+                urlPreview: "Preview",
+                labelStatus: "Status:",
+                btnCheckCurrent: "Check",
+                statusUnknownDesc: "Unknown. This channel has not been checked yet.",
+                labelTvgId: "TVG ID:",
+                labelTvgName: "TVG Name:",
+                labelTvgLogo: "TVG Logo:",
+                labelGroupTitle: "Group Title:",
+                selectGroupDefault: "Select group",
+                labelCatchup: "Catchup:",
+                catchupPlaceholder: "shift, default, append, or a catchup source",
+                labelCatchupType: "Catchup Type:",
+                catchupTypePlaceholder: "flussonic, xtream, default...",
+                labelCatchupDays: "Catchup Days:",
+                catchupDaysPlaceholder: "7",
+                labelExtraAttrs: "Extra Attributes:",
+                extraAttrsPlaceholder: "catchup-source=\"?utc={utc}&amp;lutc={lutc}\" timeshift=\"7\"",
+                extraAttrsHelp: "Unknown channel attributes are preserved here, so provider archive parameters are not lost.",
+                btnSave: "Save Changes"
+            },
+            tr: {
+                subtitle: "Ücretsiz, gizli, yerel ve tarayıcı tabanlı M3U & M3U8 oynatma listesi düzenleyicisi.",
+                downloadBtn: "Düzenlenmiş M3U & M3U8 Dosyasını İndir",
+                clearBtn: "Temizle",
+                playlistHeaderLabel: "Oynatma listesi başlığı",
+                playlistHeaderHelp: "Oynatma listesinin ilk satırını buradan düzenleyin. Yükleme ve indirme sırasında EPG ve küresel catchup öznitelikleri korunur. <i style='color:orange'>Ne olduğunu bilmiyorsanız dokunmayın.</i>",
+                groupsHeading: "Gruplar",
+                newGroupBtn: "Yeni",
+                renameGroupBtn: "Yeniden Adlandır",
+                sortGroupsBtn: "A-Z Sırala",
+                deleteGroupsBtn: "Sil",
+                groupsFilterPlaceholder: "Grupları filtrele...",
+                groupsHint: "Ctrl/Cmd-tıklama çoklu seçer. Shift-tıklama aralık seçer. Yeniden sıralamak için satırları sürükleyin.",
+                channelsHeading: "Kanallar",
+                newItemBtn: "Yeni",
+                renameItemBtn: "Yeniden Adlandır",
+                cloneItemBtn: "Klonla",
+                sortItemsBtn: "Sırala",
+                sortItemsAz: "A-Z",
+                sortItemsStatus: "Duruma Göre",
+                checkItemsBtn: "Kontrol Et",
+                moveItemsBtn: "Taşı",
+                deleteItemsBtn: "Sil",
+                channelsFilterPlaceholder: "Kanalları filtrele...",
+                channelsHint: "Yeniden adlandırma butonla veya çift tıklamayla çalışır. A-Z veya duruma göre sıralayın. Önce kanalları seçip ardından Kontrol Et'i kullanın.",
+                legendOk: "sorunsuz ve erişilebilir.",
+                legendWarning: "sizin tarafınızdan erişilemez; muhtemelen hesap, token veya coğrafi kısıtlamalı.",
+                legendNotFound: "bulunamadı.",
+                legendServerError: "sağlayıcı/sunucu hatası.",
+                legendCors: "tarayıcı erişebildi ancak sunucu izni olmadan gerçek durumu okuyamadı.",
+                legendQueued: "toplu kontroller sırasında sırasını bekliyor.",
+                legendHint: "Önce bir veya daha fazla kanal seçin. Listedeki buton, aynı anda 5 tane olacak şekilde yalnızca seçilen kanalları kontrol eder.",
+                detailsHeading: "Kanal Detayları",
+                labelName: "İsim:",
+                labelUrl: "URL:",
+                urlPreview: "Önizleme",
+                labelStatus: "Durum:",
+                btnCheckCurrent: "Kontrol Et",
+                statusUnknownDesc: "Bilinmiyor. Bu kanal henüz kontrol edilmedi.",
+                labelTvgId: "TVG ID:",
+                labelTvgName: "TVG Adı:",
+                labelTvgLogo: "TVG Logosu:",
+                labelGroupTitle: "Grup Başlığı:",
+                selectGroupDefault: "Grup seçin",
+                labelCatchup: "Geçmişe Dönük (Catchup):",
+                catchupPlaceholder: "shift, default, append veya bir catchup kaynağı",
+                labelCatchupType: "Catchup Türü:",
+                catchupTypePlaceholder: "flussonic, xtream, default...",
+                labelCatchupDays: "Catchup Gün Sayısı:",
+                catchupDaysPlaceholder: "7",
+                labelExtraAttrs: "Ek Öznitelikler:",
+                extraAttrsPlaceholder: "catchup-source=\"?utc={utc}&amp;lutc={lutc}\" timeshift=\"7\"",
+                extraAttrsHelp: "Bilinmeyen kanal öznitelikleri burada korunur, böylece sağlayıcı arşiv parametreleri kaybolmaz.",
+                btnSave: "Değişiklikleri Kaydet"
+            }
+        };
+
+        const langToggleBtn = document.getElementById('langToggle');
+        const langText = document.getElementById('langText');
+        let currentLang = localStorage.getItem('lang') || 'en';
+
+        function applyLanguage(lang) {
+            langText.textContent = lang.toUpperCase();
+            
+            // data-i18n özniteliğine sahip tüm elementleri güncelle
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang] && translations[lang][key]) {
+                    // İçinde HTML etiketi barındıran metinler için innerHTML, düz metinler için textContent kullanıyoruz
+                    if (translations[lang][key].includes('<')) {
+                        el.innerHTML = translations[lang][key];
+                    } else {
+                        el.textContent = translations[lang][key];
+                    }
+                }
+            });
+
+            // data-i18n-placeholder özniteliğine sahip input/textarea alanlarını güncelle
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+                const key = el.getAttribute('data-i18n-placeholder');
+                if (translations[lang] && translations[lang][key]) {
+                    el.setAttribute('placeholder', translations[lang][key]);
+                }
+            });
+
+            localStorage.setItem('lang', lang);
+        }
+
+        langToggleBtn.addEventListener('click', () => {
+            currentLang = currentLang === 'en' ? 'tr' : 'en';
+            applyLanguage(currentLang);
+        });
+
+        // İlk yüklemede dili uygula
+        applyLanguage(currentLang);
+
+        // --- Saat ve Tarih Yönetimi ---
+        function showtime() {
+            const simdi = new Date();
+            const activeLang = localStorage.getItem('lang') || 'en';
+            // Tarih gösterim formatını seçili dile göre dinamik ayarlıyoruz
+            const dateLocale = activeLang === 'tr' ? 'tr-TR' : 'en-US';
+            
+            document.getElementById('current-date').textContent = simdi.toLocaleDateString(dateLocale, { year: 'numeric', month: 'long', day: 'numeric' });
+            document.getElementById('current-time').textContent = simdi.toLocaleTimeString('tr-TR');
+        }
+        showtime();
+        setInterval(showtime, 1000);
+        // Dil değişimlerinde saatin anında tetiklenmesi için applyLanguage fonksiyonuna küçük bir bağ ekleyebilirsiniz, 
+        // ancak 1 sn içinde zaten güncellenecektir.
     </script>
 
     <footer style="background: linear-gradient(135deg, #1e1e24, #0a0a0c); color: #ffffff; padding: 10px 25px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 -5px 20px rgba(0,0,0,0.3); ">
