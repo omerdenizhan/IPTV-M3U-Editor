@@ -8,15 +8,24 @@
     <link rel="shortcut icon" href="logo_main.png?v=v2.0-20260619" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css?v=v2.0-20260619" rel="stylesheet">
     <link rel="stylesheet" href="styles.css?v=v2.0-20260619">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    <link rel="stylesheet" href="modern_lang.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css?v=v2.0-20260619" rel="stylesheet">
 </head>
 
 <body>
-    <button id="themeToggle" class="theme-toggle-btn" aria-label="Toggle Theme">
-        <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M18.36 18.36l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg>
-        <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>
-    </button>
+    <div class="top-controls-container">
+        <button id="themeToggle" class="theme-toggle-btn" aria-label="Toggle Theme">
+            <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M18.36 18.36l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg>
+            <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>
+        </button>
+        
+        <div class="lang-switcher-container">
+            <button class="lang-switcher-btn active" data-lang="en">EN</button>
+            <button class="lang-switcher-btn" data-lang="tr">TR</button>
+        </div>
+    </div>
+
     <div class="container-fluid p-3">
         <header class="app-header d-flex justify-content-between align-items-start gap-3 mb-3">
             <div>
@@ -24,12 +33,12 @@
                     <img src="logo_main.png" alt="Logo" class="me-2" style="width: 48px; height: 48px; object-fit: contain;">
                     <div class="fw-bold">M3U & M3U8 Editor</div>
                 </h4>
-                <div class="text-muted small">Free, private, local, browser-based M3U & M3U8 playlist editor.</div>
+                <div class="text-muted small" data-en="Free, private, local, browser-based M3U & M3U8 playlist editor." data-tr="Ücretsiz, gizli, yerel ve tarayıcı tabanlı M3U & M3U8 oynatma listesi düzenleyicisi.">Free, private, local, browser-based M3U & M3U8 playlist editor.</div>
             </div>
             <div class="d-flex align-items-center gap-2 flex-wrap justify-content-center">
                 <input type="file" id="fileInput" class="form-control" accept=".m3u,.m3u8" style="max-width: 200px;">
-                <button id="downloadBtn" class="btn btn-primary" disabled>Download Modified M3U & M3U8</button>
-                <button id="clearBtn" class="btn btn-outline-danger">Clear</button>
+                <button id="downloadBtn" class="btn btn-primary" data-en="Download Modified M3U & M3U8" data-tr="Düzenlenmiş M3U & M3U8 Dosyasını İndir" disabled>Download Modified M3U & M3U8</button>
+                <button id="clearBtn" class="btn btn-outline-danger" data-en="Clear" data-tr="Temizle">Clear</button>
             </div>
             <div class="text-end small app-meta">
                 <div id="current-date"></div>
@@ -37,7 +46,8 @@
                 <script>
                 function showtime() {
                     const simdi = new Date();
-                    document.getElementById('current-date').textContent = simdi.toLocaleDateString('en-EN', { year: 'numeric', month: 'long', day: 'numeric' });
+                    const currentLang = localStorage.getItem('app-lang') || 'en';
+                    document.getElementById('current-date').textContent = simdi.toLocaleDateString(currentLang === 'en' ? 'en-US' : 'tr-TR', { year: 'numeric', month: 'long', day: 'numeric' });
                     document.getElementById('current-time').textContent = simdi.toLocaleTimeString('tr-TR');
                 }
                 showtime();
@@ -45,91 +55,96 @@
                 </script>
             </div>
         </header>
+
         <section class="border p-2 mb-2 bg-white">
-            <label for="playlistHeaderInput" class="form-label small fw-semibold mb-1">Playlist header</label>
-            <input id="playlistHeaderInput" type="text" class="form-control form-control-sm font-monospace" value="#EXTM3U" placeholder="#EXTM3U x-tvg-url=&quot;https://example.com/epg.xml&quot; url-tvg=&quot;https://example.com/epg.xml&quot;">
-            <div class="form-text small">Edit the first line of the playlist here. EPG and global catchup attributes are preserved when loading and downloading. <i style="color:orange">Don't touch it if you don't know what it is.</i></div>
+            <label for="playlistHeaderInput" class="form-label small fw-semibold mb-1" data-en="Playlist header" data-tr="Oynatma listesi başlığı">Playlist header</label>
+            <input id="playlistHeaderInput" type="text" class="form-control form-control-sm font-monospace" value="#EXTM3U" data-pl-en="#EXTM3U x-tvg-url=&quot;https://example.com/epg.xml&quot; url-tvg=&quot;https://example.com/epg.xml&quot;" data-pl-tr="#EXTM3U x-tvg-url=&quot;https://ornek.com/epg.xml&quot; url-tvg=&quot;https://ornek.com/epg.xml&quot;" placeholder="#EXTM3U x-tvg-url=&quot;https://example.com/epg.xml&quot; url-tvg=&quot;https://example.com/epg.xml&quot;">
+            <div class="form-text small" data-en="Edit the first line of the playlist here. EPG and global catchup attributes are preserved when loading and downloading. <i style='color:orange'>Don't touch it if you don't know what it is.</i>" data-tr="Oynatma listesinin ilk satırını buradan düzenleyin. Yükleme ve indirme sırasında EPG ve genel geri sarma (catchup) öznitelikleri korunur. <i style='color:orange'>Ne olduğunu bilmiyorsanız dokunmayın.</i>">Edit the first line of the playlist here. EPG and global catchup attributes are preserved when loading and downloading. <i style="color:orange">Don't touch it if you don't know what it is.</i></div>
         </section>
+
         <main class="row g-2">
             <section class="col-lg-3 col-md-4">
                 <div class="border p-2 h-100 d-flex flex-column bg-white">
                     <div class="d-flex justify-content-between align-items-center mb-2 gap-2 flex-wrap">
-                        <h6 class="mb-0">Groups <span id="groupSelectedCount" class="text-muted fw-normal"></span></h6>
+                        <h6 class="mb-0"><span data-en="Groups" data-tr="Gruplar">Groups</span> <span id="groupSelectedCount" class="text-muted fw-normal"></span></h6>
                         <div class="d-flex gap-1 flex-wrap">
-                            <button id="newGroupBtn" class="btn btn-sm btn-outline-success">New</button>
-                            <button id="renameGroupBtn" class="btn btn-sm btn-outline-secondary" disabled>Rename</button>
-                            <button id="sortGroupsBtn" class="btn btn-sm btn-outline-secondary">Sort A-Z</button>
-                            <button id="deleteGroupsBtn" class="btn btn-sm btn-outline-danger" disabled>Delete</button>
+                            <button id="newGroupBtn" class="btn btn-sm btn-outline-success" data-en="New" data-tr="Yeni">New</button>
+                            <button id="renameGroupBtn" class="btn btn-sm btn-outline-secondary" data-en="Rename" data-tr="Yeniden Adlandır" disabled>Rename</button>
+                            <button id="sortGroupsBtn" class="btn btn-sm btn-outline-secondary" data-en="Sort A-Z" data-tr="A-Z Sırala">Sort A-Z</button>
+                            <button id="deleteGroupsBtn" class="btn btn-sm btn-outline-danger" data-en="Delete" data-tr="Sil" disabled>Delete</button>
                         </div>
                     </div>
                     <div class="mb-2">
-                        <input id="groupsFilterInput" type="text" class="form-control form-control-sm" placeholder="Filter groups...">
+                        <input id="groupsFilterInput" type="text" class="form-control form-control-sm" data-pl-en="Filter groups..." data-pl-tr="Grupları filtrele..." placeholder="Filter groups...">
                     </div>
-                    <div class="section-hint small text-muted mb-2">Ctrl/Cmd-click selects many. Shift-click selects a range. Drag selected rows to reorder.</div>
+                    <div class="section-hint small text-muted mb-2" data-en="Ctrl/Cmd-click selects many. Shift-click selects a range. Drag selected rows to reorder." data-tr="Ctrl/Cmd-tıklama çoklu seçim yapar. Shift-tıklama aralık seçer. Sıralamak için seçili satırları sürükleyin.">Ctrl/Cmd-click selects many. Shift-click selects a range. Drag selected rows to reorder.</div>
                     <div id="groupsList" class="list-group flex-grow-1">
                     </div>
                 </div>
             </section>
+
             <section class="col-lg-4 col-md-8">
                 <div class="border p-2 h-100 d-flex flex-column bg-white">
                     <div class="d-flex justify-content-between align-items-center mb-2 gap-2 flex-wrap">
-                        <h6 class="mb-0">Channels <span id="itemSelectedCount" class="text-muted fw-normal"></span></h6>
+                        <h6 class="mb-0"><span data-en="Channels" data-tr="Kanallar">Channels</span> <span id="itemSelectedCount" class="text-muted fw-normal"></span></h6>
                         <div class="d-flex gap-1 flex-wrap">
-                            <button id="newItemBtn" class="btn btn-sm btn-outline-success" disabled>New</button>
-                            <button id="renameItemBtn" class="btn btn-sm btn-outline-secondary" disabled>Rename</button>
-                            <button id="cloneItemBtn" class="btn btn-sm btn-outline-secondary" disabled>Clone</button>
+                            <button id="newItemBtn" class="btn btn-sm btn-outline-success" data-en="New" data-tr="Yeni" disabled>New</button>
+                            <button id="renameItemBtn" class="btn btn-sm btn-outline-secondary" data-en="Rename" data-tr="Yeniden Adlandır" disabled>Rename</button>
+                            <button id="cloneItemBtn" class="btn btn-sm btn-outline-secondary" data-en="Clone" data-tr="Klonla" disabled>Clone</button>
                             <div class="dropdown">
-                                <button id="sortItemsBtn" class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" disabled>
+                                <button id="sortItemsBtn" class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" data-en="Sort" data-tr="Sırala" disabled>
                                     Sort
                                 </button>
                                 <ul class="dropdown-menu">
-                                    <li><a id="sortItemsAzBtn" class="dropdown-item" href="#">A-Z</a></li>
-                                    <li><a id="sortItemsStatusBtn" class="dropdown-item" href="#">By Status</a></li>
+                                    <li><a id="sortItemsAzBtn" class="dropdown-item" href="#" data-en="A-Z" data-tr="A-Z">A-Z</a></li>
+                                    <li><a id="sortItemsStatusBtn" class="dropdown-item" href="#" data-en="By Status" data-tr="Duruma Göre">By Status</a></li>
                                 </ul>
                             </div>
-                            <button id="checkItemsBtn" class="btn btn-sm btn-outline-warning" disabled>Check</button>
+                            <button id="checkItemsBtn" class="btn btn-sm btn-outline-warning" data-en="Check" data-tr="Kontrol Et" disabled>Check</button>
                             <div class="dropdown">
-                                <button id="moveItemsBtn" class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" disabled>
+                                <button id="moveItemsBtn" class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" data-en="Move" data-tr="Taşı" disabled>
                                     Move
                                 </button>
                                 <ul id="groupDropdown" class="dropdown-menu">
                                 </ul>
                             </div>
-                            <button id="deleteItemsBtn" class="btn btn-sm btn-outline-danger" disabled>Delete</button>
+                            <button id="deleteItemsBtn" class="btn btn-sm btn-outline-danger" data-en="Delete" data-tr="Sil" disabled>Delete</button>
                         </div>
                     </div>
                     <div class="mb-2">
-                        <input id="itemsFilterInput" type="text" class="form-control form-control-sm" placeholder="Filter channels...">
+                        <input id="itemsFilterInput" type="text" class="form-control form-control-sm" data-pl-en="Filter channels..." data-pl-tr="Kanalları filtrele..." placeholder="Filter channels...">
                     </div>
-                    <div class="section-hint small text-muted mb-2">Rename works by button or double click. Sort A-Z or by status. Select channels, then use Check to test only those URLs.</div>
+                    <div class="section-hint small text-muted mb-2" data-en="Rename works by button or double click. Sort A-Z or by status. Select channels, then use Check to test only those URLs." data-tr="Yeniden adlandırma butonla veya çift tıklamayla çalışır. A-Z veya duruma göre sıralayın. Kanalları seçin, ardından sadece o URL'leri test etmek için Kontrol Et'i kullanın.">Rename works by button or double click. Sort A-Z or by status. Select channels, then use Check to test only those URLs.</div>
                     <div id="itemsList" class="list-group flex-grow-1 overflow-auto">
                     </div>
                     <div id="statusCheckProgress" class="status-progress small mt-2" aria-live="polite"></div>
                     <div class="status-legend small text-muted mt-2">
-                        <div><span class="status-badge status-ok">200</span> fine and reachable.</div>
-                        <div><span class="status-badge status-warning">403</span> not accessible by you, possibly account, token, or geo-limited.</div>
-                        <div><span class="status-badge status-bad">404</span> not found. <span class="status-badge status-bad">5xx</span> provider/server error.</div>
-                        <div><span class="status-badge status-neutral">CORS</span> browser could reach it, but cannot read the real status without server permission.</div>
-                        <div><span class="status-badge status-neutral">Queued</span> waiting for its turn during batch checks.</div>
-                        <div>Select one or more channels first. The list button checks selected channels only, 5 at a time.</div>
+                        <div data-en="<span class='status-badge status-ok'>200</span> fine and reachable." data-tr="<span class='status-badge status-ok'>200</span> sorunsuz ve erişilebilir."><span class="status-badge status-ok">200</span> fine and reachable.</div>
+                        <div data-en="<span class='status-badge status-warning'>403</span> not accessible by you, possibly account, token, or geo-limited." data-tr="<span class='status-badge status-warning'>403</span> sizin tarafınızdan erişilemez, muhtemelen hesap, token veya coğrafi kısıtlamalı."><span class="status-badge status-warning">403</span> not accessible by you, possibly account, token, or geo-limited.</div>
+                        <div data-en="<span class='status-badge status-bad'>404</span> not found. <span class='status-badge status-bad'>5xx</span> provider/server error." data-tr="<span class='status-badge status-bad'>404</span> bulunamadı. <span class='status-badge status-bad'>5xx</span> sağlayıcı/sunucu hatası."><span class="status-badge status-bad">404</span> not found. <span class="status-badge status-bad">5xx</span> provider/server error.</div>
+                        <div data-en="<span class='status-badge status-neutral'>CORS</span> browser could reach it, but cannot read the real status without server permission." data-tr="<span class='status-badge status-neutral'>CORS</span> tarayıcı erişebildi ancak sunucu izni olmadan gerçek durumu okuyamıyor."><span class="status-badge status-neutral">CORS</span> browser could reach it, but cannot read the real status without server permission.</div>
+                        <div data-en="<span class='status-badge status-neutral'>Queued</span> waiting for its turn during batch checks." data-tr="<span class='status-badge status-neutral'>Sırada</span> toplu kontroller sırasında sırasını bekliyor."><span class="status-badge status-neutral">Queued</span> waiting for its turn during batch checks.</div>
+                        <div data-en="Select one or more channels first. The list button checks selected channels only, 5 at a time." data-tr="Önce bir veya daha fazla kanal seçin. Liste butonu sadece seçilen kanalları tek seferde 5 adet olacak şekilde kontrol eder.">Select one or more channels first. The list button checks selected channels only, 5 at a time.</div>
                     </div>
                 </div>
             </section>
+
             <section class="col-lg-5 col-md-12">
                 <div class="border p-3 h-100 bg-white">
-                    <h6>Channel Details</h6>
+                    <h6 data-en="Channel Details" data-tr="Kanal Detayları">Channel Details</h6>
                     <form id="itemDetailsForm" class="needs-validation" novalidate>
                         <input type="hidden" id="itemIndex">
                         <div class="mb-2 row g-2">
-                            <label class="col-sm-3 col-form-label">Name:</label>
+                            <label class="col-sm-3 col-form-label" data-en="Name:" data-tr="İsim:">Name:</label>
                             <div class="col-sm-9">
                                 <input type="text" class="form-control form-control-sm" id="itemName" required>
                             </div>
                         </div>
                         <div class="mb-2 row g-2">
-                            <label class="col-sm-3 col-form-label d-flex justify-content-between align-items-center">URL:
+                            <label class="col-sm-3 col-form-label d-flex justify-content-between align-items-center">
+                                <span data-en="URL:" data-tr="URL:">URL:</span>
                                 <a id="itemUrlPreview" href="#" target="_blank" rel="noopener" class="ms-2 text-decoration-none disabled" title="Preview">
-                                    <span class="bi bi-box-arrow-up-right"></span> Preview
+                                    <span class="bi bi-box-arrow-up-right"></span> <span data-en="Preview" data-tr="Önizleme">Preview</span>
                                 </a>
                             </label>
                             <div class="col-sm-9">
@@ -137,39 +152,39 @@
                             </div>
                         </div>
                         <div class="mb-2 row g-2">
-                            <label class="col-sm-3 col-form-label">Status:</label>
+                            <label class="col-sm-3 col-form-label" data-en="Status:" data-tr="Durum:">Status:</label>
                             <div class="col-sm-9">
                                 <div class="input-group input-group-sm">
                                     <input type="text" class="form-control form-control-sm" id="itemStatus" value="Unknown" readonly>
-                                    <button type="button" id="checkCurrentItemBtn" class="btn btn-outline-warning" disabled>Check</button>
+                                    <button type="button" id="checkCurrentItemBtn" class="btn btn-outline-warning" data-en="Check" data-tr="Kontrol Et" disabled>Check</button>
                                 </div>
-                                <div id="itemStatusDescription" class="form-text small">Unknown. This channel has not been checked yet.</div>
+                                <div id="itemStatusDescription" class="form-text small" data-en="Unknown. This channel has not been checked yet." data-tr="Bilinmiyor. Bu kanal henüz kontrol edilmedi.">Unknown. This channel has not been checked yet.</div>
                             </div>
                         </div>
                         <div class="mb-2 row g-2">
-                            <label class="col-sm-3 col-form-label">TVG ID:</label>
+                            <label class="col-sm-3 col-form-label" data-en="TVG ID:" data-tr="TVG Kimliği:">TVG ID:</label>
                             <div class="col-sm-9">
                                 <input type="text" class="form-control form-control-sm" id="itemTvgId">
                             </div>
                         </div>
                         <div class="mb-2 row g-2">
-                            <label class="col-sm-3 col-form-label">TVG Name:</label>
+                            <label class="col-sm-3 col-form-label" data-en="TVG Name:" data-tr="TVG Adı:">TVG Name:</label>
                             <div class="col-sm-9">
                                 <input type="text" class="form-control form-control-sm" id="itemTvgName">
                             </div>
                         </div>
                         <div class="mb-2 row g-2">
-                            <label class="col-sm-3 col-form-label">TVG Logo:</label>
+                            <label class="col-sm-3 col-form-label" data-en="TVG Logo:" data-tr="TVG Logosu:">TVG Logo:</label>
                             <div class="col-sm-9">
                                 <input type="text" class="form-control form-control-sm" id="itemTvgLogo">
                             </div>
                         </div>
                         <div class="mb-2 row g-2">
-                            <label class="col-sm-3 col-form-label">Group Title:</label>
+                            <label class="col-sm-3 col-form-label" data-en="Group Title:" data-tr="Grup Başlığı:">Group Title:</label>
                             <div class="col-sm-9">
                                 <div class="dropdown">
                                     <button id="itemGroupTitleDropdown" class="btn btn-sm btn-outline-primary dropdown-toggle w-100 text-start" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <span id="itemGroupTitleSelected">Select group</span>
+                                        <span id="itemGroupTitleSelected" data-en="Select group" data-tr="Grup seçin">Select group</span>
                                     </button>
                                     <ul id="itemGroupTitleDropdownMenu" class="dropdown-menu w-100">
                                     </ul>
@@ -178,65 +193,106 @@
                             </div>
                         </div>
                         <div class="mb-2 row g-2">
-                            <label class="col-sm-3 col-form-label">Catchup:</label>
+                            <label class="col-sm-3 col-form-label" data-en="Catchup:" data-tr="Geri Sarma (Catchup):">Catchup:</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control form-control-sm" id="itemCatchup" placeholder="shift, default, append, or a catchup source">
+                                <input type="text" class="form-control form-control-sm" id="itemCatchup" data-pl-en="shift, default, append, or a catchup source" data-pl-tr="shift, default, append veya geri sarma kaynağı" placeholder="shift, default, append, or a catchup source">
                             </div>
                         </div>
                         <div class="mb-2 row g-2">
-                            <label class="col-sm-3 col-form-label">Catchup Type:</label>
+                            <label class="col-sm-3 col-form-label" data-en="Catchup Type:" data-tr="Geri Sarma Türü:">Catchup Type:</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control form-control-sm" id="itemCatchupType" placeholder="flussonic, xtream, default...">
+                                <input type="text" class="form-control form-control-sm" id="itemCatchupType" data-pl-en="flussonic, xtream, default..." data-pl-tr="flussonic, xtream, varsayılan..." placeholder="flussonic, xtream, default...">
                             </div>
                         </div>
                         <div class="mb-2 row g-2">
-                            <label class="col-sm-3 col-form-label">Catchup Days:</label>
+                            <label class="col-sm-3 col-form-label" data-en="Catchup Days:" data-tr="Geri Sarma Gün Sayısı:">Catchup Days:</label>
                             <div class="col-sm-9">
                                 <input type="number" min="0" class="form-control form-control-sm" id="itemCatchupDays" placeholder="7">
                             </div>
                         </div>
                         <div class="mb-2 row g-2">
-                            <label class="col-sm-3 col-form-label">Extra Attributes:</label>
+                            <label class="col-sm-3 col-form-label" data-en="Extra Attributes:" data-tr="Ekstra Öznitelikler:">Extra Attributes:</label>
                             <div class="col-sm-9">
-                                <textarea class="form-control form-control-sm font-monospace" id="itemAdditionalAttrs" rows="2" placeholder="catchup-source=&quot;?utc={utc}&amp;lutc={lutc}&quot; timeshift=&quot;7&quot;"></textarea>
-                                <div class="form-text small">Unknown channel attributes are preserved here, so provider archive parameters are not lost.</div>
+                                <textarea class="form-control form-control-sm font-monospace" id="itemAdditionalAttrs" rows="2" data-pl-en="catchup-source=&quot;?utc={utc}&amp;lutc={lutc}&quot; timeshift=&quot;7&quot;" data-pl-tr="catchup-source=&quot;?utc={utc}&amp;lutc={lutc}&quot; timeshift=&quot;7&quot;" placeholder="catchup-source=&quot;?utc={utc}&amp;lutc={lutc}&quot; timeshift=&quot;7&quot;"></textarea>
+                                <div class="form-text small" data-en="Unknown channel attributes are preserved here, so provider archive parameters are not lost." data-tr="Bilinmeyen kanal öznitelikleri burada korunur, böylece sağlayıcı arşiv parametreleri kaybolmaz.">Unknown channel attributes are preserved here, so provider archive parameters are not lost.</div>
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-primary btn-sm">Save Changes</button>
+                        <button type="submit" class="btn btn-primary btn-sm" data-en="Save Changes" data-tr="Değişiklikleri Kaydet">Save Changes</button>
                     </form>
                 </div>
             </section>
         </main>
     </div>
+
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js?v=v2.0-20260619"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js?v=v2.0-20260619"></script>
     <script src="script.js?v=v2.0-20260619"></script>
+    
     <script>
+        // Tema ve Dil Yönetim Scriptleri
         const themeToggleBtn = document.getElementById('themeToggle');
         const savedTheme = localStorage.getItem('theme');
-        // If the user has a previous preference, install it
         if (savedTheme === 'dark') {
             document.body.classList.add('dark-mode');
         }
-        // Click event trigger
         themeToggleBtn.addEventListener('click', () => {
             document.body.classList.toggle('dark-mode');
-            // Save preference to browser memory
             if (document.body.classList.contains('dark-mode')) {
                 localStorage.setItem('theme', 'dark');
             } else {
                 localStorage.setItem('theme', 'light');
             }
         });
+
+        // Dinamik Dil Değiştirme Fonksiyonu
+        function updateLanguage(lang) {
+            // Yazı içeriklerini güncelle
+            document.querySelectorAll('[data-en]').forEach(el => {
+                el.innerHTML = el.getAttribute(`data-${lang}`);
+            });
+
+            // Girdi alanlarının Placeholder değerlerini güncelle
+            document.querySelectorAll('[data-pl-en]').forEach(el => {
+                el.setAttribute('placeholder', el.getAttribute(`data-pl-${lang}`));
+            });
+
+            // Butonların aktiflik durumunu güncelle
+            document.querySelectorAll('.lang-switcher-btn').forEach(btn => {
+                if (btn.getAttribute('data-lang') === lang) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+
+            document.documentElement.lang = lang;
+            localStorage.setItem('app-lang', lang);
+            
+            // Tarih ve saat formatını yenile
+            if (typeof showtime === 'function') showtime();
+        }
+
+        // Dil butonu tıklama olayları
+        document.querySelectorAll('.lang-switcher-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                updateLanguage(btn.getAttribute('data-lang'));
+            });
+        });
+
+        // Başlangıç dili (Varsayılan: İngilizce)
+        const initialLang = localStorage.getItem('app-lang') || 'en';
+        updateLanguage(initialLang);
     </script>
 
-    <footer style="background: linear-gradient(135deg, #1e1e24, #0a0a0c); color: #ffffff; padding: 10px 25px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 -5px 20px rgba(0,0,0,0.3); ">
+    <footer style="background: linear-gradient(135deg, #1e1e24, #0a0a0c); color: #ffffff; padding: 10px 25px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 -5px 20px rgba(0,0,0,0.3);">
         <div style="display: flex; align-items: center; gap: 10px; font-size: 12px; letter-spacing: 0.5px;">
             <a href="https://github.com/omerdenizhan/" target="_blank" style="color: #ffffff; font-size: 12px; transition: color 0.3s ease; text-decoration: none;">
                 <i class="fa-brands fa-github" style="cursor: pointer;"></i>
             </a>
             <span style="color: rgba(255, 255, 255, 0.8);">
-                Made with ❤️ By <a target="_blank" rel="noopener" href="https://github.com/omerdenizhan/"> <strong style="color: #00bcd4; font-weight: 600;">Ömer Denizhan</strong></a> &copy; 2026 <a href="https://github.com/omerdenizhan/IPTV-M3U-Editor" target="_blank" rel="noopener"><strong style="color: #00bcd4; font-weight: 600;"> ⭐ Star it on Github</strong></a>
+                <span data-en="Made with ❤️ By" data-tr="❤️ İle Hazırlayan">Made with ❤️ By</span> 
+                <a target="_blank" rel="noopener" href="https://github.com/omerdenizhan/"> <strong style="color: #00bcd4; font-weight: 600;">Ömer Denizhan</strong></a> &copy; 2026 
+                <a href="https://github.com/omerdenizhan/IPTV-M3U-Editor" target="_blank" rel="noopener"><strong style="color: #00bcd4; font-weight: 600;" data-en=" ⭐ Star it on Github" data-tr=" ⭐ GitHub'da Yıldızla"> ⭐ Star it on Github</strong></a>
             </span>
         </div>
     </footer>
