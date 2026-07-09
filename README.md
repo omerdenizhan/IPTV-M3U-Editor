@@ -1,4 +1,4 @@
-<p align="center"><img src="logo_main.png" alt="Logo"></p>
+<p align="center"><img src="logo-main.png" alt="Logo"></p>
 <h1 align="center">⭐ IPTV M3U & M3U8 Editor ⭐</h1>
 
 A free, private, browser-based editor for M3U and M3U8 IPTV playlists.
@@ -63,7 +63,7 @@ Browser-based checking has limits. Some IPTV servers block browser status checks
 ---
 
 > [!NOTE]
-> 🕰️ Updated on June 28, 2026
+> 🕰️ Updated on July 10, 2026
 
 ---
 <p align="center">❤️ Made with Love ❤️</p>
