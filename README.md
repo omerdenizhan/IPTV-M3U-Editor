@@ -7,7 +7,6 @@ Open a playlist, organize groups and channels, edit channel details, check strea
 
 ## 📌 Screenshots
 ![screenshot](screenshot-1.png "Light Theme")
-
 ![screenshot](screenshot-2.png "Dark Theme")
 
 ## 📌 Main Features
@@ -50,20 +49,14 @@ https://iptv-org.github.io/iptv/index.country.m3u
 5. Use **Sort** to sort channels A-Z or by status.
 6. Click **Download Modified M3U** when you are done.
 
----
-
 ## 📌 Privacy
 IPTV M3U Editor works locally in your browser. Your playlist is not sent to a server.
-
----
 
 ## 📌 Notes About Status Checking
 Browser-based checking has limits. Some IPTV servers block browser status checks with CORS. When that happens, the app shows `CORS` instead of guessing whether the stream is alive or dead.
 
----
-
-> [!NOTE]
-> 🕰️ Updated on July 10, 2026
+## 🕰️ Update
+July 10, 2026
 
 ---
 <p align="center">❤️ Made with Love ❤️</p>
