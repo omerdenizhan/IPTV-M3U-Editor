@@ -55,7 +55,7 @@ IPTV M3U Editor works locally in your browser. Your playlist is not sent to a se
 ## 📌 Notes About Status Checking
 Browser-based checking has limits. Some IPTV servers block browser status checks with CORS. When that happens, the app shows `CORS` instead of guessing whether the stream is alive or dead.
 
-## 🕰️ Update
+## 🕰️ Last Update
 July 10, 2026
 
 ---
