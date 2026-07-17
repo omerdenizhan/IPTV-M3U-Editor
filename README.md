@@ -31,6 +31,12 @@ Open a playlist, organize groups and channels, edit channel details, check strea
 
 ## 📌 Sample Playlists
 ```txt
+# Türkiye TV Channels
+https://raw.githubusercontent.com/omerdenizhan/IPTV-M3U/refs/heads/main/m3u/turkiye.m3u
+
+# Türkiye Plus TV Channels
+https://raw.githubusercontent.com/omerdenizhan/IPTV-M3U/refs/heads/main/m3u/tv_channels_plus.m3u
+
 # All TV channels grouped by category
 https://iptv-org.github.io/iptv/index.category.m3u
 
