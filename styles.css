@@ -39,11 +39,11 @@ body, .bg-white, .border, input, textarea, select, .list-group-item {
     transition: background-color 0.4s ease, border-color 0.4s ease, color 0.4s ease !important;
 }
 
-/* --- Default Status: ON MODE --- */
+/* Default Status: On Mode */
 .theme-toggle-btn .sun-icon { opacity: 0; transform: rotate(-90deg); stroke: #fff; }
 .theme-toggle-btn .moon-icon { opacity: 1; transform: rotate(0deg); stroke: #1e293b; }
 
-/* --- STYLES TO BE APPLIED WHEN DARK MODE IS ACTIVE --- */
+/* Styles to be Applied When Dark Mode is Active */
 body.dark-mode {
     background-color: #1c1c1c !important; /* Midnight Blue / Black Background */
     color: #f1f5f9 !important;
