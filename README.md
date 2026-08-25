@@ -11,6 +11,7 @@ Open a playlist, organize groups and channels, edit channel details, check strea
 
 ## 📌 Main Features
 - Light/dark mode toggle
+- Turkish and English language support
 - Open `.m3u` and `.m3u8` playlists
 - Edit the playlist header, including EPG URLs
 - Create, rename, move, sort, and delete groups
