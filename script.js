@@ -14,6 +14,154 @@ let nextItemId = 1;
 let isCheckingChannels = false;
 let checkingProgressText = '';
 
+// --- Dil Desteği (i18n) Sözlüğü - Varsayılan: İngilizce ('en') ---
+let currentLang = localStorage.getItem('lang') || 'en';
+
+const translations = {
+    en: {
+        appTitle: "M3U & M3U8 Editor",
+        appSubtitle: "Free, private, local, browser-based M3U & M3U8 playlist editor.",
+        downloadBtn: "Download Modified M3U & M3U8",
+        clearBtn: "Clear",
+        playlistHeaderLabel: "Playlist header",
+        playlistHeaderDesc: "Edit the first line of the playlist here. EPG and global catchup attributes are preserved when loading and downloading.",
+        playlistHeaderWarning: "Don't touch it if you don't know what it is.",
+        groupsTitle: "Groups",
+        btnNew: "New",
+        btnRename: "Rename",
+        btnSortAz: "Sort A-Z",
+        btnDelete: "Delete",
+        filterGroupsPlaceholder: "Filter groups...",
+        groupHint: "Ctrl/Cmd-click selects many. Shift-click selects a range. Drag selected rows to reorder.",
+        channelsTitle: "Channels",
+        btnClone: "Clone",
+        btnSort: "Sort",
+        sortAz: "A-Z",
+        sortStatus: "By Status",
+        btnCheck: "Check",
+        btnMove: "Move",
+        filterChannelsPlaceholder: "Filter channels...",
+        channelHint: "Rename works by button or double click. Sort A-Z or by status. Select channels, then use Check to test only those URLs.",
+        status200: "fine and reachable.",
+        status403: "not accessible by you, possibly account, token, or geo-limited.",
+        status404: "not found.",
+        status5xx: "provider/server error.",
+        statusCors: "browser could reach it, but cannot read the real status without server permission.",
+        statusQueued: "waiting for its turn during batch checks.",
+        statusFooter: "Select one or more channels first. The list button checks selected channels only, 5 at a time.",
+        channelDetailsTitle: "Channel Details",
+        labelName: "Name:",
+        labelUrl: "URL:",
+        previewBtn: "Preview",
+        labelStatus: "Status:",
+        unknownStatusDesc: "Unknown. This channel has not been checked yet.",
+        labelGroupTitle: "Group Title:",
+        selectGroup: "Select group",
+        labelCatchup: "Catchup:",
+        catchupPlaceholder: "shift, default, append, or a catchup source",
+        labelCatchupType: "Catchup Type:",
+        catchupTypePlaceholder: "flussonic, xtream, default...",
+        labelCatchupDays: "Catchup Days:",
+        labelExtraAttrs: "Extra Attributes:",
+        extraAttrsDesc: "Unknown channel attributes are preserved here, so provider archive parameters are not lost.",
+        btnSaveChanges: "Save Changes",
+        confirmClear: "Are you sure you want to clear this playlist? This cannot be undone.",
+        confirmDeleteGroup: "Delete selected groups and all channels inside them?",
+        confirmDeleteChannels: "Delete selected channel(s)?",
+        promptNewGroup: "Enter new group name:",
+        promptRenameGroup: "Rename group:",
+        promptRenameChannel: "Rename channel:",
+        alertUpdated: "Channel updated successfully!"
+    },
+    tr: {
+        appTitle: "M3U & M3U8 Düzenleyici",
+        appSubtitle: "Ücretsiz, gizli, yerel, tarayıcı tabanlı M3U & M3U8 oynatma listesi editörü.",
+        downloadBtn: "Düzenlenen M3U & M3U8'i İndir",
+        clearBtn: "Temizle",
+        playlistHeaderLabel: "Oynatma Listesi Başlığı",
+        playlistHeaderDesc: "Oynatma listesinin ilk satırını buradan düzenleyin. EPG ve genel arşiv (catchup) nitelikleri yükleme ve indirme sırasında korunur.",
+        playlistHeaderWarning: "Ne olduğunu bilmiyorsanız dokunmayın.",
+        groupsTitle: "Gruplar",
+        btnNew: "Yeni",
+        btnRename: "Yeniden Adlandır",
+        btnSortAz: "A-Z Sırala",
+        btnDelete: "Sil",
+        filterGroupsPlaceholder: "Grupları filtrele...",
+        groupHint: "Ctrl/Cmd ile çoklu seçim, Shift ile aralık seçimi yapabilirsiniz. Sıralamak için sürükleyin.",
+        channelsTitle: "Kanallar",
+        btnClone: "Kopyala",
+        btnSort: "Sırala",
+        sortAz: "A-Z",
+        sortStatus: "Duruma Göre",
+        btnCheck: "Kontrol",
+        btnMove: "Taşı",
+        filterChannelsPlaceholder: "Kanalları filtrele...",
+        channelHint: "Yeniden adlandırma butonla veya çift tıklamayla yapılır. Kanal seçip 'Kontrol' ile test edin.",
+        status200: "sorunsuz ve erişilebilir.",
+        status403: "erişilemiyor, hesap, token veya bölge kısıtlı olabilir.",
+        status404: "bulunamadı.",
+        status5xx: "sağlayıcı / sunucu hatası.",
+        statusCors: "tarayıcı erişti ancak sunucu izni olmadan gerçek durumu okuyamıyor.",
+        statusQueued: "toplu kontrol sırasında sırasını bekliyor.",
+        statusFooter: "Önce bir veya daha fazla kanal seçin. Kontrol tuşu seçilenleri aynı anda 5'erli test eder.",
+        channelDetailsTitle: "Kanal Detayları",
+        labelName: "Adı:",
+        labelUrl: "URL:",
+        previewBtn: "Önizle",
+        labelStatus: "Durum:",
+        unknownStatusDesc: "Bilinmiyor. Bu kanal henüz kontrol edilmedi.",
+        labelGroupTitle: "Grup Başlığı:",
+        selectGroup: "Grup seçin",
+        labelCatchup: "Geri Alma (Catchup):",
+        catchupPlaceholder: "shift, default, append veya catchup kaynağı",
+        labelCatchupType: "Catchup Türü:",
+        catchupTypePlaceholder: "flussonic, xtream, default...",
+        labelCatchupDays: "Catchup Günleri:",
+        labelExtraAttrs: "Ek Nitelikler:",
+        extraAttrsDesc: "Bilinmeyen kanal nitelikleri burada korunur, böylece arşiv parametreleri kaybolmaz.",
+        btnSaveChanges: "Değişiklikleri Kaydet",
+        confirmClear: "Bu oynatma listesini temizlemek istediğinizden emin misiniz? Bu işlem geri alınamaz.",
+        confirmDeleteGroup: "Seçilen gruplar ve içerisindeki tüm kanallar silinsin mi?",
+        confirmDeleteChannels: "Seçilen kanal(lar) silinsin mi?",
+        promptNewGroup: "Yeni grup adını girin:",
+        promptRenameGroup: "Grubu yeniden adlandır:",
+        promptRenameChannel: "Kanalı yeniden adlandır:",
+        alertUpdated: "Kanal başarıyla güncellendi!"
+    }
+};
+
+function t(key) {
+    return (translations[currentLang] && translations[currentLang][key]) || translations['en'][key] || key;
+}
+
+function updateTexts() {
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        el.textContent = t(key);
+    });
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        const key = el.getAttribute('data-i18n-placeholder');
+        el.placeholder = t(key);
+    });
+    const langToggleBtn = document.getElementById('langToggleBtn');
+    if (langToggleBtn) {
+        langToggleBtn.setAttribute('data-lang', currentLang);
+    }
+}
+
+const langToggleBtn = document.getElementById('langToggleBtn');
+if (langToggleBtn) {
+    langToggleBtn.setAttribute('data-lang', currentLang);
+    langToggleBtn.addEventListener('click', () => {
+        currentLang = currentLang === 'tr' ? 'en' : 'tr';
+        localStorage.setItem('lang', currentLang);
+        langToggleBtn.setAttribute('data-lang', currentLang);
+        updateTexts();
+        renderGroups();
+        renderItems();
+    });
+}
+
 const STATUS_UNKNOWN = 'Unknown';
 const STORAGE_KEY = 'IPTVM3uEditorProject';
 const LEGACY_DATA_KEY = 'm3uData';
@@ -333,25 +481,22 @@ function normalizeChannelStatus(status) {
 function getStatusDescription(status) {
     const value = normalizeChannelStatus(status);
     const code = Number(value);
-    if (value === STATUS_UNKNOWN) return 'Unknown. This channel has not been checked yet.';
-    if (value === 'Queued') return 'Queued. This channel is waiting to be checked.';
-    if (value === 'Checking') return 'Checking now.';
-    if (value === 'No URL') return 'No URL is set for this channel.';
-    if (value === 'Bad URL') return 'The URL is not valid.';
-    if (value === 'Unsupported') return 'Only http and https URLs can be checked from the browser.';
-    if (value === 'CORS') return 'The browser reached it, but the server did not allow reading the real HTTP status.';
-    if (value === 'Blocked') return 'The browser could not complete the request. It may be mixed content, DNS, network, ad blocker, or CORS.';
-    if (code >= 200 && code < 300) return `${value} means fine and reachable.`;
-    if (code >= 300 && code < 400) return `${value} means redirected. The final URL may still work in a player.`;
-    if (code === 401) return '401 means authentication is required.';
-    if (code === 403) return '403 means it is not accessible by you. It may be token, account, or geo-limited.';
-    if (code === 404) return '404 means not found.';
-    if (code === 408) return '408 means the server timed out.';
-    if (code === 410) return '410 means gone.';
-    if (code === 429) return '429 means rate-limited.';
-    if (code === 451) return '451 means unavailable for legal or regional reasons.';
-    if (code >= 400 && code < 500) return `${value} is a client/access error.`;
-    if (code >= 500 && code < 600) return `${value} is a provider/server error.`;
+    if (value === STATUS_UNKNOWN) return t('unknownStatusDesc');
+    if (value === 'Queued') return t('statusQueued');
+    if (value === 'Checking') return currentLang === 'tr' ? 'Kontrol ediliyor...' : 'Checking now.';
+    if (value === 'No URL') return currentLang === 'tr' ? 'Bu kanal için URL ayarlanmamış.' : 'No URL is set for this channel.';
+    if (value === 'Bad URL') return currentLang === 'tr' ? 'URL geçerli değil.' : 'The URL is not valid.';
+    if (value === 'Unsupported') return currentLang === 'tr' ? 'Tarayıcıdan yalnızca http ve https URL\'leri kontrol edilebilir.' : 'Only http and https URLs can be checked from the browser.';
+    if (value === 'CORS') return t('statusCors');
+    if (value === 'Blocked') return currentLang === 'tr' ? 'Tarayıcı isteği tamamlayamadı.' : 'The browser could not complete the request.';
+    if (code >= 200 && code < 300) return `${value} ${t('status200')}`;
+    if (code >= 300 && code < 400) return `${value} ${currentLang === 'tr' ? 'yönlendirme demek.' : 'means redirected.'}`;
+    if (code === 401) return currentLang === 'tr' ? '401 kimlik doğrulama gerektirir.' : '401 means authentication is required.';
+    if (code === 403) return `${value} ${t('status403')}`;
+    if (code === 404) return `${value} ${t('status404')}`;
+    if (code === 408) return currentLang === 'tr' ? '408 zaman aşımı.' : '408 means the server timed out.';
+    if (code >= 400 && code < 500) return `${value} ${currentLang === 'tr' ? 'istemci hatasıdır.' : 'is a client error.'}`;
+    if (code >= 500 && code < 600) return `${value} ${t('status5xx')}`;
     return value;
 }
 
@@ -374,7 +519,7 @@ function getStatusLabel(item) {
 
 function getStatusTitle(item) {
     const detail = item && item.statusDetail ? String(item.statusDetail) : getStatusDescription(item && item.status);
-    const checked = item && item.lastChecked ? ` Last checked: ${item.lastChecked}` : '';
+    const checked = item && item.lastChecked ? ` (${currentLang === 'tr' ? 'Son kontrol:' : 'Last checked:'} ${item.lastChecked})` : '';
     return `${detail}${checked}`.trim();
 }
 
@@ -411,7 +556,7 @@ function getSelectedChannelItems() {
 function resetItemForm() {
     itemDetailsForm.reset();
     itemIndexInput.value = '';
-    itemGroupTitleSelected.textContent = selectedGroup || 'Select group';
+    itemGroupTitleSelected.textContent = selectedGroup || t('selectGroup');
     itemGroupTitleInput.value = selectedGroup || '';
     updateItemStatusControls(null);
     if (checkCurrentItemBtn) checkCurrentItemBtn.disabled = true;
@@ -506,13 +651,13 @@ function updateActionState() {
     cloneItemBtn.disabled = selectedItemCount !== 1;
     sortItemsBtn.disabled = !selectedGroup || itemCount < 2;
     checkItemsBtn.disabled = isCheckingChannels || selectedItemCount === 0;
-    checkItemsBtn.textContent = isCheckingChannels ? 'Checking...' : 'Check';
+    checkItemsBtn.innerHTML = `<i class="fas fa-stethoscope"></i> ${isCheckingChannels ? (currentLang === 'tr' ? 'Kontrol ediliyor...' : 'Checking...') : t('btnCheck')}`;
     if (checkCurrentItemBtn) checkCurrentItemBtn.disabled = isCheckingChannels || !activeChannelId;
     moveItemsBtn.disabled = selectedItemCount === 0 || groupCount === 0;
     deleteItemsBtn.disabled = selectedItemCount === 0;
     downloadBtn.disabled = m3uData.length === 0 && getAllGroups().length === 0;
-    groupSelectedCount.textContent = selectedGroupCount ? `(${selectedGroupCount} selected)` : '';
-    itemSelectedCount.textContent = selectedItemCount ? `(${selectedItemCount} selected)` : '';
+    groupSelectedCount.textContent = selectedGroupCount ? `(${selectedGroupCount})` : '';
+    itemSelectedCount.textContent = selectedItemCount ? `(${selectedItemCount})` : '';
     if (statusCheckProgress) statusCheckProgress.textContent = checkingProgressText;
 }
 
@@ -542,7 +687,7 @@ function renderGroups() {
             });
             const saveBtn = document.createElement('button');
             saveBtn.className = 'btn btn-sm btn-success';
-            saveBtn.textContent = 'Save';
+            saveBtn.innerHTML = `<i class="fas fa-check"></i> ${currentLang === 'tr' ? 'Kaydet' : 'Save'}`;
             saveBtn.addEventListener('click', () => saveGroupRename(group, input.value));
             groupItem.appendChild(input);
             groupItem.appendChild(saveBtn);
@@ -608,7 +753,7 @@ function renderItems() {
             });
             const saveBtn = document.createElement('button');
             saveBtn.className = 'btn btn-sm btn-success';
-            saveBtn.textContent = 'Save';
+            saveBtn.innerHTML = `<i class="fas fa-check"></i> ${currentLang === 'tr' ? 'Kaydet' : 'Save'}`;
             saveBtn.addEventListener('click', () => saveItemRename(item._id, input.value));
             itemElement.appendChild(input);
             itemElement.appendChild(saveBtn);
@@ -770,7 +915,7 @@ function saveGroupRename(oldName, newName) {
         return;
     }
     if (groupOrder.includes(newGroup) && oldGroup !== newGroup) {
-        const shouldMerge = confirm(`A group named "${newGroup}" already exists. Merge "${oldGroup}" into it?`);
+        const shouldMerge = confirm(currentLang === 'tr' ? `"${newGroup}" adında bir grup zaten var. "${oldGroup}" ile birleştirilsin mi?` : `A group named "${newGroup}" already exists. Merge "${oldGroup}" into it?`);
         if (!shouldMerge) return;
         groupOrder = groupOrder.filter(group => group !== oldGroup);
     } else {
@@ -808,10 +953,10 @@ function saveItemRename(itemId, newName) {
 
 function createNewGroup() {
     const groups = getAllGroups();
-    let newGroupName = 'New Group';
+    let newGroupName = currentLang === 'tr' ? 'Yeni Grup' : 'New Group';
     let suffix = 1;
     while (groups.includes(newGroupName)) {
-        newGroupName = `New Group ${suffix++}`;
+        newGroupName = `${currentLang === 'tr' ? 'Yeni Grup' : 'New Group'} ${suffix++}`;
     }
     groupOrder.unshift(newGroupName);
     selectedGroup = newGroupName;
@@ -830,7 +975,7 @@ function createNewItem() {
     if (!selectedGroup) return;
     const group = ensureGroupExists(selectedGroup);
     const item = ensureItem({
-        name: 'New Item',
+        name: currentLang === 'tr' ? 'Yeni Öğe' : 'New Item',
         url: '',
         tvgId: '',
         tvgName: '',
@@ -875,7 +1020,7 @@ function cloneSelectedItem() {
     const clone = ensureItem({
         ...source,
         _id: makeItemId(),
-        name: `${source.name || 'Unnamed'} Copy`,
+        name: `${source.name || 'Unnamed'} (${currentLang === 'tr' ? 'Kopya' : 'Copy'})`,
         extraLines: Array.isArray(source.extraLines) ? source.extraLines.slice() : []
     });
     m3uData.splice(sourceIndex + 1, 0, clone);
@@ -891,8 +1036,7 @@ function cloneSelectedItem() {
 
 function deleteSelectedGroups() {
     if (!selectedGroups.size) return;
-    const count = selectedGroups.size;
-    if (!confirm(`Delete ${count} selected group${count === 1 ? '' : 's'}? This will also delete every channel inside.`)) {
+    if (!confirm(t('confirmDeleteGroup'))) {
         return;
     }
     const groupsToDelete = new Set(selectedGroups);
@@ -911,6 +1055,7 @@ function deleteSelectedGroups() {
 
 function deleteSelectedItems() {
     if (!selectedChannels.size) return;
+    if (!confirm(t('confirmDeleteChannels'))) return;
     const idsToDelete = new Set(selectedChannels);
     m3uData = m3uData.filter(item => !idsToDelete.has(item._id));
     selectedChannels.clear();
@@ -1123,7 +1268,7 @@ async function checkSingleChannel(item) {
             markChannelStatus(item, 'CORS', getStatusDescription('CORS'));
         } catch (blockedError) {
             const detail = blockedError && blockedError.name === 'AbortError'
-                ? 'The request timed out. The stream may be slow, endless, blocked, or unreachable.'
+                ? (currentLang === 'tr' ? 'İstek zaman aşımına uğradı.' : 'The request timed out.')
                 : getStatusDescription('Blocked');
             markChannelStatus(item, 'Blocked', detail);
         }
@@ -1134,7 +1279,7 @@ async function checkChannelItems(items, emptyMessage, finishedLabel) {
     if (isCheckingChannels) return;
     const targets = Array.from(new Set((items || []).filter(Boolean)));
     if (targets.length === 0) {
-        setProgress(emptyMessage || 'Select at least one channel to check.');
+        setProgress(emptyMessage || (currentLang === 'tr' ? 'Kontrol için en az bir kanal seçin.' : 'Select at least one channel to check.'));
         updateActionState();
         return;
     }
@@ -1147,10 +1292,9 @@ async function checkChannelItems(items, emptyMessage, finishedLabel) {
         item.lastChecked = '';
         return item;
     });
-    const label = finishedLabel || 'selected channels';
     const total = candidates.length;
     const batchSize = 5;
-    setProgress(`Queued ${total} ${label}. Checking 5 at a time.`);
+    setProgress(currentLang === 'tr' ? `${total} kanal kuyruğa eklendi. Aynı anda 5'erli kontrol ediliyor.` : `Queued ${total} channels. Checking 5 at a time.`);
     saveToLocalStorage();
     renderItems();
     for (let start = 0; start < total; start += batchSize) {
@@ -1162,23 +1306,23 @@ async function checkChannelItems(items, emptyMessage, finishedLabel) {
             item.statusDetail = getStatusDescription('Checking');
             item.lastChecked = new Date().toLocaleString();
         });
-        setProgress(`Checking ${batchStart}-${batchEnd} of ${total}. ${Math.max(total - batchEnd, 0)} queued.`);
+        setProgress(currentLang === 'tr' ? `${batchStart}-${batchEnd} / ${total} kontrol ediliyor.` : `Checking ${batchStart}-${batchEnd} of ${total}.`);
         saveToLocalStorage();
         renderItems();
         await Promise.all(batch.map(item => checkSingleChannel(item)));
-        setProgress(`Checked ${batchEnd} of ${total}. ${Math.max(total - batchEnd, 0)} queued.`);
+        setProgress(currentLang === 'tr' ? `${batchEnd} / ${total} kontrol edildi.` : `Checked ${batchEnd} of ${total}.`);
         saveToLocalStorage();
         renderItems();
     }
     isCheckingChannels = false;
-    setProgress(`Finished checking ${total} ${label}.`);
+    setProgress(currentLang === 'tr' ? `${total} kanalın kontrolü tamamlandı.` : `Finished checking ${total} channels.`);
     saveToLocalStorage();
     renderItems();
     updateActionState();
 }
 
 async function checkChannels() {
-    await checkChannelItems(getSelectedChannelItems(), 'Select at least one channel to check.', 'selected channels');
+    await checkChannelItems(getSelectedChannelItems(), currentLang === 'tr' ? 'Kontrol için en az bir kanal seçin.' : 'Select at least one channel to check.', 'selected channels');
 }
 
 async function checkCurrentItem() {
@@ -1187,7 +1331,7 @@ async function checkCurrentItem() {
     const item = m3uData.find(entry => entry._id === activeChannelId);
     if (!item) return;
     selectedChannels = new Set([item._id]);
-    await checkChannelItems([item], 'Select a channel to check.', 'current channel');
+    await checkChannelItems([item], currentLang === 'tr' ? 'Kontrol için bir kanal seçin.' : 'Select a channel to check.', 'current channel');
 }
 
 function handleFileUpload(event) {
@@ -1355,6 +1499,7 @@ function saveItemChanges(event) {
     saveToLocalStorage();
     renderGroups();
     renderItems();
+    alert(t('alertUpdated'));
 }
 
 function saveToLocalStorage() {
@@ -1398,12 +1543,13 @@ function loadFromLocalStorage() {
         selectedGroups = new Set([selectedGroup]);
         groupSelectionAnchor = selectedGroup;
     }
+    updateTexts();
     renderGroups();
     renderItems();
 }
 
 function clearProject() {
-    if (!confirm('Are you sure you want to clear this playlist? This cannot be undone.')) return;
+    if (!confirm(t('confirmClear'))) return;
     m3uData = [];
     groupOrder = [];
     playlistHeader = '#EXTM3U';
