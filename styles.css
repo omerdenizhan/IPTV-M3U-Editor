@@ -1,70 +1,137 @@
-/* Stylish Button in the Upper Right Corner */
-.theme-toggle-btn {
-    position: fixed;
-    top: 15px;
-    right: 15px;
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
-    border: 1px solid rgba(255, 255, 255, 0.4);
-    background: rgba(255, 255, 255, 0.25);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+/* --- Modern Görsel Dil Toggle Anahtar (Switch) Tasarımı --- */
+.visual-toggle-btn.lang-toggle {
+    position: relative;
+    width: 58px;
+    height: 32px;
+    background-color: #e2e8f0;
+    border: 1px solid #cbd5e1;
+    border-radius: 16px;
     cursor: pointer;
-    display: flex;
+    display: inline-flex;
+    align-items: center;
+    padding: 0 4px;
+    box-sizing: border-box;
+    transition: background-color 0.4s ease, border-color 0.4s ease;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.visual-toggle-btn.lang-toggle:hover {
+    border-color: #94a3b8;
+}
+
+.visual-toggle-btn.lang-toggle .toggle-track {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 24px;
+    height: 24px;
+    background-color: #ffffff;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 2;
+}
+
+.visual-toggle-btn.lang-toggle .toggle-label {
+    position: absolute;
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: #64748b;
+    z-index: 1;
+    transition: color 0.4s ease;
+}
+
+.visual-toggle-btn.lang-toggle .tr-lbl {
+    left: 8px;
+    color: #0f172a;
+}
+.visual-toggle-btn.lang-toggle .en-lbl {
+    right: 8px;
+    color: #64748b;
+}
+.visual-toggle-btn.lang-toggle[data-lang="en"] .toggle-track {
+    transform: translateX(26px);
+}
+.visual-toggle-btn.lang-toggle[data-lang="en"] .tr-lbl {
+    color: #64748b;
+}
+.visual-toggle-btn.lang-toggle[data-lang="en"] .en-lbl {
+    color: #0f172a;
+}
+
+body.dark-mode .visual-toggle-btn.lang-toggle {
+    background-color: #334155;
+    border-color: #475569;
+}
+body.dark-mode .visual-toggle-btn.lang-toggle .tr-lbl,
+body.dark-mode .visual-toggle-btn.lang-toggle .en-lbl {
+    color: #cbd5e1;
+}
+
+/* --- Yuvarlak ve Animasyonlu Karanlık Mod Butonu --- */
+.theme-toggle-btn {
+    position: static;
+    width: 38px;
+    height: 38px;
+    border-radius: 50% !important; /* Tamamen yuvarlak */
+    border: 1px solid #ced4da;
+    background: #f8f9fa;
+    cursor: pointer;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    z-index: 10000;
-    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 10;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Hover Effect */
 .theme-toggle-btn:hover {
-    transform: scale(1.1) rotate(15deg);
-    background: rgba(255, 255, 255, 0.4);
-    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.25);
+    background: #e2e6ea;
+    border-color: #dae0e5;
 }
 
-/* General Style of Icons */
+/* Basıldığında (Active) Tıklama Efekti ve Dönme Animasyonu */
+.theme-toggle-btn:active {
+    transform: scale(0.88) rotate(180deg);
+}
+
 .theme-toggle-btn svg {
-    width: 22px;
-    height: 22px;
+    width: 18px;
+    height: 18px;
     position: absolute;
     transition: transform 0.4s, opacity 0.4s;
 }
 
-/* Page Overall Softness */
-body, .bg-white, .border, input, textarea, select, .list-group-item {
-    transition: background-color 0.4s ease, border-color 0.4s ease, color 0.4s ease !important;
-}
-
-/* Default Status: On Mode */
-.theme-toggle-btn .sun-icon { opacity: 0; transform: rotate(-90deg); stroke: #fff; }
+.theme-toggle-btn .sun-icon { opacity: 0; transform: rotate(-90deg); stroke: #495057; }
 .theme-toggle-btn .moon-icon { opacity: 1; transform: rotate(0deg); stroke: #1e293b; }
 
-/* Styles to be Applied When Dark Mode is Active */
-body.dark-mode {
-    background-color: #1c1c1c !important; /* Midnight Blue / Black Background */
-    color: #f1f5f9 !important;
+body.dark-mode .theme-toggle-btn {
+    border: 1px solid #475569;
+    background: #334155;
 }
 
-/* Button Icon Change in Dark Mode */
-body.dark-mode .theme-toggle-btn {
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    background: rgba(15, 23, 42, 0.6);
+body.dark-mode .theme-toggle-btn:hover {
+    background: #475569;
 }
 
 body.dark-mode .theme-toggle-btn .sun-icon { opacity: 1; transform: rotate(0deg); stroke: #f59e0b; }
 body.dark-mode .theme-toggle-btn .moon-icon { opacity: 0; transform: rotate(90deg); stroke: #fff; }
 
-/* Transformation of White Areas in Dark Mode */
-body.dark-mode .bg-white {
-    background-color: #1e293b !important; /* Panel Backgrounds */
+/* --- Genel Sayfa Animasyonlu Geçişleri --- */
+body, body *, .bg-white, .border, input, textarea, select, .list-group-item, .btn {
+    transition: background-color 0.4s ease, border-color 0.4s ease, color 0.4s ease, box-shadow 0.4s ease !important;
+}
+
+body.dark-mode {
+    background-color: #1c1c1c !important;
     color: #f1f5f9 !important;
 }
 
-/* Form Elements and Borders in Dark Mode */
+body.dark-mode .bg-white {
+    background-color: #1e293b !important;
+    color: #f1f5f9 !important;
+}
+
 body.dark-mode .border, 
 body.dark-mode .form-control, 
 body.dark-mode .form-select, 
@@ -74,23 +141,14 @@ body.dark-mode textarea {
     color: #f8fafc !important;
 }
 
-/* Passive (Disabled) Elements in Dark Mode */
 body.dark-mode .form-control:disabled,
 body.dark-mode button:disabled {
     background-color: #1e293b !important;
     opacity: 0.6;
 }
 
-/* Setting Font Colors in Dark Mode */
 body.dark-mode .text-muted {
     color: #94a3b8 !important;
-}
-
-/* Scrolling the Small Meta Information on the Top Right to Prevent It from Being Under the Button */
-@media (min-width: 576px) {
-    .app-meta {
-        margin-right: 55px;
-    }
 }
 
 body {
@@ -105,10 +163,6 @@ body {
 
 .app-header {
     min-height: 60px;
-}
-
-.app-meta {
-    min-width: 230px;
 }
 
 .list-group-item {
@@ -303,8 +357,5 @@ textarea.form-control-sm {
 @media (max-width: 992px) {
     .app-header {
         flex-direction: column;
-    }
-    .app-meta {
-        text-align: left !important;
     }
 }
