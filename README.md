@@ -8,7 +8,6 @@ A free, private, local, and fully browser-based M3U & M3U8 playlist editor. This
 ![screenshot](screenshot-2.png "Dark Theme")
 
 ## 🚀 Features
-
 * **Complete Privacy:** Files are processed locally in your browser using JavaScript. No data is sent to external servers.
 * **Group Management:** 
   * Create, rename, delete, and sort groups alphabetically.
@@ -58,7 +57,6 @@ https://iptv-org.github.io/iptv/index.country.m3u
 6. Click **Download Modified M3U** when you are done.
 
 ## 🛠️ Usage Instructions
-
 1. **Load a Playlist:** Click the file input button at the top to upload your `.m3u` or `.m3u8` file.
 2. **Select Groups:** Click on a group in the left panel to view its channels.
 3. **Edit Channels:** 
@@ -71,9 +69,7 @@ https://iptv-org.github.io/iptv/index.country.m3u
 6. **Clear:** Use the **Clear** button to wipe the current project from your browser's local storage and start fresh.
 
 ## 📊 Channel Status Legend
-
 When using the built-in channel checker, you will see various status badges:
-
 * **200 (Green):** Fine and reachable. The stream is active.
 * **403 / 401 (Yellow):** Not accessible by you. Possibly requires an account, token, or is geo-blocked.
 * **404 / 5xx (Red):** Not found or provider/server error. The stream is likely dead.
@@ -88,7 +84,6 @@ When using the built-in channel checker, you will see various status badges:
 
 
 ## 📄 License
-
 This project is released into the public domain under the [Unlicense](https://unlicense.org/); you are free to use, modify, and distribute it as you wish. See the [`LICENSE`](LICENSE) file for details.
 
 ## 🕰️ Last Update
