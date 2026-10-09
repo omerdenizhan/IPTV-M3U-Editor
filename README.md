@@ -82,7 +82,6 @@ When using the built-in channel checker, you will see various status badges:
 * [FontAwesome](https://fontawesome.com/) & [Bootstrap Icons](https://icons.getbootstrap.com/) - For UI iconography.
 * [SortableJS](https://sortablejs.github.io/Sortable/) - For smooth drag-and-drop reordering.
 
-
 ## 📄 License
 This project is released into the public domain under the [Unlicense](https://unlicense.org/); you are free to use, modify, and distribute it as you wish. See the [`LICENSE`](LICENSE) file for details.
 
