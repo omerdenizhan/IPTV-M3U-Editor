@@ -225,6 +225,11 @@
             color: #0f172a;
             background: #cbd5e1;
         }
+        body:not(.dark-mode) .btn-outline-secondary:hover:not(:disabled) {
+            color: var(--text);
+            background: var(--glass-bg-strong);
+            border-color: var(--text-muted);
+        }
         .btn:disabled {
             opacity: 0.5;
         }
