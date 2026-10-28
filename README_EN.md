@@ -4,8 +4,8 @@
 A free, private, local, and fully browser-based M3U & M3U8 playlist editor. This tool allows you to easily manage, organize, and test your IPTV playlists without ever uploading your sensitive data to a third-party server. Everything happens securely within your browser.
 
 ## 📌 Screenshots
-![screenshot](screenshot-1.png "Light Theme")
-![screenshot](screenshot-2.png "Dark Theme")
+![screenshot](screenshot-en-1.png "Light Theme")
+![screenshot](screenshot-en-2.png "Dark Theme")
 
 ## 🚀 Features
 * **Complete Privacy:** Files are processed locally in your browser using JavaScript. No data is sent to external servers.

@@ -4,8 +4,8 @@
 Ücretsiz, gizli, yerel ve tamamen tarayıcı tabanlı bir M3U ve M3U8 oynatma listesi düzenleyicisi. Bu araç, hassas verilerinizi asla üçüncü taraf bir sunucuya yüklemeden IPTV oynatma listelerinizi kolayca yönetmenize, düzenlemenize ve test etmenize olanak tanır. Her şey tarayıcınızın içinde güvenli bir şekilde gerçekleşir.
 
 ## 📌 Ekran Görüntüleri
-![ekran görüntüsü](screenshot-1.png "Açık Tema")
-![ekran görüntüsü](screenshot-2.png "Koyu Tema")
+![ekran görüntüsü](screenshot-tr-1.png "Açık Tema")
+![ekran görüntüsü](screenshot-tr-2.png "Koyu Tema")
 
 ## 🚀 Özellikler
 * **Tam Gizlilik:** Dosyalar, JavaScript kullanılarak tarayıcınızda yerel olarak işlenir. Harici sunuculara hiçbir veri gönderilmez.

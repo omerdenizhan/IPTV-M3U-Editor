@@ -1,6 +1,6 @@
 <!doctype html>
-<html lang="en">
 
+<html lang="en">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -555,10 +555,14 @@
                 flex-direction: column;
             }
         }
+        #confirmModal .modal-body {
+            padding-left: 10px !important;
+            padding-right: 10px !important;
+        }
     </style>
 </head>
 <body>
-    <div class="container-fluid p-3 pb-3">
+    <div class="container-fluid p-2 pb-2">
         <section class="glass-panel p-2 mb-2">
             <header class="app-header d-flex justify-content-between align-items-start gap-3">
                 <div>
@@ -571,7 +575,7 @@
                 <div class="d-flex align-items-center gap-2 flex-wrap justify-content-center">
                     <label for="fileInput" class="btn btn-outline-secondary mb-0">
                         <i class="fas fa-folder-open me-1"></i>
-                        <span data-i18n="btnLoad">Listeyi Yükle</span>
+                        <span data-i18n="btnLoad">Liste Yükle</span>
                     </label>
                     <input type="file" id="fileInput" class="d-none" accept=".m3u,.m3u8" />
                     <button id="downloadBtn" class="btn btn-primary" disabled>
@@ -599,235 +603,237 @@
                 </div>
             </header>
         </section>
-        <section class="glass-panel p-2 mb-2">
-            <label for="playlistHeaderInput" class="form-label h6 fw-bold mb-1" data-i18n="playlistHeaderLabel">Playlist Header</label>
-            <input id="playlistHeaderInput" type="text" class="form-control form-control-sm font-monospace" value="#EXTM3U" placeholder='#EXTM3U x-tvg-url="https://example.com/epg.xml" url-tvg="https://example.com/epg.xml"' />
-            <div class="form-text small">
-                <span data-i18n="playlistHeaderDesc">Edit the first line of the playlist here. EPG and global catchup attributes are preserved when loading and downloading.</span>
-                <i style="color: orange" data-i18n="playlistHeaderWarning">Don't touch it if you don't know what it is.</i>
-            </div>
-        </section>
-        <main class="row g-2">
-            <section class="col-lg-3 col-md-4">
-                <div class="glass-panel p-2 h-100 d-flex flex-column">
-                    <div class="d-flex flex-column mb-2 gap-2">
-                        <h6 class="mb-0">
-                            <span data-i18n="groupsTitle">Groups</span>
-                            <span id="groupSelectedCount" class="text-muted fw-normal"></span>
-                        </h6>
-                        <div class="d-flex gap-1 flex-wrap">
-                            <button id="newGroupBtn" class="btn btn-sm btn-outline-success">
-                                <i class="fas fa-plus"></i>
-                                <span data-i18n="btnNew">New</span>
-                            </button>
-                            <button id="renameGroupBtn" class="btn btn-sm btn-outline-secondary" disabled>
-                                <i class="fas fa-edit"></i>
-                                <span data-i18n="btnRename">Rename</span>
-                            </button>
-                            <button id="sortGroupsBtn" class="btn btn-sm btn-outline-secondary">
-                                <i class="fas fa-sort-alpha-down"></i>
-                                <span data-i18n="btnSortAz">Sort A-Z</span>
-                            </button>
-                            <button id="deleteGroupsBtn" class="btn btn-sm btn-outline-danger" disabled>
-                                <i class="fas fa-trash"></i>
-                                <span data-i18n="btnDelete">Delete</span>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="mb-2">
-                        <input id="groupsFilterInput" type="text" class="form-control form-control-sm" data-i18n-placeholder="filterGroupsPlaceholder" placeholder="Filter groups..." />
-                    </div>
-                    <div class="section-hint small text-muted mb-2" data-i18n="groupHint">Ctrl/Cmd-click selects many. Shift-click selects a range. Drag selected rows to reorder.</div>
-                    <div id="groupsList" class="list-group flex-grow-1"></div>
+        <div style="max-height: calc(100vh - 160px); overflow-y: auto; overflow-x: hidden; padding-right: 5px;">
+            <section class="glass-panel p-2 mb-2">
+                <label for="playlistHeaderInput" class="form-label h6 fw-bold mb-1" data-i18n="playlistHeaderLabel">Playlist Header</label>
+                <input id="playlistHeaderInput" type="text" class="form-control form-control-sm font-monospace" value="#EXTM3U" placeholder='#EXTM3U x-tvg-url="https://example.com/epg.xml" url-tvg="https://example.com/epg.xml"' />
+                <div class="form-text small">
+                    <span data-i18n="playlistHeaderDesc">Edit the first line of the playlist here. EPG and global catchup attributes are preserved when loading and downloading.</span>
+                    <i style="color: orange" data-i18n="playlistHeaderWarning">Don't touch it if you don't know what it is.</i>
                 </div>
             </section>
-            <section class="col-lg-4 col-md-8">
-                <div class="glass-panel p-2 h-100 d-flex flex-column">
-                    <div class="d-flex flex-column mb-2 gap-2">
-                        <h6 class="mb-0">
-                            <span data-i18n="channelsTitle">Channels</span>
-                            <span id="itemSelectedCount" class="text-muted fw-normal"></span>
-                        </h6>
-                        <div class="d-flex gap-1 flex-wrap">
-                            <button id="newItemBtn" class="btn btn-sm btn-outline-success" disabled>
-                                <i class="fas fa-plus"></i>
-                                <span data-i18n="btnNew">New</span>
-                            </button>
-                            <button id="renameItemBtn" class="btn btn-sm btn-outline-secondary" disabled>
-                                <i class="fas fa-edit"></i>
-                                <span data-i18n="btnRename">Rename</span>
-                            </button>
-                            <button id="cloneItemBtn" class="btn btn-sm btn-outline-secondary" disabled>
-                                <i class="fas fa-copy"></i>
-                                <span data-i18n="btnClone">Clone</span>
-                            </button>
-                            <div class="dropdown">
-                                <button id="sortItemsBtn" class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" disabled>
-                                    <i class="fas fa-sort"></i>
-                                    <span data-i18n="btnSort">Sort</span>
+            <main class="row g-2">
+                <section class="col-lg-3 col-md-4">
+                    <div class="glass-panel p-2 h-100 d-flex flex-column">
+                        <div class="d-flex flex-column mb-2 gap-2">
+                            <h6 class="mb-0">
+                                <span data-i18n="groupsTitle">Groups</span>
+                                <span id="groupSelectedCount" class="text-muted fw-normal"></span>
+                            </h6>
+                            <div class="d-flex gap-1 flex-wrap">
+                                <button id="newGroupBtn" class="btn btn-sm btn-outline-success">
+                                    <i class="fas fa-plus"></i>
+                                    <span data-i18n="btnNew">New</span>
                                 </button>
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <a id="sortItemsAzBtn" class="dropdown-item" href="#"><i class="fas fa-sort-alpha-down me-1"></i>
-                                            <span data-i18n="sortAz">A-Z</span></a>
-                                    </li>
-                                    <li>
-                                        <a id="sortItemsStatusBtn" class="dropdown-item" href="#"><i class="fas fa-heartbeat me-1"></i>
-                                            <span data-i18n="sortStatus">By Status</span></a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <button id="checkItemsBtn" class="btn btn-sm btn-outline-warning" disabled>
-                                <i class="fas fa-stethoscope"></i>
-                                <span data-i18n="btnCheck">Check</span>
-                            </button>
-                            <div class="dropdown">
-                                <button id="moveItemsBtn" class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" disabled>
-                                    <i class="fas fa-folder-open"></i>
-                                    <span data-i18n="btnMove">Move</span>
+                                <button id="renameGroupBtn" class="btn btn-sm btn-outline-secondary" disabled>
+                                    <i class="fas fa-edit"></i>
+                                    <span data-i18n="btnRename">Rename</span>
                                 </button>
-                                <ul id="groupDropdown" class="dropdown-menu"></ul>
+                                <button id="sortGroupsBtn" class="btn btn-sm btn-outline-secondary">
+                                    <i class="fas fa-sort-alpha-down"></i>
+                                    <span data-i18n="btnSortAz">Sort A-Z</span>
+                                </button>
+                                <button id="deleteGroupsBtn" class="btn btn-sm btn-outline-danger" disabled>
+                                    <i class="fas fa-trash"></i>
+                                    <span data-i18n="btnDelete">Delete</span>
+                                </button>
                             </div>
-                            <button id="deleteItemsBtn" class="btn btn-sm btn-outline-danger" disabled>
-                                <i class="fas fa-trash"></i>
-                                <span data-i18n="btnDelete">Delete</span>
-                            </button>
                         </div>
+                        <div class="mb-2">
+                            <input id="groupsFilterInput" type="text" class="form-control form-control-sm" data-i18n-placeholder="filterGroupsPlaceholder" placeholder="Filter groups..." />
+                        </div>
+                        <div class="section-hint small text-muted mb-2" data-i18n="groupHint">Ctrl/Cmd-click selects many. Shift-click selects a range. Drag selected rows to reorder.</div>
+                        <div id="groupsList" class="list-group flex-grow-1"></div>
                     </div>
-                    <div class="mb-2">
-                        <input id="itemsFilterInput" type="text" class="form-control form-control-sm" data-i18n-placeholder="filterChannelsPlaceholder" placeholder="Filter channels..." />
-                    </div>
-                    <div class="section-hint small text-muted mb-2" data-i18n="channelHint">Rename works by button or double click. Sort A-Z or by status. Select channels, then use Check to test only those URLs.</div>
-                    <div id="itemsList" class="list-group flex-grow-1 overflow-auto"></div>
-                    <div id="statusCheckProgress" class="status-progress small" aria-live="polite"></div>
-                    <div class="status-legend small text-muted mt-2 d-flex flex-column gap-1">
-                        <div>
-                            <span class="status-badge status-ok">200</span>
-                            <span data-i18n="status200">Fine and reachable.</span>
-                        </div>
-                        <div>
-                            <span class="status-badge status-warning">403</span>
-                            <span data-i18n="status403">Not accessible by you, possibly account, token, or geo-limited.</span>
-                        </div>
-                        <div>
-                            <span class="status-badge status-bad">404</span>
-                            <span data-i18n="status404">Not found.</span>
-                        </div>
-                        <div>
-                            <span class="status-badge status-bad">5xx</span>
-                            <span data-i18n="status5xx">Provider/server error.</span>
-                        </div>
-                        <div>
-                            <span class="status-badge status-neutral">CORS</span>
-                            <span data-i18n="statusCors">Browser could reach it, but cannot read the real status without server permission.</span>
-                        </div>
-                        <div>
-                            <span class="status-badge status-neutral">Queued</span>
-                            <span data-i18n="statusQueued">Waiting for its turn during batch checks.</span>
-                        </div>
-                        <div data-i18n="statusFooter">Select one or more channels first. The list button checks selected channels only, 5 at a time.</div>
-                    </div>
-                </div>
-            </section>
-            <section class="col-lg-5 col-md-12">
-                <div class="glass-panel p-3 h-100">
-                    <h6 data-i18n="channelDetailsTitle">Channel Details</h6>
-                    <form id="itemDetailsForm" class="needs-validation" novalidate>
-                        <input type="hidden" id="itemIndex" />
-                        <div class="mb-2 row g-2">
-                            <label class="col-sm-3 col-form-label" data-i18n="labelName">Name:</label>
-                            <div class="col-sm-9">
-                                <input type="text" class="form-control form-control-sm" id="itemName" required />
-                            </div>
-                        </div>
-                        <div class="mb-2 row g-2">
-                            <label class="col-sm-3 col-form-label" data-i18n="labelUrl">URL:</label>
-                            <div class="col-sm-9">
-                                <div class="input-group input-group-sm">
-                                    <input type="text" class="form-control form-control-sm" id="itemUrl" required />
-                                    <a id="itemUrlPreview" href="#" class="btn btn-outline-primary disabled" title="Preview">
-                                        <i class="bi bi-box-arrow-up-right me-1"></i>
-                                        <span data-i18n="previewBtn">Preview</span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mb-2 row g-2">
-                            <label class="col-sm-3 col-form-label" data-i18n="labelStatus">Status:</label>
-                            <div class="col-sm-9">
-                                <div class="input-group input-group-sm">
-                                    <input type="text" class="form-control form-control-sm" id="itemStatus" value="Unknown" readonly />
-                                    <button type="button" id="checkCurrentItemBtn" class="btn btn-outline-warning" disabled>
-                                        <i class="fas fa-stethoscope"></i>
-                                        <span data-i18n="btnCheck">Check</span>
-                                    </button>
-                                </div>
-                                <div id="itemStatusDescription" class="form-text small" data-i18n="unknownStatusDesc">Unknown. This channel has not been checked yet.</div>
-                            </div>
-                        </div>
-                        <div class="mb-2 row g-2">
-                            <label class="col-sm-3 col-form-label">TVG ID:</label>
-                            <div class="col-sm-9">
-                                <input type="text" class="form-control form-control-sm" id="itemTvgId" />
-                            </div>
-                        </div>
-                        <div class="mb-2 row g-2">
-                            <label class="col-sm-3 col-form-label">TVG Name:</label>
-                            <div class="col-sm-9">
-                                <input type="text" class="form-control form-control-sm" id="itemTvgName" />
-                            </div>
-                        </div>
-                        <div class="mb-2 row g-2">
-                            <label class="col-sm-3 col-form-label">TVG Logo:</label>
-                            <div class="col-sm-9">
-                                <input type="text" class="form-control form-control-sm" id="itemTvgLogo" />
-                            </div>
-                        </div>
-                        <div class="mb-2 row g-2">
-                            <label class="col-sm-3 col-form-label" data-i18n="labelGroupTitle">Group Title:</label>
-                            <div class="col-sm-9">
+                </section>
+                <section class="col-lg-4 col-md-8">
+                    <div class="glass-panel p-2 h-100 d-flex flex-column">
+                        <div class="d-flex flex-column mb-2 gap-2">
+                            <h6 class="mb-0">
+                                <span data-i18n="channelsTitle">Channels</span>
+                                <span id="itemSelectedCount" class="text-muted fw-normal"></span>
+                            </h6>
+                            <div class="d-flex gap-1 flex-wrap">
+                                <button id="newItemBtn" class="btn btn-sm btn-outline-success" disabled>
+                                    <i class="fas fa-plus"></i>
+                                    <span data-i18n="btnNew">New</span>
+                                </button>
+                                <button id="renameItemBtn" class="btn btn-sm btn-outline-secondary" disabled>
+                                    <i class="fas fa-edit"></i>
+                                    <span data-i18n="btnRename">Rename</span>
+                                </button>
+                                <button id="cloneItemBtn" class="btn btn-sm btn-outline-secondary" disabled>
+                                    <i class="fas fa-copy"></i>
+                                    <span data-i18n="btnClone">Clone</span>
+                                </button>
                                 <div class="dropdown">
-                                    <button id="itemGroupTitleDropdown" class="btn btn-sm btn-outline-primary dropdown-toggle w-100 text-start" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <span id="itemGroupTitleSelected" data-i18n="selectGroup">Select group</span>
+                                    <button id="sortItemsBtn" class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" disabled>
+                                        <i class="fas fa-sort"></i>
+                                        <span data-i18n="btnSort">Sort</span>
                                     </button>
-                                    <ul id="itemGroupTitleDropdownMenu" class="dropdown-menu w-100"></ul>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a id="sortItemsAzBtn" class="dropdown-item" href="#"><i class="fas fa-sort-alpha-down me-1"></i>
+                                                <span data-i18n="sortAz">A-Z</span></a>
+                                        </li>
+                                        <li>
+                                            <a id="sortItemsStatusBtn" class="dropdown-item" href="#"><i class="fas fa-heartbeat me-1"></i>
+                                                <span data-i18n="sortStatus">By Status</span></a>
+                                        </li>
+                                    </ul>
                                 </div>
-                                <input type="hidden" id="itemGroupTitle" />
+                                <button id="checkItemsBtn" class="btn btn-sm btn-outline-warning" disabled>
+                                    <i class="fas fa-stethoscope"></i>
+                                    <span data-i18n="btnCheck">Check</span>
+                                </button>
+                                <div class="dropdown">
+                                    <button id="moveItemsBtn" class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" disabled>
+                                        <i class="fas fa-folder-open"></i>
+                                        <span data-i18n="btnMove">Move</span>
+                                    </button>
+                                    <ul id="groupDropdown" class="dropdown-menu"></ul>
+                                </div>
+                                <button id="deleteItemsBtn" class="btn btn-sm btn-outline-danger" disabled>
+                                    <i class="fas fa-trash"></i>
+                                    <span data-i18n="btnDelete">Delete</span>
+                                </button>
                             </div>
                         </div>
-                        <div class="mb-2 row g-2">
-                            <label class="col-sm-3 col-form-label" data-i18n="labelCatchup">Catchup:</label>
-                            <div class="col-sm-9">
-                                <input type="text" class="form-control form-control-sm" id="itemCatchup" data-i18n-placeholder="catchupPlaceholder" placeholder="shift, default, append, or a catchup source" />
-                            </div>
+                        <div class="mb-2">
+                            <input id="itemsFilterInput" type="text" class="form-control form-control-sm" data-i18n-placeholder="filterChannelsPlaceholder" placeholder="Filter channels..." />
                         </div>
-                        <div class="mb-2 row g-2">
-                            <label class="col-sm-3 col-form-label" data-i18n="labelCatchupType">Catchup Type:</label>
-                            <div class="col-sm-9">
-                                <input type="text" class="form-control form-control-sm" id="itemCatchupType" data-i18n-placeholder="catchupTypePlaceholder" placeholder="flussonic, xtream, default..." />
+                        <div class="section-hint small text-muted mb-2" data-i18n="channelHint">Rename works by button or double click. Sort A-Z or by status. Select channels, then use Check to test only those URLs.</div>
+                        <div id="itemsList" class="list-group flex-grow-1 overflow-auto"></div>
+                        <div id="statusCheckProgress" class="status-progress small" aria-live="polite"></div>
+                        <div class="status-legend small text-muted mt-2 d-flex flex-column gap-1">
+                            <div>
+                                <span class="status-badge status-ok">200</span>
+                                <span data-i18n="status200">Fine and reachable.</span>
                             </div>
-                        </div>
-                        <div class="mb-2 row g-2">
-                            <label class="col-sm-3 col-form-label" data-i18n="labelCatchupDays">Catchup Days:</label>
-                            <div class="col-sm-9">
-                                <input type="number" min="0" class="form-control form-control-sm" id="itemCatchupDays" placeholder="7" />
+                            <div>
+                                <span class="status-badge status-warning">403</span>
+                                <span data-i18n="status403">Not accessible by you, possibly account, token, or geo-limited.</span>
                             </div>
-                        </div>
-                        <div class="mb-2 row g-2">
-                            <label class="col-sm-3 col-form-label" data-i18n="labelExtraAttrs">Extra Attributes:</label>
-                            <div class="col-sm-9">
-                                <textarea class="form-control form-control-sm font-monospace" id="itemAdditionalAttrs" rows="2" placeholder='catchup-source="?utc={utc}&amp;lutc={lutc}" timeshift="7"'></textarea>
-                                <div class="form-text small" data-i18n="extraAttrsDesc">Unknown channel attributes are preserved here, so provider archive parameters are not lost.</div>
+                            <div>
+                                <span class="status-badge status-bad">404</span>
+                                <span data-i18n="status404">Not found.</span>
                             </div>
+                            <div>
+                                <span class="status-badge status-bad">5xx</span>
+                                <span data-i18n="status5xx">Provider/server error.</span>
+                            </div>
+                            <div>
+                                <span class="status-badge status-neutral">CORS</span>
+                                <span data-i18n="statusCors">Browser could reach it, but cannot read the real status without server permission.</span>
+                            </div>
+                            <div>
+                                <span class="status-badge status-neutral">Queued</span>
+                                <span data-i18n="statusQueued">Waiting for its turn during batch checks.</span>
+                            </div>
+                            <div data-i18n="statusFooter">Select one or more channels first. The list button checks selected channels only, 5 at a time.</div>
                         </div>
-                        <button type="submit" class="btn btn-primary btn-sm">
-                            <i class="fas fa-save me-1"></i>
-                            <span data-i18n="btnSaveChanges">Save Changes</span>
-                        </button>
-                    </form>
-                </div>
-            </section>
-        </main>
+                    </div>
+                </section>
+                <section class="col-lg-5 col-md-12">
+                    <div class="glass-panel p-3 h-100">
+                        <h6 data-i18n="channelDetailsTitle">Channel Details</h6>
+                        <form id="itemDetailsForm" class="needs-validation" novalidate>
+                            <input type="hidden" id="itemIndex" />
+                            <div class="mb-2 row g-2">
+                                <label class="col-sm-3 col-form-label" data-i18n="labelName">Name:</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control form-control-sm" id="itemName" required />
+                                </div>
+                            </div>
+                            <div class="mb-2 row g-2">
+                                <label class="col-sm-3 col-form-label" data-i18n="labelUrl">URL:</label>
+                                <div class="col-sm-9">
+                                    <div class="input-group input-group-sm">
+                                        <input type="text" class="form-control form-control-sm" id="itemUrl" required />
+                                        <a id="itemUrlPreview" href="#" class="btn btn-outline-primary disabled" title="Preview">
+                                            <i class="bi bi-box-arrow-up-right me-1"></i>
+                                            <span data-i18n="previewBtn">Preview</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-2 row g-2">
+                                <label class="col-sm-3 col-form-label" data-i18n="labelStatus">Status:</label>
+                                <div class="col-sm-9">
+                                    <div class="input-group input-group-sm">
+                                        <input type="text" class="form-control form-control-sm" id="itemStatus" value="Unknown" readonly />
+                                        <button type="button" id="checkCurrentItemBtn" class="btn btn-outline-warning" disabled>
+                                            <i class="fas fa-stethoscope"></i>
+                                            <span data-i18n="btnCheck">Check</span>
+                                        </button>
+                                    </div>
+                                    <div id="itemStatusDescription" class="form-text small" data-i18n="unknownStatusDesc">Unknown. This channel has not been checked yet.</div>
+                                </div>
+                            </div>
+                            <div class="mb-2 row g-2">
+                                <label class="col-sm-3 col-form-label">TVG ID:</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control form-control-sm" id="itemTvgId" />
+                                </div>
+                            </div>
+                            <div class="mb-2 row g-2">
+                                <label class="col-sm-3 col-form-label">TVG Name:</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control form-control-sm" id="itemTvgName" />
+                                </div>
+                            </div>
+                            <div class="mb-2 row g-2">
+                                <label class="col-sm-3 col-form-label">TVG Logo:</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control form-control-sm" id="itemTvgLogo" />
+                                </div>
+                            </div>
+                            <div class="mb-2 row g-2">
+                                <label class="col-sm-3 col-form-label" data-i18n="labelGroupTitle">Group Title:</label>
+                                <div class="col-sm-9">
+                                    <div class="dropdown">
+                                        <button id="itemGroupTitleDropdown" class="btn btn-sm btn-outline-primary dropdown-toggle w-100 text-start" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <span id="itemGroupTitleSelected" data-i18n="selectGroup">Select group</span>
+                                        </button>
+                                        <ul id="itemGroupTitleDropdownMenu" class="dropdown-menu w-100"></ul>
+                                    </div>
+                                    <input type="hidden" id="itemGroupTitle" />
+                                </div>
+                            </div>
+                            <div class="mb-2 row g-2">
+                                <label class="col-sm-3 col-form-label" data-i18n="labelCatchup">Catchup:</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control form-control-sm" id="itemCatchup" data-i18n-placeholder="catchupPlaceholder" placeholder="shift, default, append, or a catchup source" />
+                                </div>
+                            </div>
+                            <div class="mb-2 row g-2">
+                                <label class="col-sm-3 col-form-label" data-i18n="labelCatchupType">Catchup Type:</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control form-control-sm" id="itemCatchupType" data-i18n-placeholder="catchupTypePlaceholder" placeholder="flussonic, xtream, default..." />
+                                </div>
+                            </div>
+                            <div class="mb-2 row g-2">
+                                <label class="col-sm-3 col-form-label" data-i18n="labelCatchupDays">Catchup Days:</label>
+                                <div class="col-sm-9">
+                                    <input type="number" min="0" class="form-control form-control-sm" id="itemCatchupDays" placeholder="7" />
+                                </div>
+                            </div>
+                            <div class="mb-2 row g-2">
+                                <label class="col-sm-3 col-form-label" data-i18n="labelExtraAttrs">Extra Attributes:</label>
+                                <div class="col-sm-9">
+                                    <textarea class="form-control form-control-sm font-monospace" id="itemAdditionalAttrs" rows="2" placeholder='catchup-source="?utc={utc}&amp;lutc={lutc}" timeshift="7"'></textarea>
+                                    <div class="form-text small" data-i18n="extraAttrsDesc">Unknown channel attributes are preserved here, so provider archive parameters are not lost.</div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-sm">
+                                <i class="fas fa-save me-1"></i>
+                                <span data-i18n="btnSaveChanges">Save Changes</span>
+                            </button>
+                        </form>
+                    </div>
+                </section>
+            </main>
+        </div>
     </div>
     <footer class="app-footer">
         <div class="d-flex align-items-center gap-2">
@@ -845,7 +851,7 @@
     <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content glass-modal">
-                <div class="modal-body text-center p-4">
+                <div class="modal-body text-center">
                     <div id="confirmModalIcon" class="confirm-icon danger"><i class="fas fa-exclamation-triangle"></i></div>
                     <h5 id="confirmModalTitle" class="fw-bold mb-2" data-i18n="confirmTitle">Are you sure?</h5>
                     <p id="confirmModalMessage" class="mb-4"></p>
