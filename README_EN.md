@@ -86,7 +86,7 @@ When using the built-in channel checker, you will see various status badges:
 This project is released into the public domain under the [Unlicense](https://unlicense.org/); you are free to use, modify, and distribute it as you wish. See the [`LICENSE`](LICENSE) file for details.
 
 ## 🕰️ Last Update
-Oct 21, 2026
+Oct 28, 2026
 
 ---
 
