@@ -2,9 +2,9 @@
 <h1 align="center">⭐ IPTV M3U & M3U8 Editor ⭐</h1>
 
 <p align="center">
-  <a href="https://github.com/omerdenizhan/IPTV-M3U-Editor/blob/main/README_EN.md" title="English">README.MD English</a>
+  <a href="https://github.com/omerdenizhan/IPTV-M3U-Editor/blob/main/README_EN.md" title="English">English</a>
   <br>
-  <a href="https://github.com/omerdenizhan/IPTV-M3U-Editor/blob/main/README_TR.md" title="Türkçe">README.MD Türkçe</a>
+  <a href="https://github.com/omerdenizhan/IPTV-M3U-Editor/blob/main/README_TR.md" title="Türkçe">Türkçe</a>
 </p>
 
 ---
