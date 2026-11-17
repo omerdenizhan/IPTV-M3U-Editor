@@ -1,11 +1,11 @@
 <!doctype html>
-
 <html lang="en">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>M3U & M3U8 Editor</title>
-    <link rel="shortcut icon" href="logo-main.png?v=v2.0-20260619" type="image/x-icon" />
+    <link rel="shortcut icon" href="logo-main.png?v=v2.3-20261117" type="image/x-icon" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css?v=v2.0-20260619" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css?v=v2.0-20260619" rel="stylesheet" />
@@ -559,28 +559,199 @@
             padding-left: 10px !important;
             padding-right: 10px !important;
         }
+
+        .app-search {
+            position: relative;
+            width: 180px;
+        }
+        .app-search i {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            pointer-events: none;
+            font-size: 0.8rem;
+        }
+        .app-search .form-control {
+            padding-left: 2.1rem;
+        }
+        .drop-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 1070;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(99, 102, 241, 0.16);
+            -webkit-backdrop-filter: blur(4px);
+            backdrop-filter: blur(4px);
+        }
+        .drop-box {
+            color: var(--accent);
+            background: var(--glass-bg-strong);
+            border: 2px dashed var(--accent);
+            border-radius: 20px;
+            padding: 1.5rem 2.25rem;
+            font-weight: 600;
+            box-shadow: var(--glass-shadow);
+        }
+        .loading-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 1080;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(15, 23, 42, 0.35);
+            -webkit-backdrop-filter: blur(4px);
+            backdrop-filter: blur(4px);
+        }
+        .loading-box {
+            color: var(--text);
+            background: var(--glass-bg-strong);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            box-shadow: var(--glass-shadow);
+            padding: 1.2rem 1.4rem;
+            width: 24rem;
+            max-width: calc(100vw - 2rem);
+        }
+        .loading-phase {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 1rem;
+            font-weight: 600;
+        }
+        .loading-count {
+            font-size: 0.78rem;
+            font-weight: 400;
+            color: var(--text-muted);
+            font-variant-numeric: tabular-nums;
+        }
+        .loading-track {
+            display: flex;
+            gap: 4px;
+            margin: 0.7rem 0 0.55rem;
+        }
+        .loading-segment {
+            flex: 1;
+            height: 8px;
+            border: 1px solid var(--input-border);
+            background: var(--input-bg);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        .loading-segment-fill {
+            display: block;
+            width: 0;
+            height: 100%;
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            transition: width 0.12s linear;
+        }
+        .loading-detail {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            overflow-wrap: anywhere;
+            white-space: pre-line;
+        }
+        .logo-field {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .logo-preview {
+            width: 38px;
+            height: 38px;
+            flex: 0 0 38px;
+            object-fit: contain;
+            border: 1px solid var(--divider);
+            border-radius: 8px;
+            background: var(--input-bg);
+        }
+        .logo-preview[hidden] {
+            display: none;
+        }
+        .channel-group-tag {
+            flex: 0 0 auto;
+            max-width: 8rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+        .list-group-item.search-hit {
+            box-shadow: inset 3px 0 0 var(--accent);
+        }
+        .bulk-rename-preview {
+            max-height: 12rem;
+            overflow: auto;
+            background: var(--input-bg);
+            border: 1px solid var(--input-border);
+            border-radius: 10px;
+        }
+        .bulk-rename-preview-row {
+            display: flex;
+            align-items: baseline;
+            gap: 0.5rem;
+            min-width: 0;
+        }
+        .bulk-rename-preview-old,
+        .bulk-rename-preview-new {
+            flex: 1;
+            min-width: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .bulk-rename-preview-old {
+            color: var(--text-muted);
+        }
+        .bulk-rename-preview-arrow {
+            flex: 0 0 auto;
+            color: var(--text-muted);
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .loading-segment-fill {
+                transition: none;
+            }
+        }
     </style>
 </head>
+
 <body>
     <div class="container-fluid p-2 pb-2">
         <section class="glass-panel p-2 mb-2">
             <header class="app-header d-flex justify-content-between align-items-start gap-3">
                 <div>
                     <h4 class="mb-1 d-flex align-items-center">
-                        <img src="logo-main.png" alt="Logo" class="me-2" style="width: 48px; height: 48px; object-fit: contain;" />
+                        <img src="logo-main.png" alt="Logo" class="me-2" style="width: 48px; height: 48px; object-fit: contain;" onerror="if (!this.dataset.fallback) { this.dataset.fallback = '1'; this.src = 'logo-main.png'; } else { this.style.display = 'none'; }" />
                         <div class="fw-bold" data-i18n="appTitle">M3U & M3U8 Editor</div>
                     </h4>
                     <div class="text-muted small" data-i18n="appSubtitle">Free, private, local, browser-based M3U & M3U8 playlist editor.</div>
                 </div>
                 <div class="d-flex align-items-center gap-2 flex-wrap justify-content-center">
-                    <label for="fileInput" class="btn btn-outline-secondary mb-0">
+                    <div class="app-search">
+                        <i class="fas fa-search" aria-hidden="true"></i>
+                        <input id="globalSearchInput" type="search" class="form-control" data-i18n-placeholder="globalSearchPlaceholder" data-i18n-title="globalSearchTitle" title="Search all channels (Ctrl+K)" placeholder="Search..." aria-label="Search all channels" autocomplete="off" />
+                    </div>
+                    <label for="fileInput" class="btn btn-outline-secondary mb-0" data-i18n-title="titleLoad" title="Open one or more .m3u or .m3u8 files. Multiple files are merged.">
                         <i class="fas fa-folder-open me-1"></i>
                         <span data-i18n="btnLoad">Liste Yükle</span>
                     </label>
-                    <input type="file" id="fileInput" class="d-none" accept=".m3u,.m3u8" />
+                    <input type="file" id="fileInput" class="d-none" accept=".m3u,.m3u8" multiple aria-hidden="true" />
+                    <input type="file" id="importProjectInput" class="d-none" accept=".json,application/json" aria-hidden="true" />
                     <button id="downloadBtn" class="btn btn-primary" disabled>
                         <i class="fas fa-download me-1"></i>
                         <span data-i18n="downloadBtn">Download Modified File</span>
+                    </button>
+                    <button id="importProjectBtn" class="btn btn-outline-secondary" data-i18n-title="titleImport" title="Import a saved editor project, including groups, channels, and statuses" aria-label="Import project">
+                        <i class="fas fa-file-import"></i>
+                    </button>
+                    <button id="exportProjectBtn" class="btn btn-outline-secondary" disabled data-i18n-title="titleExport" title="Export the full editor project as JSON" aria-label="Export project">
+                        <i class="fas fa-file-export"></i>
                     </button>
                     <button id="clearBtn" class="btn btn-outline-danger">
                         <i class="fas fa-trash-alt me-1"></i>
@@ -602,6 +773,7 @@
                     </button>
                 </div>
             </header>
+            <div class="small text-muted mt-1" data-i18n="toolbarHint">Drop .m3u or .m3u8 files anywhere to open them. Multiple files are merged. Ctrl/Cmd+K focuses search.</div>
         </section>
         <div style="max-height: calc(100vh - 160px); overflow-y: auto; overflow-x: hidden; padding-right: 5px;">
             <section class="glass-panel p-2 mb-2">
@@ -650,7 +822,7 @@
                     <div class="glass-panel p-2 h-100 d-flex flex-column">
                         <div class="d-flex flex-column mb-2 gap-2">
                             <h6 class="mb-0">
-                                <span data-i18n="channelsTitle">Channels</span>
+                                <span id="channelsHeadingLabel" data-i18n="channelsTitle">Channels</span>
                                 <span id="itemSelectedCount" class="text-muted fw-normal"></span>
                             </h6>
                             <div class="d-flex gap-1 flex-wrap">
@@ -750,7 +922,7 @@
                                 <div class="col-sm-9">
                                     <div class="input-group input-group-sm">
                                         <input type="text" class="form-control form-control-sm" id="itemUrl" required />
-                                        <a id="itemUrlPreview" href="#" class="btn btn-outline-primary disabled" title="Preview">
+                                        <a id="itemUrlPreview" href="#" target="_blank" rel="noopener" class="btn btn-outline-primary disabled" title="Preview">
                                             <i class="bi bi-box-arrow-up-right me-1"></i>
                                             <span data-i18n="previewBtn">Preview</span>
                                         </a>
@@ -785,7 +957,10 @@
                             <div class="mb-2 row g-2">
                                 <label class="col-sm-3 col-form-label">TVG Logo:</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control form-control-sm" id="itemTvgLogo" />
+                                    <div class="logo-field">
+                                        <input type="text" class="form-control form-control-sm" id="itemTvgLogo" placeholder="https://example.com/logo.png" />
+                                        <img id="itemTvgLogoPreview" class="logo-preview" alt="Logo" hidden />
+                                    </div>
                                 </div>
                             </div>
                             <div class="mb-2 row g-2">
@@ -848,6 +1023,103 @@
             </span>
         </div>
     </footer>
+    <div id="dropOverlay" class="drop-overlay d-none" aria-hidden="true">
+        <div class="drop-box" data-i18n="dropHint">Drop .m3u or .m3u8 files to open them</div>
+    </div>
+    <div id="loadingOverlay" class="loading-overlay d-none">
+        <div class="loading-box">
+            <div class="loading-phase">
+                <span id="loadingMessage" role="status" aria-live="polite">Reading file</span>
+                <span id="loadingCount" class="loading-count" aria-live="off"></span>
+            </div>
+            <div id="loadingTrack" class="loading-track" role="progressbar" aria-label="Loading playlist" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                <span class="loading-segment"><span class="loading-segment-fill"></span></span>
+                <span class="loading-segment"><span class="loading-segment-fill"></span></span>
+                <span class="loading-segment"><span class="loading-segment-fill"></span></span>
+            </div>
+            <div id="loadingDetail" class="loading-detail font-monospace"></div>
+        </div>
+    </div>
+    <div class="modal fade" id="bulkRenameModal" tabindex="-1" aria-labelledby="bulkRenameModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+            <div class="modal-content glass-modal">
+                <form id="bulkRenameForm">
+                    <div class="modal-header border-0 pb-0">
+                        <h5 class="modal-title fw-bold" id="bulkRenameModalLabel" data-i18n="bulkRenameTitle">Rename channels</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p id="bulkRenameCount" class="small text-muted mb-2"></p>
+                        <p class="small text-muted" data-i18n="bulkRenameDesc">Filled options are applied in this order: replace, prefix, suffix, then numbers.</p>
+                        <div class="mb-3">
+                            <label for="bulkRenamePrefix" class="form-label small fw-semibold" data-i18n="bulkPrefix">Add prefix</label>
+                            <input type="text" class="form-control form-control-sm" id="bulkRenamePrefix" placeholder="e.g. US | " autocomplete="off" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="bulkRenameSuffix" class="form-label small fw-semibold" data-i18n="bulkSuffix">Add suffix</label>
+                            <input type="text" class="form-control form-control-sm" id="bulkRenameSuffix" placeholder="e.g. HD" autocomplete="off" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-semibold" data-i18n="bulkReplaceText">Replace text</label>
+                            <div class="row g-2">
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control form-control-sm" id="bulkRenameFind" data-i18n-placeholder="bulkFind" placeholder="Find" aria-label="Find" autocomplete="off" />
+                                </div>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control form-control-sm" id="bulkRenameReplace" data-i18n-placeholder="bulkReplaceWith" placeholder="Replace with" aria-label="Replace with" autocomplete="off" />
+                                </div>
+                            </div>
+                            <div class="d-flex gap-3 flex-wrap mt-1">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="bulkRenameMatchCase" />
+                                    <label class="form-check-label small" for="bulkRenameMatchCase" data-i18n="bulkMatchCase">Match case</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="bulkRenameWholeWord" />
+                                    <label class="form-check-label small" for="bulkRenameWholeWord" data-i18n="bulkWholeWord">Whole word</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" id="bulkRenameAddNumbers" />
+                                <label class="form-check-label small fw-semibold" for="bulkRenameAddNumbers" data-i18n="bulkAddNumbers">Add numbers</label>
+                            </div>
+                            <div class="row g-2">
+                                <div class="col-6 col-sm-3">
+                                    <label for="bulkRenameNumberStart" class="form-label small" data-i18n="bulkStartAt">Start at</label>
+                                    <input type="number" class="form-control form-control-sm" id="bulkRenameNumberStart" value="1" min="0" step="1" />
+                                </div>
+                                <div class="col-6 col-sm-3">
+                                    <label for="bulkRenameNumberPad" class="form-label small" data-i18n="bulkDigits">Digits</label>
+                                    <input type="number" class="form-control form-control-sm" id="bulkRenameNumberPad" value="2" min="1" max="8" step="1" />
+                                </div>
+                                <div class="col-6 col-sm-3">
+                                    <label for="bulkRenameNumberPosition" class="form-label small" data-i18n="bulkPosition">Position</label>
+                                    <select class="form-select form-select-sm" id="bulkRenameNumberPosition">
+                                        <option value="prefix" data-i18n="bulkBeforeName">Before name</option>
+                                        <option value="suffix" data-i18n="bulkAfterName">After name</option>
+                                    </select>
+                                </div>
+                                <div class="col-6 col-sm-3">
+                                    <label for="bulkRenameNumberSeparator" class="form-label small" data-i18n="bulkSeparator">Separator</label>
+                                    <input type="text" class="form-control form-control-sm" id="bulkRenameNumberSeparator" value=" " placeholder="e.g. . " autocomplete="off" />
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="small fw-semibold mb-1" data-i18n="previewBtn">Preview</div>
+                            <div id="bulkRenamePreview" class="bulk-rename-preview p-2 small font-monospace"></div>
+                        </div>
+                    </div>
+                    <div class="modal-footer border-0 pt-0">
+                        <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal" data-i18n="btnCancel">Cancel</button>
+                        <button type="submit" class="btn btn-sm btn-primary" id="bulkRenameApplyBtn" data-i18n="btnRename">Rename</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content glass-modal">
@@ -859,19 +1131,6 @@
                         <button type="button" id="confirmCancelBtn" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal" data-i18n="btnCancel">Cancel</button>
                         <button type="button" id="confirmOkBtn" class="btn btn-danger px-4"></button>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="modal fade" id="previewModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content glass-modal">
-                <div class="modal-header border-0 pb-0">
-                    <h6 class="modal-title" data-i18n="previewBtn">Preview</h6>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body p-2" style="height: 60vh;">
-                    <iframe id="previewIframe" src="" style="width: 100%; height: 100%; border: none; border-radius: 12px; background: #000;"></iframe>
                 </div>
             </div>
         </div>
@@ -894,6 +1153,7 @@
         let nextItemId = 1;
         let isCheckingChannels = false;
         let checkingProgressText = '';
+        let bulkRenameTargets = [];
         let currentLang = localStorage.getItem('lang') || 'en';
         const translations = {
             en: {
@@ -911,7 +1171,13 @@
                 btnSortAz: "Sort A-Z",
                 btnDelete: "Delete",
                 filterGroupsPlaceholder: "Filter groups...",
-                groupHint: "Ctrl/Cmd-click selects many. Shift-click selects a range. Drag selected rows to reorder.",
+                groupHint: "Ctrl/Cmd-click selects many. Shift-click selects a range. Drag selected rows to reorder. Switching groups keeps channel selection.",
+                toolbarHint: "Drop .m3u or .m3u8 files anywhere to open them. Multiple files are merged. Ctrl/Cmd+K focuses search.",
+                selectedCount: "{n} selected",
+                selectedCountOther: "{n} selected, {m} in other groups",
+                statusBlockedDesc: "The browser could not complete the request. It may be mixed content, DNS, network, ad blocker, or CORS.",
+                statusRedirectDesc: "means redirected. The final URL may still work in a player.",
+                statusClientErrDesc: "is a client/access error.",
                 channelsTitle: "Channels",
                 btnClone: "Clone",
                 btnSort: "Sort",
@@ -920,7 +1186,7 @@
                 btnCheck: "Check",
                 btnMove: "Move",
                 filterChannelsPlaceholder: "Filter channels...",
-                channelHint: "Rename works by button or double click. Sort A-Z or by status. Select channels, then use Check to test only those URLs.",
+                channelHint: "Double-click or Rename edits one name; select several channels and hit Rename for prefix, suffix, replace, and numbering. Use the top search to find channels in every group. Sort A-Z or by status. Select channels, then use Check to test only those URLs.",
                 status200: "Fine and reachable.",
                 status403: "Not accessible by you, possibly account, token, or geo-limited.",
                 status404: "Not found.",
@@ -948,9 +1214,61 @@
                 btnCancel: "Cancel",
                 btnConfirm: "Yes, continue",
                 btnMerge: "Merge",
-                confirmClear: "Are you sure you want to clear this playlist? This cannot be undone.",
-                confirmDeleteGroup: "Delete selected groups and all channels inside them?",
+                confirmClear: "Are you sure you want to clear this playlist? A backup will download first.",
+                confirmDeleteGroup: "Delete {n} selected group(s)? This will also delete every channel inside. A backup will download first.",
                 confirmDeleteChannels: "Delete selected channel(s)?",
+                btnImport: "Import",
+                btnExport: "Export",
+                titleLoad: "Open one or more .m3u or .m3u8 files. Multiple files are merged.",
+                titleImport: "Import a saved editor project, including groups, channels, and statuses",
+                titleExport: "Export the full editor project as JSON",
+                globalSearchPlaceholder: "Search...",
+                globalSearchTitle: "Search all channels (Ctrl+K)",
+                searchResults: "Search results",
+                narrowSearchPlaceholder: "Narrow search results...",
+                dropHint: "Drop .m3u or .m3u8 files to open them",
+                loadReading: "Reading file",
+                loadReadingFiles: "Reading files",
+                loadFinding: "Finding channels",
+                loadBuilding: "Building the list",
+                loadChannelsCount: "{n} channels",
+                loadFilesLabel: "{n} files",
+                bulkRenameTitle: "Rename channels",
+                bulkRenameDesc: "Filled options are applied in this order: replace, prefix, suffix, then numbers. This changes the channel name only, not TVG ID or TVG name.",
+                bulkRenameCount: "Renaming {n} selected channel(s).",
+                bulkPrefix: "Add prefix",
+                bulkSuffix: "Add suffix",
+                bulkReplaceText: "Replace text",
+                bulkFind: "Find",
+                bulkReplaceWith: "Replace with",
+                bulkMatchCase: "Match case",
+                bulkWholeWord: "Whole word",
+                bulkAddNumbers: "Add numbers",
+                bulkStartAt: "Start at",
+                bulkDigits: "Digits",
+                bulkPosition: "Position",
+                bulkBeforeName: "Before name",
+                bulkAfterName: "After name",
+                bulkSeparator: "Separator",
+                bulkMore: "...and {n} more",
+                bulkNeedAction: "Enter a prefix, suffix, or replacement, or enable numbering.",
+                alertChooseFiles: "Choose .m3u or .m3u8 files.",
+                alertNoChannels: "No channels found in {names}. Your current playlist is untouched.",
+                alertReadError: "Could not read {names}. Check that the file still exists, then choose it again.",
+                alertNotProject: "That file is not a valid editor project.",
+                alertImportError: "Could not read that project file.",
+                confirmLargeFile: "This playlist is {size}. Loading it will take a while, and the editor will run slower afterwards. Load it anyway?",
+                btnLoadAnyway: "Load anyway",
+                status410: "410 means gone.",
+                status429: "429 means rate-limited.",
+                status451: "451 means unavailable for legal or regional reasons.",
+                timeoutDesc: "The request timed out. The stream may be slow, endless, blocked, or unreachable.",
+                labelSelectedChannels: "selected channels",
+                labelCurrentChannel: "current channel",
+                progQueued: "Queued {n} {label}. Checking 5 at a time.",
+                progChecking: "Checking {a}-{b} of {n}. {q} queued.",
+                progChecked: "Checked {b} of {n}. {q} queued.",
+                progFinished: "Finished checking {n} {label}.",
                 alertUpdated: "Channel updated successfully!"
             },
             tr: {
@@ -968,7 +1286,13 @@
                 btnSortAz: "A-Z Sırala",
                 btnDelete: "Sil",
                 filterGroupsPlaceholder: "Grupları filtrele...",
-                groupHint: "Ctrl/Cmd ile çoklu seçim, Shift ile aralık seçimi yapabilirsiniz. Sıralamak için sürükleyin.",
+                groupHint: "Ctrl/Cmd ile çoklu seçim, Shift ile aralık seçimi yapabilirsiniz. Sıralamak için sürükleyin. Grup değiştirirken kanal seçimi korunur.",
+                toolbarHint: "Açmak için .m3u veya .m3u8 dosyalarını herhangi bir yere bırakın. Birden fazla dosya birleştirilir. Ctrl/Cmd+K aramaya odaklanır.",
+                selectedCount: "{n} seçili",
+                selectedCountOther: "{n} seçili, {m} diğer gruplarda",
+                statusBlockedDesc: "Tarayıcı isteği tamamlayamadı. Karışık içerik (mixed content), DNS, ağ, reklam engelleyici veya CORS kaynaklı olabilir.",
+                statusRedirectDesc: "yönlendirme demek. Son URL bir oynatıcıda yine de çalışabilir.",
+                statusClientErrDesc: "istemci/erişim hatasıdır.",
                 channelsTitle: "Kanallar",
                 btnClone: "Kopyala",
                 btnSort: "Sırala",
@@ -977,7 +1301,7 @@
                 btnCheck: "Kontrol",
                 btnMove: "Taşı",
                 filterChannelsPlaceholder: "Kanalları filtrele...",
-                channelHint: "Yeniden adlandırma butonla veya çift tıklamayla yapılır. Kanal seçip 'Kontrol' ile test edin.",
+                channelHint: "Çift tıklama veya Yeniden Adlandır tek bir adı düzenler; birden fazla kanal seçip Yeniden Adlandır ile önek, sonek, değiştirme ve numaralandırma yapabilirsiniz. Tüm gruplarda aramak için üstteki arama kutusunu kullanın. Kanal seçip 'Kontrol' ile test edin.",
                 status200: "Sorunsuz ve erişilebilir.",
                 status403: "Erişilemiyor, hesap, token veya bölge kısıtlı olabilir.",
                 status404: "Bulunamadı.",
@@ -1005,9 +1329,61 @@
                 btnCancel: "Vazgeç",
                 btnConfirm: "Evet, devam et",
                 btnMerge: "Birleştir",
-                confirmClear: "Bu oynatma listesini temizlemek istediğinizden emin misiniz? Bu işlem geri alınamaz.",
-                confirmDeleteGroup: "Seçilen gruplar ve içerisindeki tüm kanallar silinsin mi?",
+                confirmClear: "Bu oynatma listesini temizlemek istediğinizden emin misiniz? Önce bir yedek indirilecek.",
+                confirmDeleteGroup: "Seçilen {n} grup silinsin mi? İçindeki tüm kanallar da silinecek. Önce bir yedek indirilecek.",
                 confirmDeleteChannels: "Seçilen kanal(lar) silinsin mi?",
+                btnImport: "İçe Aktar",
+                btnExport: "Dışa Aktar",
+                titleLoad: "Bir veya birden fazla .m3u/.m3u8 dosyası açın. Birden fazla dosya birleştirilir.",
+                titleImport: "Kaydedilmiş bir editör projesini (gruplar, kanallar ve durumlar dahil) içe aktarın",
+                titleExport: "Tüm editör projesini JSON olarak dışa aktarın",
+                globalSearchPlaceholder: "Ara...",
+                globalSearchTitle: "Tüm kanallarda ara (Ctrl+K)",
+                searchResults: "Arama sonuçları",
+                narrowSearchPlaceholder: "Arama sonuçlarını daralt...",
+                dropHint: "Açmak için .m3u veya .m3u8 dosyalarını bırakın",
+                loadReading: "Dosya okunuyor",
+                loadReadingFiles: "Dosyalar okunuyor",
+                loadFinding: "Kanallar bulunuyor",
+                loadBuilding: "Liste oluşturuluyor",
+                loadChannelsCount: "{n} kanal",
+                loadFilesLabel: "{n} dosya",
+                bulkRenameTitle: "Kanalları yeniden adlandır",
+                bulkRenameDesc: "Doldurulan seçenekler şu sırayla uygulanır: değiştir, önek, sonek, sonra numara. Yalnızca kanal adı değişir; TVG ID ve TVG adı değişmez.",
+                bulkRenameCount: "{n} seçili kanal yeniden adlandırılıyor.",
+                bulkPrefix: "Önek ekle",
+                bulkSuffix: "Sonek ekle",
+                bulkReplaceText: "Metni değiştir",
+                bulkFind: "Bul",
+                bulkReplaceWith: "Şununla değiştir",
+                bulkMatchCase: "Büyük/küçük harf duyarlı",
+                bulkWholeWord: "Tam kelime",
+                bulkAddNumbers: "Numara ekle",
+                bulkStartAt: "Başlangıç",
+                bulkDigits: "Basamak",
+                bulkPosition: "Konum",
+                bulkBeforeName: "Adın önüne",
+                bulkAfterName: "Adın sonuna",
+                bulkSeparator: "Ayraç",
+                bulkMore: "...ve {n} tane daha",
+                bulkNeedAction: "Önek, sonek veya değiştirme metni girin ya da numaralandırmayı açın.",
+                alertChooseFiles: ".m3u veya .m3u8 dosyaları seçin.",
+                alertNoChannels: "{names} içinde kanal bulunamadı. Mevcut listeniz değiştirilmedi.",
+                alertReadError: "{names} okunamadı. Dosyanın hâlâ var olduğunu kontrol edip tekrar seçin.",
+                alertNotProject: "Bu dosya geçerli bir editör projesi değil.",
+                alertImportError: "Proje dosyası okunamadı.",
+                confirmLargeFile: "Bu liste {size} boyutunda. Yüklemesi uzun sürecek ve editör sonrasında yavaş çalışacak. Yine de yüklensin mi?",
+                btnLoadAnyway: "Yine de yükle",
+                status410: "410 kalıcı olarak kaldırılmış demek.",
+                status429: "429 istek sınırına takıldı demek.",
+                status451: "451 yasal veya bölgesel nedenlerle erişilemiyor demek.",
+                timeoutDesc: "İstek zaman aşımına uğradı. Yayın yavaş, sonsuz, engelli veya erişilemez olabilir.",
+                labelSelectedChannels: "seçili kanal",
+                labelCurrentChannel: "geçerli kanal",
+                progQueued: "{n} {label} kuyruğa eklendi. Aynı anda 5'erli kontrol ediliyor.",
+                progChecking: "{a}-{b} / {n} kontrol ediliyor. {q} kuyrukta.",
+                progChecked: "{b} / {n} kontrol edildi. {q} kuyrukta.",
+                progFinished: "{n} {label} kontrolü tamamlandı.",
                 alertUpdated: "Kanal başarıyla güncellendi!"
             }
         };
@@ -1015,12 +1391,18 @@
         function t(key) {
             return (translations[currentLang] && translations[currentLang][key]) || translations['en'][key] || key;
         }
+        function tf(key, params) {
+            return t(key).replace(/\{(\w+)\}/g, (match, name) => (params && name in params ? params[name] : match));
+        }
         function updateTexts() {
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 el.textContent = t(el.getAttribute('data-i18n'));
             });
             document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
                 el.placeholder = t(el.getAttribute('data-i18n-placeholder'));
+            });
+            document.querySelectorAll('[data-i18n-title]').forEach(el => {
+                el.title = t(el.getAttribute('data-i18n-title'));
             });
             langToggleBtn.setAttribute('data-lang', currentLang);
         }
@@ -1032,10 +1414,13 @@
             renderItems();
         });
         const STATUS_UNKNOWN = 'Unknown';
-        const STORAGE_KEY = 'IPTVM3uEditorProject';
+        const STORAGE_KEY = 'M3uEditorProject';
         const LEGACY_DATA_KEY = 'm3uData';
         const LEGACY_HEADER_KEY = 'm3uHeader';
         const NO_GROUP = 'No Group';
+        const LARGE_FILE_BYTES = 100 * 1024 * 1024;
+        const PROJECT_FORMAT = 'm3u-editor-project';
+        const PROJECT_FORMAT_VERSION = 1;
         function getStorageItem(key) {
             try {
                 return window.localStorage ? window.localStorage.getItem(key) : null;
@@ -1067,6 +1452,20 @@
             'catchup-days'
         ]);
         const fileInput = document.getElementById('fileInput');
+        const importProjectBtn = document.getElementById('importProjectBtn');
+        const exportProjectBtn = document.getElementById('exportProjectBtn');
+        const importProjectInput = document.getElementById('importProjectInput');
+        const globalSearchInput = document.getElementById('globalSearchInput');
+        const dropOverlay = document.getElementById('dropOverlay');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        const loadingMessage = document.getElementById('loadingMessage');
+        const loadingCount = document.getElementById('loadingCount');
+        const loadingDetail = document.getElementById('loadingDetail');
+        const loadingTrack = document.getElementById('loadingTrack');
+        const loadingFills = Array.from(document.querySelectorAll('.loading-segment-fill'));
+        const appContainer = document.querySelector('.container-fluid');
+        const channelsHeadingLabel = document.getElementById('channelsHeadingLabel');
+        const itemTvgLogoPreview = document.getElementById('itemTvgLogoPreview');
         const downloadBtn = document.getElementById('downloadBtn');
         const clearBtn = document.getElementById('clearBtn');
         const playlistHeaderInput = document.getElementById('playlistHeaderInput');
@@ -1113,8 +1512,28 @@
         const confirmModalMessage = document.getElementById('confirmModalMessage');
         const confirmModalIcon = document.getElementById('confirmModalIcon');
         const confirmOkBtn = document.getElementById('confirmOkBtn');
+        const bulkRenameModalEl = document.getElementById('bulkRenameModal');
+        const bulkRenameForm = document.getElementById('bulkRenameForm');
+        const bulkRenameCount = document.getElementById('bulkRenameCount');
+        const bulkRenamePrefixInput = document.getElementById('bulkRenamePrefix');
+        const bulkRenameSuffixInput = document.getElementById('bulkRenameSuffix');
+        const bulkRenameFindInput = document.getElementById('bulkRenameFind');
+        const bulkRenameReplaceInput = document.getElementById('bulkRenameReplace');
+        const bulkRenameMatchCaseInput = document.getElementById('bulkRenameMatchCase');
+        const bulkRenameWholeWordInput = document.getElementById('bulkRenameWholeWord');
+        const bulkRenameAddNumbersInput = document.getElementById('bulkRenameAddNumbers');
+        const bulkRenameNumberStartInput = document.getElementById('bulkRenameNumberStart');
+        const bulkRenameNumberPadInput = document.getElementById('bulkRenameNumberPad');
+        const bulkRenameNumberPositionInput = document.getElementById('bulkRenameNumberPosition');
+        const bulkRenameNumberSeparatorInput = document.getElementById('bulkRenameNumberSeparator');
+        const bulkRenamePreview = document.getElementById('bulkRenamePreview');
+        const bulkRenameModal = bulkRenameModalEl && window.bootstrap
+            ? new bootstrap.Modal(bulkRenameModalEl)
+            : null;
         let groupsFilterValue = '';
         let itemsFilterValue = '';
+        let globalSearchValue = '';
+        let fileDragDepth = 0;
         function showConfirm(message, { okText = t('btnConfirm'), danger = true } = {}) {
             return new Promise(resolve => {
                 const modal = bootstrap.Modal.getOrCreateInstance(confirmModalEl);
@@ -1176,6 +1595,17 @@
             });
             return output;
         }
+        function uniqueStrings(values) {
+            const seen = new Set();
+            const output = [];
+            values.forEach(value => {
+                const normalized = String(value || '').trim();
+                if (!normalized || seen.has(normalized)) return;
+                seen.add(normalized);
+                output.push(normalized);
+            });
+            return output;
+        }
         function syncGroupOrder() {
             m3uData.forEach(ensureItem);
             const groupsFromItems = uniqueList(m3uData.map(getItemGroup));
@@ -1204,14 +1634,35 @@
             const group = cleanGroupName(groupName);
             return m3uData.filter(item => getItemGroup(item) === group);
         }
+        function itemMatchesQuery(item, query) {
+            if (!query) return true;
+            const haystack = [
+                item.name,
+                item.url,
+                item.tvgId,
+                item.tvgName,
+                item.tvgLogo,
+                getItemGroup(item)
+            ].join(' ').toLowerCase();
+            return haystack.includes(query);
+        }
         function getVisibleItemsForSelectedGroup() {
-            if (!selectedGroup) return [];
-            const items = getGroupItems(selectedGroup);
-            if (!itemsFilterValue) return items;
-            return items.filter(item => {
-                const haystack = [item.name, item.url, item.tvgId, item.tvgName, item.tvgLogo].join(' ').toLowerCase();
-                return haystack.includes(itemsFilterValue);
-            });
+            let items;
+            if (globalSearchValue) {
+                items = m3uData.filter(item => itemMatchesQuery(item, globalSearchValue));
+            } else if (!selectedGroup) {
+                return [];
+            } else {
+                items = getGroupItems(selectedGroup);
+            }
+            if (itemsFilterValue) {
+                items = items.filter(item => itemMatchesQuery(item, itemsFilterValue));
+            }
+            return items;
+        }
+        function groupHasSearchMatch(groupName) {
+            if (!globalSearchValue) return false;
+            return getGroupItems(groupName).some(item => itemMatchesQuery(item, globalSearchValue));
         }
         function rebuildDataByGroupOrder() {
             syncGroupOrder();
@@ -1318,7 +1769,10 @@
         }
         function buildAdditionalAttributes(item) {
             const parsed = parseAttributeString(item.additionalAttributes || '');
-            return formatAdditionalAttributes(parsed.attributes, parsed.order);
+            return parsed.order
+                .filter(key => !knownAttributeKeys.has(key))
+                .map(key => formatAttribute(key, parsed.attributes[key]))
+                .join(' ');
         }
         function buildExtinfLine(item) {
             const attributes = [];
@@ -1348,14 +1802,17 @@
             if (value === 'Bad URL') return currentLang === 'tr' ? 'URL geçerli değil.' : 'The URL is not valid.';
             if (value === 'Unsupported') return currentLang === 'tr' ? 'Tarayıcıdan yalnızca http ve https URL\'leri kontrol edilebilir.' : 'Only http and https URLs can be checked from the browser.';
             if (value === 'CORS') return t('statusCors');
-            if (value === 'Blocked') return currentLang === 'tr' ? 'Tarayıcı isteği tamamlayamadı.' : 'The browser could not complete the request.';
+            if (value === 'Blocked') return t('statusBlockedDesc');
             if (code >= 200 && code < 300) return `${value} ${t('status200')}`;
-            if (code >= 300 && code < 400) return `${value} ${currentLang === 'tr' ? 'yönlendirme demek.' : 'means redirected.'}`;
+            if (code >= 300 && code < 400) return `${value} ${t('statusRedirectDesc')}`;
             if (code === 401) return currentLang === 'tr' ? '401 kimlik doğrulama gerektirir.' : '401 means authentication is required.';
             if (code === 403) return `${value} ${t('status403')}`;
             if (code === 404) return `${value} ${t('status404')}`;
             if (code === 408) return currentLang === 'tr' ? '408 zaman aşımı.' : '408 means the server timed out.';
-            if (code >= 400 && code < 500) return `${value} ${currentLang === 'tr' ? 'istemci hatasıdır.' : 'is a client error.'}`;
+            if (code === 410) return t('status410');
+            if (code === 429) return t('status429');
+            if (code === 451) return t('status451');
+            if (code >= 400 && code < 500) return `${value} ${t('statusClientErrDesc')}`;
             if (code >= 500 && code < 600) return `${value} ${t('status5xx')}`;
             return value;
         }
@@ -1411,6 +1868,25 @@
             updateItemStatusControls(null);
             checkCurrentItemBtn.disabled = true;
             updateItemUrlPreview('');
+            updateLogoPreview('');
+        }
+        function updateLogoPreview(url) {
+            if (!itemTvgLogoPreview) return;
+            const value = String(url || '').trim();
+            itemTvgLogoPreview.onload = null;
+            itemTvgLogoPreview.onerror = null;
+            if (!value) {
+                itemTvgLogoPreview.hidden = true;
+                itemTvgLogoPreview.removeAttribute('src');
+                return;
+            }
+            itemTvgLogoPreview.onload = () => {
+                itemTvgLogoPreview.hidden = false;
+            };
+            itemTvgLogoPreview.onerror = () => {
+                itemTvgLogoPreview.hidden = true;
+            };
+            itemTvgLogoPreview.src = value;
         }
         function fillItemForm(item) {
             if (!item) {
@@ -1431,6 +1907,7 @@
             checkCurrentItemBtn.disabled = isCheckingChannels || !item._id;
             updateItemGroupTitleDropdown(item.groupTitle || selectedGroup || NO_GROUP);
             updateItemUrlPreview(item.url || '');
+            updateLogoPreview(item.tvgLogo || '');
         }
         function updateItemUrlPreview(url) {
             if (!url) {
@@ -1492,17 +1969,34 @@
             deleteGroupsBtn.disabled = selectedGroupCount === 0;
             sortGroupsBtn.disabled = visibleGroupCount < 2;
             newItemBtn.disabled = !selectedGroup;
-            renameItemBtn.disabled = selectedItemCount !== 1;
+            renameItemBtn.disabled = selectedItemCount === 0;
             cloneItemBtn.disabled = selectedItemCount !== 1;
-            sortItemsBtn.disabled = !selectedGroup || itemCount < 2;
+            sortItemsBtn.disabled = Boolean(globalSearchValue) || !selectedGroup || itemCount < 2;
             checkItemsBtn.disabled = isCheckingChannels || selectedItemCount === 0;
             checkItemsBtn.innerHTML = `<i class="fas fa-stethoscope"></i> ${isCheckingChannels ? (currentLang === 'tr' ? 'Kontrol ediliyor...' : 'Checking...') : t('btnCheck')}`;
             checkCurrentItemBtn.disabled = isCheckingChannels || !activeChannelId;
             moveItemsBtn.disabled = selectedItemCount === 0 || groupCount === 0;
             deleteItemsBtn.disabled = selectedItemCount === 0;
-            downloadBtn.disabled = m3uData.length === 0 && groupCount === 0;
-            groupSelectedCount.textContent = selectedGroupCount ? `(${selectedGroupCount})` : '';
-            itemSelectedCount.textContent = selectedItemCount ? `(${selectedItemCount})` : '';
+            const projectEmpty = m3uData.length === 0 && groupCount === 0;
+            downloadBtn.disabled = projectEmpty;
+            if (exportProjectBtn) exportProjectBtn.disabled = projectEmpty;
+            if (typeof itemsSortable !== 'undefined' && itemsSortable && typeof itemsSortable.option === 'function') {
+                itemsSortable.option('disabled', Boolean(globalSearchValue));
+            }
+            if (channelsHeadingLabel) {
+                channelsHeadingLabel.textContent = globalSearchValue ? t('searchResults') : t('channelsTitle');
+            }
+            itemsFilterInput.placeholder = globalSearchValue ? t('narrowSearchPlaceholder') : t('filterChannelsPlaceholder');
+            groupSelectedCount.textContent = selectedGroupCount ? `(${tf('selectedCount', { n: selectedGroupCount })})` : '';
+            const visibleSelectedCount = selectedGroupItems.filter(item => selectedChannels.has(item._id)).length;
+            const hiddenSelectedCount = selectedItemCount - visibleSelectedCount;
+            if (!selectedItemCount) {
+                itemSelectedCount.textContent = '';
+            } else if (hiddenSelectedCount > 0) {
+                itemSelectedCount.textContent = `(${tf('selectedCountOther', { n: selectedItemCount, m: hiddenSelectedCount })})`;
+            } else {
+                itemSelectedCount.textContent = `(${tf('selectedCount', { n: selectedItemCount })})`;
+            }
             statusCheckProgress.textContent = checkingProgressText;
         }
         function renderGroups() {
@@ -1517,6 +2011,7 @@
                 groupItem.dataset.groupName = group;
                 if (selectedGroups.has(group)) groupItem.classList.add('selected');
                 if (selectedGroup === group) groupItem.classList.add('active');
+                if (groupHasSearchMatch(group)) groupItem.classList.add('search-hit');
                 if (renamingGroup === group) {
                     const input = document.createElement('input');
                     input.type = 'text';
@@ -1571,7 +2066,7 @@
                 activeChannelId = null;
             }
             itemsList.innerHTML = '';
-            if (!selectedGroup) {
+            if (!selectedGroup && !globalSearchValue) {
                 resetItemForm();
                 updateActionState();
                 return;
@@ -1619,6 +2114,13 @@
                     urlSpan.textContent = item.url || '';
                     urlSpan.title = item.url || '';
                     channelMain.appendChild(nameSpan);
+                    if (globalSearchValue) {
+                        const groupTag = document.createElement('span');
+                        groupTag.className = 'channel-group-tag';
+                        groupTag.textContent = getItemGroup(item);
+                        groupTag.title = getItemGroup(item);
+                        channelMain.appendChild(groupTag);
+                    }
                     channelMain.appendChild(statusSpan);
                     itemElement.appendChild(channelMain);
                     itemElement.appendChild(urlSpan);
@@ -1651,8 +2153,6 @@
                 if (!selectedGroups.size) selectedGroup = null;
                 if (selectedGroup && !selectedGroups.has(selectedGroup)) selectedGroup = [...selectedGroups][0] || null;
                 groupSelectionAnchor = group;
-                selectedChannels.clear();
-                activeChannelId = null;
                 renderGroups();
                 renderItems();
                 return;
@@ -1666,8 +2166,6 @@
                 if (start > end) [start, end] = [end, start];
                 selectedGroups = new Set(visibleGroups.slice(start, end + 1));
                 selectedGroup = group;
-                selectedChannels.clear();
-                activeChannelId = null;
                 renderGroups();
                 renderItems();
                 return;
@@ -1675,8 +2173,6 @@
             selectedGroup = group;
             selectedGroups = new Set([group]);
             groupSelectionAnchor = group;
-            selectedChannels.clear();
-            activeChannelId = null;
             renderGroups();
             renderItems();
         }
@@ -1685,7 +2181,16 @@
             if (!item) return;
             const useToggle = event && (event.ctrlKey || event.metaKey);
             const useRange = event && event.shiftKey;
+            const itemGroup = getItemGroup(item);
+            let groupChanged = false;
             renamingItemId = null;
+            if (itemGroup !== selectedGroup) {
+                selectedGroup = itemGroup;
+                if (!useToggle && !useRange) selectedGroups = new Set([itemGroup]);
+                else selectedGroups.add(itemGroup);
+                groupSelectionAnchor = itemGroup;
+                groupChanged = true;
+            }
             if (useToggle) {
                 if (selectedChannels.has(itemId)) {
                     selectedChannels.delete(itemId);
@@ -1695,6 +2200,7 @@
                     activeChannelId = itemId;
                 }
                 itemSelectionAnchorId = itemId;
+                if (groupChanged) renderGroups();
                 renderItems();
                 return;
             }
@@ -1708,12 +2214,14 @@
                 if (start > end) [start, end] = [end, start];
                 selectedChannels = new Set(visibleIds.slice(start, end + 1));
                 activeChannelId = itemId;
+                if (groupChanged) renderGroups();
                 renderItems();
                 return;
             }
             selectedChannels = new Set([itemId]);
             activeChannelId = itemId;
             itemSelectionAnchorId = itemId;
+            if (groupChanged) renderGroups();
             renderItems();
         }
         function startGroupRename(groupName) {
@@ -1739,8 +2247,129 @@
             renderItems();
         }
         function startSelectedItemRename() {
-            if (selectedChannels.size !== 1) return;
-            startItemRename([...selectedChannels][0]);
+            if (selectedChannels.size === 0) return;
+            if (selectedChannels.size === 1) {
+                startItemRename([...selectedChannels][0]);
+                return;
+            }
+            openBulkRenameModal();
+        }
+        function escapeRegExp(value) {
+            return String(value || '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        }
+        function replaceNameText(name, find, replaceWith, matchCase, wholeWord) {
+            const source = String(name || '');
+            const search = String(find || '');
+            if (!search) return source;
+            const flags = matchCase ? 'g' : 'gi';
+            const pattern = wholeWord ? `\\b${escapeRegExp(search)}\\b` : escapeRegExp(search);
+            return source.replace(new RegExp(pattern, flags), () => String(replaceWith || ''));
+        }
+        function readBulkRenameOptions() {
+            const startRaw = bulkRenameNumberStartInput ? bulkRenameNumberStartInput.value : '1';
+            const padRaw = bulkRenameNumberPadInput ? bulkRenameNumberPadInput.value : '2';
+            let start = startRaw === '' ? 1 : Number(startRaw);
+            let pad = Number(padRaw);
+            if (!Number.isFinite(start) || start < 0) start = 1;
+            start = Math.floor(start);
+            if (!Number.isFinite(pad) || pad < 1) pad = 1;
+            if (pad > 8) pad = 8;
+            pad = Math.floor(pad);
+            return {
+                prefix: bulkRenamePrefixInput ? bulkRenamePrefixInput.value : '',
+                suffix: bulkRenameSuffixInput ? bulkRenameSuffixInput.value : '',
+                find: bulkRenameFindInput ? bulkRenameFindInput.value : '',
+                replaceWith: bulkRenameReplaceInput ? bulkRenameReplaceInput.value : '',
+                matchCase: Boolean(bulkRenameMatchCaseInput && bulkRenameMatchCaseInput.checked),
+                wholeWord: Boolean(bulkRenameWholeWordInput && bulkRenameWholeWordInput.checked),
+                addNumbers: Boolean(bulkRenameAddNumbersInput && bulkRenameAddNumbersInput.checked),
+                start,
+                pad,
+                position: bulkRenameNumberPositionInput && bulkRenameNumberPositionInput.value === 'suffix' ? 'suffix' : 'prefix',
+                separator: bulkRenameNumberSeparatorInput ? bulkRenameNumberSeparatorInput.value : ' '
+            };
+        }
+        function hasAnyBulkRenameAction(options) {
+            return Boolean(options.prefix || options.suffix || options.find || options.addNumbers);
+        }
+        function buildBulkRenamedName(originalName, index, options) {
+            let name = String(originalName || '');
+            if (options.find) {
+                name = replaceNameText(name, options.find, options.replaceWith, options.matchCase, options.wholeWord);
+            }
+            if (options.prefix) name = options.prefix + name;
+            if (options.suffix) name += options.suffix;
+            if (options.addNumbers) {
+                const number = String(options.start + index).padStart(options.pad, '0');
+                name = options.position === 'suffix'
+                    ? `${name}${options.separator}${number}`
+                    : `${number}${options.separator}${name}`;
+            }
+            name = name.trim();
+            return name || String(originalName || 'Unnamed');
+        }
+        function resetBulkRenameForm() {
+            if (bulkRenamePrefixInput) bulkRenamePrefixInput.value = '';
+            if (bulkRenameSuffixInput) bulkRenameSuffixInput.value = '';
+            if (bulkRenameFindInput) bulkRenameFindInput.value = '';
+            if (bulkRenameReplaceInput) bulkRenameReplaceInput.value = '';
+            if (bulkRenameMatchCaseInput) bulkRenameMatchCaseInput.checked = false;
+            if (bulkRenameWholeWordInput) bulkRenameWholeWordInput.checked = false;
+            if (bulkRenameAddNumbersInput) bulkRenameAddNumbersInput.checked = false;
+            if (bulkRenameNumberStartInput) bulkRenameNumberStartInput.value = '1';
+            if (bulkRenameNumberPadInput) bulkRenameNumberPadInput.value = '2';
+            if (bulkRenameNumberPositionInput) bulkRenameNumberPositionInput.value = 'prefix';
+            if (bulkRenameNumberSeparatorInput) bulkRenameNumberSeparatorInput.value = ' ';
+        }
+        function updateBulkRenamePreview() {
+            if (!bulkRenamePreview) return;
+            bulkRenamePreview.innerHTML = '';
+            const options = readBulkRenameOptions();
+            bulkRenameTargets.slice(0, 8).forEach((item, index) => {
+                const row = document.createElement('div');
+                row.className = 'bulk-rename-preview-row';
+                const from = document.createElement('span');
+                from.className = 'bulk-rename-preview-old';
+                from.textContent = item.name || 'Unnamed';
+                const arrow = document.createElement('span');
+                arrow.className = 'bulk-rename-preview-arrow';
+                arrow.textContent = '→';
+                const to = document.createElement('span');
+                to.className = 'bulk-rename-preview-new';
+                to.textContent = buildBulkRenamedName(item.name, index, options);
+                row.appendChild(from);
+                row.appendChild(arrow);
+                row.appendChild(to);
+                bulkRenamePreview.appendChild(row);
+            });
+            if (bulkRenameTargets.length > 8) {
+                const more = document.createElement('div');
+                more.className = 'text-muted mt-1';
+                more.textContent = tf('bulkMore', { n: bulkRenameTargets.length - 8 });
+                bulkRenamePreview.appendChild(more);
+            }
+        }
+        function openBulkRenameModal() {
+            bulkRenameTargets = getSelectedChannelItems();
+            if (!bulkRenameTargets.length) return;
+            resetBulkRenameForm();
+            if (bulkRenameCount) bulkRenameCount.textContent = tf('bulkRenameCount', { n: bulkRenameTargets.length });
+            updateBulkRenamePreview();
+            if (bulkRenameModal) bulkRenameModal.show();
+        }
+        function applyBulkRename() {
+            if (!bulkRenameTargets.length) return;
+            const options = readBulkRenameOptions();
+            if (!hasAnyBulkRenameAction(options)) {
+                alert(t('bulkNeedAction'));
+                return;
+            }
+            bulkRenameTargets.forEach((item, index) => {
+                item.name = buildBulkRenamedName(item.name, index, options);
+            });
+            if (bulkRenameModal) bulkRenameModal.hide();
+            saveToLocalStorage();
+            renderItems();
         }
         async function saveGroupRename(oldName, newName) {
             const oldGroup = cleanGroupName(oldName);
@@ -1851,7 +2480,8 @@
         }
         async function deleteSelectedGroups() {
             if (!selectedGroups.size) return;
-            if (!await showConfirm(t('confirmDeleteGroup'), { okText: t('btnDelete') })) return;
+            if (!await showConfirm(tf('confirmDeleteGroup', { n: selectedGroups.size }), { okText: t('btnDelete') })) return;
+            if (hasProjectData()) downloadProjectBackup();
             const groupsToDelete = new Set(selectedGroups);
             m3uData = m3uData.filter(item => !groupsToDelete.has(getItemGroup(item)));
             groupOrder = groupOrder.filter(group => !groupsToDelete.has(group));
@@ -2042,13 +2672,13 @@
                     markChannelStatus(item, 'CORS', getStatusDescription('CORS'));
                 } catch (blockedError) {
                     const detail = blockedError && blockedError.name === 'AbortError'
-                        ? (currentLang === 'tr' ? 'İstek zaman aşımına uğradı.' : 'The request timed out.')
+                        ? t('timeoutDesc')
                         : getStatusDescription('Blocked');
                     markChannelStatus(item, 'Blocked', detail);
                 }
             }
         }
-        async function checkChannelItems(items, emptyMessage) {
+        async function checkChannelItems(items, emptyMessage, finishedLabel) {
             if (isCheckingChannels) return;
             const targets = Array.from(new Set((items || []).filter(Boolean)));
             if (targets.length === 0) {
@@ -2065,9 +2695,10 @@
                 item.lastChecked = '';
                 return item;
             });
+            const label = finishedLabel || t('labelSelectedChannels');
             const total = candidates.length;
             const batchSize = 5;
-            setProgress(currentLang === 'tr' ? `${total} kanal kuyruğa eklendi. Aynı anda 5'erli kontrol ediliyor.` : `Queued ${total} channels. Checking 5 at a time.`);
+            setProgress(tf('progQueued', { n: total, label }));
             saveToLocalStorage();
             renderItems();
             for (let start = 0; start < total; start += batchSize) {
@@ -2079,16 +2710,16 @@
                     item.statusDetail = getStatusDescription('Checking');
                     item.lastChecked = new Date().toLocaleString();
                 });
-                setProgress(currentLang === 'tr' ? `${batchStart}-${batchEnd} / ${total} kontrol ediliyor.` : `Checking ${batchStart}-${batchEnd} of ${total}.`);
+                setProgress(tf('progChecking', { a: batchStart, b: batchEnd, n: total, q: Math.max(total - batchEnd, 0) }));
                 saveToLocalStorage();
                 renderItems();
                 await Promise.all(batch.map(item => checkSingleChannel(item)));
-                setProgress(currentLang === 'tr' ? `${batchEnd} / ${total} kontrol edildi.` : `Checked ${batchEnd} of ${total}.`);
+                setProgress(tf('progChecked', { b: batchEnd, n: total, q: Math.max(total - batchEnd, 0) }));
                 saveToLocalStorage();
                 renderItems();
             }
             isCheckingChannels = false;
-            setProgress(currentLang === 'tr' ? `${total} kanalın kontrolü tamamlandı.` : `Finished checking ${total} channels.`);
+            setProgress(tf('progFinished', { n: total, label }));
             saveToLocalStorage();
             renderItems();
             updateActionState();
@@ -2102,42 +2733,171 @@
             const item = m3uData.find(entry => entry._id === activeChannelId);
             if (!item) return;
             selectedChannels = new Set([item._id]);
-            await checkChannelItems([item], currentLang === 'tr' ? 'Kontrol için bir kanal seçin.' : 'Select a channel to check.');
+            await checkChannelItems([item], currentLang === 'tr' ? 'Kontrol için bir kanal seçin.' : 'Select a channel to check.', t('labelCurrentChannel'));
         }
-        function handleFileUpload(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = loadEvent => {
-                parseM3U(loadEvent.target.result);
+        function formatFileSize(bytes) {
+            if (!Number.isFinite(bytes) || bytes <= 0) return '0 B';
+            const units = ['B', 'KB', 'MB', 'GB'];
+            const power = Math.min(Math.floor(Math.log(bytes) / Math.log(1024)), units.length - 1);
+            const value = bytes / Math.pow(1024, power);
+            return `${power === 0 || value >= 10 ? Math.round(value) : value.toFixed(1)} ${units[power]}`;
+        }
+        const LOAD_PHASES = ['loadReading', 'loadFinding', 'loadBuilding'];
+        function showLoading(detail) {
+            if (!loadingOverlay) return;
+            loadingDetail.textContent = detail || '';
+            loadingOverlay.classList.remove('d-none');
+            if (appContainer) appContainer.inert = true;
+            setLoadingPhase(0, 0);
+        }
+        function setLoadingPhase(index, ratio, count, message) {
+            if (!loadingOverlay) return;
+            loadingMessage.textContent = message || t(LOAD_PHASES[index]);
+            loadingCount.textContent = count || '';
+            loadingFills.forEach((fill, position) => {
+                const filled = position < index ? 1 : position === index ? ratio : 0;
+                fill.style.width = `${Math.round(filled * 100)}%`;
+            });
+            const overall = (index + ratio) / LOAD_PHASES.length;
+            loadingTrack.setAttribute('aria-valuenow', String(Math.round(overall * 100)));
+        }
+        function hideLoading() {
+            if (!loadingOverlay) return;
+            loadingOverlay.classList.add('d-none');
+            if (appContainer) appContainer.inert = false;
+            loadingFills.forEach(fill => { fill.style.width = '0%'; });
+        }
+        function nextPaint() {
+            return new Promise(resolve => {
+                let settled = false;
+                const finish = () => {
+                    if (settled) return;
+                    settled = true;
+                    resolve();
+                };
+                requestAnimationFrame(() => requestAnimationFrame(finish));
+                setTimeout(finish, 50);
+            });
+        }
+        function readFileAsText(file, onProgress) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = () => reject(reader.error || new Error('Could not read the file.'));
+                reader.onprogress = event => {
+                    if (onProgress && event.lengthComputable) onProgress(event.loaded / event.total);
+                };
+                reader.readAsText(file);
+            });
+        }
+        function formatFileSelectionLabel(files) {
+            const totalSize = files.reduce((sum, file) => sum + (file.size || 0), 0);
+            const sizeLabel = formatFileSize(totalSize);
+            if (files.length === 1) return `${files[0].name} · ${sizeLabel}`;
+            return `${tf('loadFilesLabel', { n: files.length })} · ${sizeLabel}\n${files.map(file => file.name).join(', ')}`;
+        }
+        function isPlaylistFile(file) {
+            const name = String(file && file.name || '').toLowerCase();
+            return name.endsWith('.m3u') || name.endsWith('.m3u8');
+        }
+        function isFileDrag(event) {
+            return Boolean(event.dataTransfer && Array.from(event.dataTransfer.types || []).includes('Files'));
+        }
+        function showDropOverlay() {
+            if (!dropOverlay) return;
+            dropOverlay.classList.remove('d-none');
+            dropOverlay.setAttribute('aria-hidden', 'false');
+        }
+        function hideDropOverlay() {
+            fileDragDepth = 0;
+            if (!dropOverlay) return;
+            dropOverlay.classList.add('d-none');
+            dropOverlay.setAttribute('aria-hidden', 'true');
+        }
+        function hasProjectData() {
+            return m3uData.length > 0 || groupOrder.length > 0;
+        }
+        async function handleFileUpload(event) {
+            const files = Array.from(event.target.files || []);
+            try {
+                await loadPlaylistFiles(files);
+            } finally {
+                event.target.value = '';
+            }
+        }
+        async function loadPlaylistFiles(files) {
+            const playlistFiles = (files || []).filter(isPlaylistFile);
+            if (!playlistFiles.length) {
+                if (files && files.length) alert(t('alertChooseFiles'));
+                return;
+            }
+            const totalSize = playlistFiles.reduce((sum, file) => sum + (file.size || 0), 0);
+            const sizeLabel = formatFileSize(totalSize);
+            const namesLabel = playlistFiles.length === 1 ? playlistFiles[0].name : tf('loadFilesLabel', { n: playlistFiles.length });
+            if (totalSize > LARGE_FILE_BYTES) {
+                const proceed = await showConfirm(tf('confirmLargeFile', { size: sizeLabel }), { okText: t('btnLoadAnyway'), danger: false });
+                if (!proceed) return;
+            }
+            showLoading(formatFileSelectionLabel(playlistFiles));
+            await nextPaint();
+            try {
+                const parsedPlaylists = [];
+                let bytesRead = 0;
+                const readableTotal = totalSize || 1;
+                const readingMessage = playlistFiles.length === 1 ? t('loadReading') : t('loadReadingFiles');
+                for (let index = 0; index < playlistFiles.length; index++) {
+                    const file = playlistFiles[index];
+                    const content = await readFileAsText(file, ratio => {
+                        const overall = (bytesRead + (file.size || 0) * ratio) / readableTotal;
+                        setLoadingPhase(0, overall, `${index + 1}/${playlistFiles.length}`, readingMessage);
+                    });
+                    bytesRead += file.size || 0;
+                    parsedPlaylists.push(parseM3U(content));
+                }
+                const withChannels = parsedPlaylists.filter(parsed => parsed.items.length);
+                if (!withChannels.length) {
+                    hideLoading();
+                    alert(tf('alertNoChannels', { names: namesLabel }));
+                    return;
+                }
+                const merged = withChannels.length === 1 ? withChannels[0] : mergeParsedPlaylists(withChannels);
+                const countLabel = tf('loadChannelsCount', { n: merged.items.length.toLocaleString() });
+                setLoadingPhase(1, 1, countLabel);
+                await nextPaint();
+                setLoadingPhase(2, 1, countLabel);
+                await nextPaint();
+                if (hasProjectData()) downloadProjectBackup();
+                applyParsedPlaylist(merged);
                 saveToLocalStorage();
                 renderGroups();
                 renderItems();
-            };
-            reader.readAsText(file);
+            } catch (error) {
+                console.error('Could not load the playlist file:', error);
+                alert(tf('alertReadError', { names: namesLabel }));
+            } finally {
+                hideLoading();
+            }
         }
         function parseM3U(content) {
-            m3uData = [];
-            groupOrder = [];
-            playlistHeader = '#EXTM3U';
-            selectedGroup = null;
-            selectedGroups.clear();
-            selectedChannels.clear();
-            activeChannelId = null;
-            renamingGroup = null;
-            renamingItemId = null;
             const lines = String(content || '').replace(/\r/g, '').split('\n');
+            const items = [];
+            const groups = [];
+            let header = '#EXTM3U';
             let currentItem = null;
+            let currentExtGrp = '';
             lines.forEach(rawLine => {
                 const line = rawLine.trim();
                 if (!line) return;
                 if (line.toUpperCase().startsWith('#EXTM3U')) {
-                    playlistHeader = line;
-                    playlistHeaderInput.value = playlistHeader;
+                    header = line;
+                    return;
+                }
+                if (line.toUpperCase().startsWith('#EXTGRP:')) {
+                    currentExtGrp = cleanGroupName(line.slice('#EXTGRP:'.length).trim());
                     return;
                 }
                 if (line.toUpperCase().startsWith('#EXTINF')) {
-                    currentItem = parseExtinfLine(line);
+                    currentItem = parseExtinfLine(line, currentExtGrp);
                     return;
                 }
                 if (currentItem) {
@@ -2147,11 +2907,75 @@
                     }
                     currentItem.url = line;
                     ensureItem(currentItem);
-                    m3uData.push(currentItem);
-                    ensureGroupExists(currentItem.groupTitle);
+                    items.push(currentItem);
+                    if (!groups.includes(currentItem.groupTitle)) groups.push(currentItem.groupTitle);
                     currentItem = null;
                 }
             });
+            return { header, items, groups };
+        }
+        function splitPlaylistUrls(value) {
+            return String(value || '')
+                .split(',')
+                .map(part => part.trim())
+                .filter(Boolean);
+        }
+        function mergePlaylistHeaders(headers) {
+            const urlKeys = new Set(['url-tvg', 'x-tvg-url', 'tvg-url']);
+            const attributes = {};
+            const order = [];
+            (headers || []).forEach(header => {
+                const rest = String(header || '').replace(/^#EXTM3U\s*/i, '');
+                const parsed = parseAttributeString(rest);
+                parsed.order.forEach(key => {
+                    const value = parsed.attributes[key];
+                    if (!order.includes(key)) order.push(key);
+                    if (urlKeys.has(key.toLowerCase())) {
+                        attributes[key] = uniqueStrings([
+                            ...splitPlaylistUrls(attributes[key]),
+                            ...splitPlaylistUrls(value)
+                        ]).join(',');
+                        return;
+                    }
+                    if (!Object.prototype.hasOwnProperty.call(attributes, key)) {
+                        attributes[key] = value;
+                    }
+                });
+            });
+            const attrsText = order.map(key => formatAttribute(key, attributes[key])).join(' ');
+            return attrsText ? `#EXTM3U ${attrsText}` : '#EXTM3U';
+        }
+        function mergeParsedPlaylists(playlists) {
+            const items = [];
+            const groups = [];
+            const headers = [];
+            (playlists || []).forEach(parsed => {
+                if (!parsed) return;
+                if (parsed.header) headers.push(parsed.header);
+                (parsed.items || []).forEach(item => items.push(item));
+                (parsed.groups || []).forEach(group => {
+                    if (!groups.includes(group)) groups.push(group);
+                });
+            });
+            return {
+                header: mergePlaylistHeaders(headers),
+                items,
+                groups
+            };
+        }
+        function applyParsedPlaylist(parsed) {
+            m3uData = parsed.items;
+            groupOrder = parsed.groups;
+            playlistHeader = parsed.header;
+            playlistHeaderInput.value = playlistHeader;
+            selectedGroup = null;
+            selectedGroups.clear();
+            selectedChannels.clear();
+            activeChannelId = null;
+            renamingGroup = null;
+            renamingItemId = null;
+            groupSelectionAnchor = null;
+            itemSelectionAnchorId = null;
             syncGroupOrder();
             selectedGroup = groupOrder[0] || null;
             if (selectedGroup) {
@@ -2159,7 +2983,7 @@
                 groupSelectionAnchor = selectedGroup;
             }
         }
-        function parseExtinfLine(line) {
+        function parseExtinfLine(line, fallbackGroup) {
             const commaIndex = line.indexOf(',');
             const metaPart = commaIndex >= 0 ? line.slice(0, commaIndex) : line;
             const name = commaIndex >= 0 ? line.slice(commaIndex + 1).trim() : 'Unnamed';
@@ -2177,11 +3001,18 @@
                 tvgId: attrs['tvg-id'] || '',
                 tvgName: attrs['tvg-name'] || '',
                 tvgLogo: attrs['tvg-logo'] || '',
-                groupTitle: cleanGroupName(attrs['group-title']),
+                groupTitle: cleanGroupName(
+                    Object.prototype.hasOwnProperty.call(attrs, 'group-title')
+                        ? attrs['group-title']
+                        : fallbackGroup
+                ),
                 catchup: attrs.catchup || '',
                 catchupType: attrs['catchup-type'] || '',
                 catchupDays: attrs['catchup-days'] || '',
                 additionalAttributes: formatAdditionalAttributes(attrs, parsed.order),
+                status: STATUS_UNKNOWN,
+                statusDetail: '',
+                lastChecked: '',
                 extraLines: []
             };
         }
@@ -2190,12 +3021,15 @@
             const header = (playlistHeaderInput.value || '#EXTM3U').trim() || '#EXTM3U';
             playlistHeader = header.toUpperCase().startsWith('#EXTM3U') ? header : `#EXTM3U ${header}`;
             const lines = [playlistHeader];
+            const orderedItems = [];
             groupOrder.forEach(group => {
-                getGroupItems(group).forEach(item => {
-                    lines.push(buildExtinfLine(item));
-                    item.extraLines.forEach(extraLine => lines.push(extraLine));
-                    lines.push(item.url || '');
-                });
+                orderedItems.push(...getGroupItems(group));
+            });
+            orderedItems.forEach(item => {
+                ensureItem(item);
+                lines.push(buildExtinfLine(item));
+                item.extraLines.forEach(extraLine => lines.push(extraLine));
+                lines.push(item.url || '');
             });
             return `${lines.join('\n')}\n`;
         }
@@ -2206,15 +3040,84 @@
                 renderGroups();
                 renderItems();
             }
-            const blob = new Blob([generateM3U()], { type: 'application/x-mpegurl' });
+            downloadTextFile('playlist.m3u', generateM3U(), 'application/x-mpegurl');
+        }
+        function downloadTextFile(filename, content, mimeType) {
+            const blob = new Blob([content], { type: mimeType || 'text/plain' });
             const url = URL.createObjectURL(blob);
             const link = document.createElement('a');
             link.href = url;
-            link.download = 'playlist.m3u';
+            link.download = filename;
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
             URL.revokeObjectURL(url);
+        }
+        function getProjectSnapshot() {
+            playlistHeader = (playlistHeaderInput.value || playlistHeader || '#EXTM3U').trim() || '#EXTM3U';
+            syncGroupOrder();
+            return {
+                format: PROJECT_FORMAT,
+                version: PROJECT_FORMAT_VERSION,
+                playlistHeader,
+                groupOrder,
+                m3uData
+            };
+        }
+        function parseProjectSnapshot(data) {
+            if (!data || typeof data !== 'object' || Array.isArray(data)) return null;
+            if (data.format && data.format !== PROJECT_FORMAT) return null;
+            const items = Array.isArray(data.m3uData) ? data.m3uData.map(ensureItem) : [];
+            const groups = Array.isArray(data.groupOrder) ? data.groupOrder.slice() : uniqueList(items.map(getItemGroup));
+            if (!items.length && !groups.length) return null;
+            return {
+                playlistHeader: data.playlistHeader || '#EXTM3U',
+                groupOrder: groups,
+                m3uData: items
+            };
+        }
+        function downloadProjectBackup() {
+            const stamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
+            downloadTextFile(
+                `m3u-editor-backup-${stamp}.json`,
+                JSON.stringify(getProjectSnapshot()),
+                'application/json'
+            );
+        }
+        function exportProject() {
+            if (activeChannelId) {
+                saveCurrentItemFromForm();
+                saveToLocalStorage();
+                renderGroups();
+                renderItems();
+            }
+            if (!hasProjectData()) return;
+            downloadTextFile('m3u-editor-project.json', JSON.stringify(getProjectSnapshot(), null, 2), 'application/json');
+        }
+        async function handleProjectImport(event) {
+            const file = event.target.files && event.target.files[0];
+            event.target.value = '';
+            if (!file) return;
+            try {
+                const content = await readFileAsText(file);
+                const parsed = parseProjectSnapshot(JSON.parse(content));
+                if (!parsed) {
+                    alert(t('alertNotProject'));
+                    return;
+                }
+                if (hasProjectData()) downloadProjectBackup();
+                applyParsedPlaylist({
+                    header: parsed.playlistHeader,
+                    items: parsed.m3uData,
+                    groups: parsed.groupOrder
+                });
+                saveToLocalStorage();
+                renderGroups();
+                renderItems();
+            } catch (error) {
+                console.error('Could not import the project file:', error);
+                alert(t('alertImportError'));
+            }
         }
         function saveCurrentItemFromForm() {
             const itemId = itemIndexInput.value;
@@ -2303,6 +3206,7 @@
         }
         async function clearProject() {
             if (!await showConfirm(t('confirmClear'), { okText: t('clearBtn') })) return;
+            if (hasProjectData()) downloadProjectBackup();
             m3uData = [];
             groupOrder = [];
             playlistHeader = '#EXTM3U';
@@ -2329,8 +3233,6 @@
                     selectedGroups = new Set([group]);
                     selectedGroup = group;
                     groupSelectionAnchor = group;
-                    selectedChannels.clear();
-                    activeChannelId = null;
                 }
                 evt.item.classList.add('dragging-selected');
             },
@@ -2342,7 +3244,7 @@
                 if (window.getSelection) window.getSelection().removeAllRanges();
             }
         });
-        new SortableClass(itemsList, {
+        const itemsSortable = new SortableClass(itemsList, {
             animation: 150,
             onStart(evt) {
                 const itemId = evt.item.dataset.itemId;
@@ -2362,6 +3264,50 @@
             }
         });
         fileInput.addEventListener('change', handleFileUpload);
+        exportProjectBtn.addEventListener('click', exportProject);
+        importProjectBtn.addEventListener('click', () => importProjectInput.click());
+        importProjectInput.addEventListener('change', handleProjectImport);
+        globalSearchInput.addEventListener('input', event => {
+            globalSearchValue = event.target.value.trim().toLowerCase();
+            renderGroups();
+            renderItems();
+        });
+        itemTvgLogoInput.addEventListener('input', event => updateLogoPreview(event.target.value));
+        document.addEventListener('dragenter', event => {
+            if (!isFileDrag(event)) return;
+            event.preventDefault();
+            fileDragDepth += 1;
+            showDropOverlay();
+        });
+        document.addEventListener('dragover', event => {
+            if (!isFileDrag(event)) return;
+            event.preventDefault();
+            event.dataTransfer.dropEffect = 'copy';
+        });
+        document.addEventListener('dragleave', event => {
+            if (!isFileDrag(event)) return;
+            fileDragDepth = Math.max(0, fileDragDepth - 1);
+            if (!fileDragDepth) hideDropOverlay();
+        });
+        document.addEventListener('drop', event => {
+            if (!isFileDrag(event)) return;
+            event.preventDefault();
+            hideDropOverlay();
+            loadPlaylistFiles(Array.from(event.dataTransfer.files || []));
+        });
+        document.addEventListener('keydown', event => {
+            if (!(event.ctrlKey || event.metaKey) || event.key.toLowerCase() !== 'k') return;
+            event.preventDefault();
+            globalSearchInput.focus();
+            globalSearchInput.select();
+        });
+        bulkRenameForm.addEventListener('submit', event => {
+            event.preventDefault();
+            applyBulkRename();
+        });
+        bulkRenameModalEl.addEventListener('input', updateBulkRenamePreview);
+        bulkRenameModalEl.addEventListener('change', updateBulkRenamePreview);
+        bulkRenameModalEl.addEventListener('shown.bs.modal', () => bulkRenamePrefixInput.focus());
         downloadBtn.addEventListener('click', downloadM3U);
         clearBtn.addEventListener('click', clearProject);
         playlistHeaderInput.addEventListener('input', () => {
@@ -2399,15 +3345,18 @@
         itemDetailsForm.addEventListener('submit', saveItemChanges);
         itemUrlInput.addEventListener('input', event => updateItemUrlPreview(event.target.value));
         itemUrlPreview.addEventListener('click', event => {
-            event.preventDefault();
-            if (!itemUrlInput.value) return;
-                        document.getElementById('previewIframe').src = itemUrlInput.value;
-            const previewModal = new bootstrap.Modal(document.getElementById('previewModal'));
-            previewModal.show();
+            if (!itemUrlInput.value) event.preventDefault();
         });
-        document.getElementById('previewModal').addEventListener('hidden.bs.modal', () => {
-            document.getElementById('previewIframe').src = '';
-        });
+        (function ensureFavicon() {
+            const icon = document.querySelector('link[rel="shortcut icon"]');
+            if (!icon) return;
+            const probe = new Image();
+            probe.onerror = () => {
+                icon.href = 'logo-main.png';
+                icon.type = 'image/png';
+            };
+            probe.src = 'logo-main.png';
+        })();
         const themeToggleBtn = document.getElementById('themeToggle');
         if (localStorage.getItem('theme') === 'dark') {
             document.body.classList.add('dark-mode');
